@@ -1,0 +1,11 @@
+{
+    "_comment": "HeartGold land data IDs in Platinum matrix order: Cherrygrove (2), Route 29 (3), New Bark (1)",
+    "hg_area_data": 2,
+    "hg_land_ids": [4, 5, 1, 2, 3, 0],
+    "first_map_data": 670,
+    "map_texture_set": 75,
+    "prop_texture_set": 71,
+    "prop_model_set": 71,
+    "area_data": 76,
+    "lighting_set": "lighting_set_000"
+}

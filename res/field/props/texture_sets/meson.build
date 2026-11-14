@@ -69,7 +69,8 @@ prop_texture_set_files = copy_gen.process(files(
     'prop_texture_set_067.nsbtx',
     'prop_texture_set_068.nsbtx',
     'prop_texture_set_069.nsbtx',
-    'prop_texture_set_070.nsbtx'
+    'prop_texture_set_070.nsbtx',
+    'prop_texture_set_071.nsbtx'
 ))
 
 prop_texture_set_narc = custom_target('prop_texture_sets.narc',

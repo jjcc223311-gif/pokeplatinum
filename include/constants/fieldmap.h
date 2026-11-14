@@ -642,6 +642,9 @@ enum MapHeaderID {
     MAP_HEADER_ROUTE_228_ROCK_PEAK_RUINS,
     MAP_HEADER_ROCK_PEAK_RUINS,
     MAP_HEADER_DISTORTED_RIFT,
+    MAP_HEADER_NEW_BARK_TOWN,
+    MAP_HEADER_ROUTE_29,
+    MAP_HEADER_CHERRYGROVE_CITY,
 
     // Add any new headers here, before the following entries
     MAP_HEADER_INVALID,

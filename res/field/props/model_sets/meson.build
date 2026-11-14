@@ -76,7 +76,8 @@ prop_model_set_data_srcs = files(
     'prop_model_set_067.json',
     'prop_model_set_068.json',
     'prop_model_set_069.json',
-    'prop_model_set_070.json'
+    'prop_model_set_070.json',
+    'prop_model_set_071.json'
 )
 
 prop_model_set_narc = custom_target('prop_model_sets.narc',

@@ -476,6 +476,13 @@
         "TEST: Warp to the portal room in\n",
         "Turnback Cave?"
       ]
+    },
+    {
+      "id": "TwinleafTownPlayerHouse1F_Text_JohtoTestAskWarp",
+      "en_US": [
+        "TEST: Warp to New Bark Town\n",
+        "in Johto?"
+      ]
     }
   ]
 }

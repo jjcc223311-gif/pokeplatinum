@@ -508,6 +508,18 @@
     {
       "id": "LocationNames_Text_DistortedRift",
       "en_US": "Distorted Rift"
+    },
+    {
+      "id": "LocationNames_Text_NewBarkTown",
+      "en_US": "New Bark Town"
+    },
+    {
+      "id": "LocationNames_Text_Route29",
+      "en_US": "Route 29"
+    },
+    {
+      "id": "LocationNames_Text_CherrygroveCity",
+      "en_US": "Cherrygrove City"
     }
   ]
 }

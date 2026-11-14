@@ -668,7 +668,13 @@ map_data_files = copy_gen.process(files(
     'map_data_666.bin',
     'map_data_667.bin',
     'map_data_668.bin',
-    'map_data_669.bin'
+    'map_data_669.bin',
+    'map_data_670.bin',
+    'map_data_671.bin',
+    'map_data_672.bin',
+    'map_data_673.bin',
+    'map_data_674.bin',
+    'map_data_675.bin'
 ))
 
 map_data_narc = custom_target('land_data.narc',

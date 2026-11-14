@@ -1,5 +1,6 @@
 #include "macros/scrcmd.inc"
 #include "constants/distorted_rift.h"
+#include "constants/johto.h"
 #include "res/text/bank/twinleaf_town_player_house_1f.h"
 #include "res/field/maps/locals/twinleaf_town_player_house_1f.h"
 
@@ -180,6 +181,12 @@ TwinleafTownPlayerHouse1F_Mom:
     PlaySE SE_CONFIRM_sseq_3
     LockAll
     FacePlayer
+#if JOHTO_TEMP_TEST
+    Message TwinleafTownPlayerHouse1F_Text_JohtoTestAskWarp
+    ShowYesNoMenu VAR_RESULT
+    GoToIfEq VAR_RESULT, MENU_YES, TwinleafTownPlayerHouse1F_JohtoTempTestWarp
+    CloseMessage
+#endif
 #if RIFT_TEMP_TEST
     GoToIfSet FLAG_HAS_POKEDEX, TwinleafTownPlayerHouse1F_RiftTempTest
 TwinleafTownPlayerHouse1F_MomNormal:
@@ -836,6 +843,18 @@ TwinleafTownPlayerHouse1F_KitchenSink:
 TwinleafTownPlayerHouse1F_KitchenCounter:
     EventMessage TwinleafTownPlayerHouse1F_Text_WhereMomDoesDeliciousCooking
     End
+
+#if JOHTO_TEMP_TEST
+// ===== TEMPORARY TEST: Johto maps (remove with JOHTO_TEMP_TEST in constants/johto.h) =====
+TwinleafTownPlayerHouse1F_JohtoTempTestWarp:
+    CloseMessage
+    FadeScreenOut
+    WaitFadeScreen
+    Warp MAP_HEADER_NEW_BARK_TOWN, JOHTO_TEST_WARP_X, JOHTO_TEST_WARP_Z, DIR_SOUTH
+    FadeScreenIn
+    WaitFadeScreen
+    End
+#endif
 
 #if RIFT_TEMP_TEST
 // ===== TEMPORARY TEST: Distorted Rift (remove with RIFT_TEMP_TEST in constants/distorted_rift.h) =====

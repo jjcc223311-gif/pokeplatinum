@@ -2783,5 +2783,18 @@
       ["MAP_666", "MAP_667"],
       ["MAP_668", "MAP_669"]
     ]
+  },
+  {
+    "id": "Johto",
+    "name": "johto",
+    "headers": [
+      ["MAP_HEADER_CHERRYGROVE_CITY", "MAP_HEADER_CHERRYGROVE_CITY", "MAP_HEADER_ROUTE_29", "MAP_HEADER_ROUTE_29", "MAP_HEADER_ROUTE_29", "MAP_HEADER_NEW_BARK_TOWN"]
+    ],
+    "altitudes": [
+      [0, 0, 0, 0, 0, 0]
+    ],
+    "maps": [
+      ["MAP_670", "MAP_671", "MAP_672", "MAP_673", "MAP_674", "MAP_675"]
+    ]
   }
 ]
