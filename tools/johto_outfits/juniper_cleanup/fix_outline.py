@@ -1,10 +1,11 @@
 import numpy as np
 from PIL import Image
-def fix(path, out=None, sep=255):
+def fix(path, out=None, sep=255, OUT=None):
     im = Image.open(path); a = np.array(im).astype(int); p = im.getpalette()
     col = lambda i: tuple(p[3*i:3*i+3])
     H, W = a.shape
-    OUT = 1
+    if OUT is None:
+        OUT = min(range(1, 16), key=lambda i: sum(col(i)))
     gray = [i for i in range(2, 16) if (lambda c: max(c) - min(c) < 40 and 80 < sum(c) < 600)(col(i))]
     light = [i for i in range(2, 16) if sum(col(i)) >= 600]
     hair = [i for i in range(2, 16) if (lambda c: c[0] > c[2] + 40 and c[0] < 200)(col(i))]
