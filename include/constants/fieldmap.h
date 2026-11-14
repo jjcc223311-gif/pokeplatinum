@@ -1324,6 +1324,12 @@ enum MapFileID {
     MAP_667,
     MAP_668,
     MAP_669,
+    MAP_670,
+    MAP_671,
+    MAP_672,
+    MAP_673,
+    MAP_674,
+    MAP_675,
 
     MAP_NONE = 0xFFFF,
 };
