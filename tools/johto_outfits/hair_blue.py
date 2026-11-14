@@ -1,7 +1,7 @@
 """Brighten Lucas's hair from navy to the reference's blue, only on hair pixels."""
 from PIL import Image
 from collections import Counter
-DARKEST, DARK, MID = (30, 38, 100), (46, 72, 166), (82, 124, 218)
+DARKEST, DARK, MID = (12, 28, 66), (34, 58, 118), (52, 88, 164)
 MAP = {(32, 32, 41): DARKEST, (57, 65, 82): DARK, (57, 66, 82): DARK, (57, 98, 139): MID, (57, 99, 140): MID}
 BLACK = (0, 0, 0)
 
