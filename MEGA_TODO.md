@@ -201,7 +201,7 @@ Form numbers: 29 = Mega 1, 28 = Mega 2 (needs the Mega Rock), 30 = Legendary 1, 
 - Wild plan applied (`tools/gen5_pack/PHASE5_WILD_PLAN.md`); 16 additions didn't fit (listed there).
 - Trainer teams (`tools/gen5_pack/PHASE6_TRAINER_PLAN.md`): 527 teams; 78 replaced Pokémon were
   Mega-capable (e.g. Cynthia's Lucario and Milotic). Single-Pokémon teams unchanged. Lass Sarah skipped.
-- Characters: VS-screen mugshots for Nathan, Hugo, Bianca and Dawn are cut from their battle sprites
+- Characters: VS-screen mugshots for Nathan, Hugo, Beatrice and Dawn are cut from their battle sprites
   (placeholder art). All battle-intro animation frames show the standing pose.
 - Juniper still uses Dawn's art for the contest outfit and the end-credits illustrations; her other
   field poses are recolours of Dawn's. Her running frames reuse walking.
@@ -255,7 +255,7 @@ Form numbers: 29 = Mega 1, 28 = Mega 2 (needs the Mega Rock), 30 = Legendary 1, 
 
 ## VS screen close-ups
 
-- Nathan, Hugo, Bianca and Dawn have tighter head-and-shoulders close-ups like the vanilla ones
+- Nathan, Hugo, Beatrice and Dawn have tighter head-and-shoulders close-ups like the vanilla ones
   (`tools/scripts/make_vs_mugshots.py`: Scale2x x2, mapped back onto the sprite palette). Still made
   from the battle sprites (no VS art in the packs).
 

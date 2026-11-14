@@ -19,7 +19,7 @@ CLASSES = ROOT / 'res' / 'trainers' / 'classes'
 TRAINERS = {
     'leader_volkner': (46, 1, 5),      # Hugo (tall hair: wider crop, away from the Poké Ball hand)
     'elite_four_flint': (40, 1, 0),    # Nathan
-    'elite_four_aaron': (40, 1, 0),    # Bianca
+    'elite_four_aaron': (40, 1, 0),    # Beatrice
     'leader_candice': (40, 1, 0),      # Dawn
 }
 OUT_W, OUT_H = 96, 64

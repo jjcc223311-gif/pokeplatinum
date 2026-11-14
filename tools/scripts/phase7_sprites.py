@@ -3,7 +3,7 @@
 
   Flint   -> Nate     (elite_four_flint, npc/flint.png)
   Volkner -> Hugh     (leader_volkner,   npc/volkner.png)
-  Aaron   -> Bianca   (elite_four_aaron, npc/aaron.png)
+  Aaron   -> Beatrice (elite_four_aaron, npc/aaron.png)
   Candice -> Dawn     (leader_candice,   npc/candice.png) using Dawn's ORIGINAL sprites (read from git HEAD)
   Dawn    -> Juniper  (player_female / dp_player_female fronts, player/player_f.png + dp_player_f.png walk/run)
 
@@ -110,7 +110,7 @@ def main():
     column([dawn_ow.crop((0, 32 * i, 32, 32 * i + 32)) for i in range(16)], pal, 16).save(FIELD / 'npc' / 'candice.png')
     report.append('Candice -> Dawn: battle front + overworld = Dawn\'s original sprites; VS mugshot cut from her front')
 
-    # --- Flint -> Nate, Volkner -> Hugh, Aaron -> Bianca ---
+    # --- Flint -> Nate, Volkner -> Hugh, Aaron -> Beatrice ---
     nate = PACK / 'nate' / 'Nate_Platinum_Sprites'
     for cls, npc, front, ow in [
         ('elite_four_flint', 'flint', nate / 'battle' / 'opponent-front' / 'standing.png', ('nate', nate / 'sprite-sheets' / '209-on-foot.png')),
