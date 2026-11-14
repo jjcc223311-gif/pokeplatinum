@@ -111,6 +111,7 @@ static void FieldInput_Clear(FieldInput *input)
     input->dummy3 = FALSE;
     input->dummy4 = FALSE;
     input->dummy5 = FALSE;
+    input->mobilePC = FALSE;
     input->playerDir = DIR_NONE;
     input->transitionDir = DIR_NONE;
 }
@@ -133,6 +134,13 @@ void FieldInput_Update(FieldInput *input, FieldSystem *fieldSystem, u16 pressedK
 
         if (pressedKeys & PAD_BUTTON_Y) {
             input->registeredItem = TRUE;
+        }
+
+        // L + R together (one of them just pressed). The field has no other L / R controls; in
+        // the "L=A" button mode the system clears L and R, so this can't trigger there.
+        if ((heldKeys & (PAD_BUTTON_L | PAD_BUTTON_R)) == (PAD_BUTTON_L | PAD_BUTTON_R)
+            && (pressedKeys & (PAD_BUTTON_L | PAD_BUTTON_R))) {
+            input->mobilePC = TRUE;
         }
 
         if (pressedKeys & PAD_BUTTON_A) {
@@ -333,6 +341,17 @@ BOOL FieldInput_Process(const FieldInput *input, FieldSystem *fieldSystem)
     if (input->menu && FieldSystem_IsInValidLocation(fieldSystem) == TRUE) {
         Sound_PlayEffect(SEQ_SE_DP_WIN_OPEN_sseq);
         StartMenu_Open(fieldSystem);
+        return TRUE;
+    }
+
+    if (input->mobilePC
+        && FieldSystem_IsInValidLocation(fieldSystem) == TRUE
+        && FieldSystem_CanUseMobilePC(fieldSystem) == TRUE) {
+        if (PlayerAvatar_CheckForceStopMovement(fieldSystem->playerAvatar) == TRUE) {
+            PlayerAvatar_ForceStopMovement(fieldSystem->playerAvatar, PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar));
+        }
+
+        ScriptManager_Set(fieldSystem, SCRIPT_ID_MOBILE_PC, NULL);
         return TRUE;
     }
 

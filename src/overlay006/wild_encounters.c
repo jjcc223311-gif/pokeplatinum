@@ -108,6 +108,16 @@ static BOOL RepelPreventsEncounter(const u8 param0, const WildEncounters_FieldPa
 static void AddRoamerToEnemyParty(const u32 param0, Roamer *param1, FieldBattleDTO *param2);
 static BOOL TryEncounterRoamer(FieldSystem *fieldSystem, Roamer **param1);
 static BOOL AddWildMonToParty(const int partySlot, const WildEncounters_FieldParams *fieldParams, Pokemon *mon, FieldBattleDTO *battleParams);
+// Deerling / Sawsbuck season: it changes every month, as in Black / White (January = spring,
+// February = summer, March = autumn, April = winter, May = spring, ...)
+u8 WildEncounters_CurrentSeason(void)
+{
+    RTCDate date;
+
+    GetCurrentDate(&date);
+    return (date.month - 1) % SEASON_FORM_COUNT;
+}
+
 static u8 TryFindHigherLevelSlot(const EncounterSlot *encounterTable, const WildEncounters_FieldParams *fieldParams, const u8 encounterSlot);
 static void InitEncounterFieldParams(FieldSystem *fieldSystem, Pokemon *firstPartyMon, WildEncounters *encounterData, WildEncounters_FieldParams *param3);
 static void ModifyEncounterRateWithHeldItem(Pokemon *param0, u8 *param1);
@@ -1487,10 +1497,17 @@ static BOOL AddWildMonToParty(const int partySlot, const WildEncounters_FieldPar
 
         u8 availableUnownForms = WildEncounters_UnownTables[encounterFieldParams->unownTableID].numberForms;
         form = WildEncounters_UnownTables[encounterFieldParams->unownTableID].forms[LCRNG_Next() % availableUnownForms];
+    } else if (species == SPECIES_BASCULIN) {
+        setForm = TRUE;
+        form = LCRNG_RandMod(2) ? BASCULIN_FORM_BLUE_STRIPED : BASCULIN_FORM_RED_STRIPED;
+    } else if (species == SPECIES_DEERLING || species == SPECIES_SAWSBUCK) {
+        setForm = TRUE;
+        form = WildEncounters_CurrentSeason();
     }
 
     if (setForm) {
         Pokemon_SetValue(mon, MON_DATA_FORM, &form);
+        Pokemon_CalcAbility(mon); // Blue-Striped Basculin has different abilities
     }
 
     return Party_AddPokemon(battleParams->parties[partySlot], mon);

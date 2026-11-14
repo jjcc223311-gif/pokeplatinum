@@ -10,15 +10,15 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_STARAPTOR",
+            "species": "SPECIES_DARMANITAN",
             "form": 0,
             "level": 36,
             "item": null,
             "moves": [
-                "MOVE_AERIAL_ACE",
-                "MOVE_TAKE_DOWN",
-                "MOVE_QUICK_ATTACK",
-                "MOVE_DOUBLE_TEAM"
+                "MOVE_THRASH",
+                "MOVE_BELLY_DRUM",
+                "MOVE_FLARE_BLITZ",
+                "MOVE_HAMMER_ARM"
             ],
             "iv_scale": 100,
             "ball_seal": 0
@@ -52,15 +52,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_RAPIDASH",
+            "species": "SPECIES_SLOWPOKE",
             "form": 0,
             "level": 35,
             "item": null,
             "moves": [
-                "MOVE_FIRE_SPIN",
-                "MOVE_TAKE_DOWN",
-                "MOVE_STOMP",
-                "MOVE_TAIL_WHIP"
+                "MOVE_DISABLE",
+                "MOVE_HEADBUTT",
+                "MOVE_WATER_PULSE",
+                "MOVE_ZEN_HEADBUTT"
             ],
             "iv_scale": 100,
             "ball_seal": 0

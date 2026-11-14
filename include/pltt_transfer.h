@@ -18,6 +18,12 @@ void PlttTransfer_Free(void);
 void PlttTransfer_Clear(void);
 BOOL PlttTransfer_RequestWholeRange(const PlttTransferTaskTemplate *template);
 BOOL PlttTransfer_RequestFreeSpace(const PlttTransferTaskTemplate *template);
+
+/**
+ * @brief Check whether PlttTransfer_RequestFreeSpace would succeed for a palette of the given
+ * size, so callers with optional palettes can skip them instead of hitting an assert.
+ */
+BOOL PlttTransfer_CanRequestFreeSpace(int numPalettes, NNS_G2D_VRAM_TYPE vramType);
 void PlttTransfer_ReplacePlttData(int resourceID, NNSG2dPaletteData *data);
 BOOL PlttTransfer_HasTask(int resourceID);
 void PlttTransfer_ResetTask(int resourceID);

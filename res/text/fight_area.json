@@ -57,7 +57,7 @@
     {
       "id": "FightArea_Text_UpToTheChallenge",
       "en_US": [
-        "Flint: Yo, Trainer!\n",
+        "Nathan: Yo, Trainer!\n",
         "It’s been too long, amigo!\r",
         "Now I don’t know what your pal speedy\n",
         "there’s been spouting...\r",
@@ -73,7 +73,7 @@
     {
       "id": "FightArea_Text_SorryAboutMyFriend",
       "en_US": [
-        "Volkner: You only want to go into the\n",
+        "Hugo: You only want to go into the\n",
         "Frontier, don’t you?\r",
         "I’m sorry about my friend.\n",
         "He’s off on his own thing..."
@@ -82,17 +82,19 @@
     {
       "id": "FightArea_Text_LetFlintSeeSpirit",
       "en_US": [
-        "Flint: This situation just cooks!\n",
+        "Nathan: This situation just cooks!\n",
         "The drama and tension sizzles!\r",
-        "Flint, the fiery master of fire Pokémon,\n",
-        "is going to put you to the test!\f",
-        "Let Flint see how hot your spirit burns!\r"
+        "Nathan, the fiery master of fire\n",
+        "Pokémon, is going to put you to the\f",
+        "test!\r",
+        "Let Nathan see how hot your spirit\n",
+        "burns!\r"
       ]
     },
     {
       "id": "FightArea_Text_ShowMeSkills",
       "en_US": [
-        "Volkner: I don’t know how I managed to\n",
+        "Hugo: I don’t know how I managed to\n",
         "get myself into this, but...\r",
         "Show me the skills that got you through\n",
         "the Pokémon League!\r"
@@ -101,7 +103,7 @@
     {
       "id": "FightArea_Text_FlintEllipses",
       "en_US": [
-        "Flint: ...\n",
+        "Nathan: ...\n",
         "...\r",
         "...\n",
         "...\r",
@@ -112,14 +114,14 @@
     {
       "id": "FightArea_Text_DontBurnOut",
       "en_US": [
-        "Volkner: Hey! Don’t burn out on us!\n",
+        "Hugo: Hey! Don’t burn out on us!\n",
         "Now you’re just getting in the way.\r"
       ]
     },
     {
       "id": "FightArea_Text_ThatWasABlast",
       "en_US": [
-        "Volkner: Hahaha!\n",
+        "Hugo: Hahaha!\n",
         "That was a blast!\r",
         "Our combination came up short, but\n",
         "you’re also a lot tougher as well.\r",
@@ -285,7 +287,7 @@
     {
       "id": "FightArea_Text_AreVolknerAndFlintFriends",
       "en_US": [
-        "Are Volkner and Flint really good\n",
+        "Are Hugo and Nathan really good\n",
         "friends?\r",
         "I’ve heard all they ever do is argue\n",
         "and bicker."

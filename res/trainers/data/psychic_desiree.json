@@ -9,15 +9,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_MR_MIME",
+            "species": "SPECIES_SIGILYPH",
+            "form": 0,
+            "level": 54,
+            "item": null,
+            "moves": [
+                "MOVE_AIR_SLASH",
+                "MOVE_PSYCHIC",
+                "MOVE_COSMIC_POWER",
+                "MOVE_SKY_ATTACK"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_REUNICLUS",
             "form": 0,
             "level": 54,
             "item": null,
             "moves": [
                 "MOVE_PSYCHIC",
-                "MOVE_REFLECT",
-                "MOVE_LIGHT_SCREEN",
-                "MOVE_DRAIN_PUNCH"
+                "MOVE_DIZZY_PUNCH",
+                "MOVE_SKILL_SWAP",
+                "MOVE_HEAL_BLOCK"
             ],
             "iv_scale": 0,
             "ball_seal": 0

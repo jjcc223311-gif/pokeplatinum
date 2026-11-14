@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SIGILYPH",
+            "form": 0,
+            "level": 25,
+            "item": null,
+            "moves": [
+                "MOVE_WHIRLWIND",
+                "MOVE_PSYBEAM",
+                "MOVE_AIR_CUTTER",
+                "MOVE_LIGHT_SCREEN"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_KADABRA",
             "form": 0,
             "level": 26,

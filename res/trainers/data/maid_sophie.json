@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_GOTHITA",
+            "form": 0,
+            "level": 26,
+            "item": null,
+            "moves": [
+                "MOVE_PSYBEAM",
+                "MOVE_EMBARGO",
+                "MOVE_FAINT_ATTACK",
+                "MOVE_PSYSHOCK"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_CLEFAIRY",
             "form": 0,
             "level": 27,

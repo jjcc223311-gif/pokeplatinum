@@ -10,14 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_GASTLY",
+            "species": "SPECIES_GOLETT",
             "form": 0,
             "level": 27,
             "item": null,
             "moves": [
-                "MOVE_PAYBACK",
-                "MOVE_SUCKER_PUNCH",
-                "MOVE_CONFUSE_RAY"
+                "MOVE_SHADOW_PUNCH",
+                "MOVE_IRON_DEFENSE",
+                "MOVE_MEGA_PUNCH",
+                "MOVE_MAGNITUDE"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_TIRTOUGA",
+            "form": 0,
+            "level": 27,
+            "item": null,
+            "moves": [
+                "MOVE_AQUA_JET",
+                "MOVE_ANCIENT_POWER",
+                "MOVE_CRUNCH",
+                "MOVE_WIDE_GUARD"
             ],
             "iv_scale": 10,
             "ball_seal": 0

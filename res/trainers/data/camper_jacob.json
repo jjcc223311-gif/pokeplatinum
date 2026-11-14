@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_LITWICK",
+            "form": 0,
+            "level": 13,
+            "item": null,
+            "moves": [
+                "MOVE_SMOG",
+                "MOVE_FIRE_SPIN",
+                "MOVE_CONFUSE_RAY",
+                "MOVE_NIGHT_SHADE"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_PONYTA",
             "form": 0,
             "level": 14,

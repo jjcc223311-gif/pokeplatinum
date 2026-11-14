@@ -1,0 +1,111 @@
+{
+    "base_stats": {
+        "hp": 60,
+        "attack": 95,
+        "defense": 110,
+        "speed": 165,
+        "special_attack": 200,
+        "special_defense": 150
+    },
+    "types": [
+        "TYPE_GRASS",
+        "TYPE_LIGHT"
+    ],
+    "catch_rate": 75,
+    "base_exp_reward": 204,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 3,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_POISON_BARB"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_50",
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_MEDIUM_SLOW",
+    "egg_groups": [
+        "EGG_GROUP_FAIRY",
+        "EGG_GROUP_GRASS"
+    ],
+    "abilities": [
+        "ABILITY_THORN_BLOOM",
+        "ABILITY_NONE"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_GREEN",
+    "flip_sprite": true,
+    "icon_palette": 0,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_WEATHER_BALL"
+            ],
+            [
+                1,
+                "MOVE_POISON_STING"
+            ],
+            [
+                1,
+                "MOVE_MEGA_DRAIN"
+            ],
+            [
+                1,
+                "MOVE_MAGICAL_LEAF"
+            ],
+            [
+                1,
+                "MOVE_SWEET_SCENT"
+            ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM09",
+            "TM10",
+            "TM11",
+            "TM15",
+            "TM17",
+            "TM18",
+            "TM19",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM30",
+            "TM32",
+            "TM36",
+            "TM42",
+            "TM43",
+            "TM44",
+            "TM45",
+            "TM53",
+            "TM58",
+            "TM68",
+            "TM70",
+            "TM75",
+            "TM77",
+            "TM78",
+            "TM82",
+            "TM83",
+            "TM84",
+            "TM86",
+            "TM87",
+            "TM90",
+            "HM01"
+        ],
+        "by_tutor": [
+            "MOVE_MUD_SLAP",
+            "MOVE_FURY_CUTTER",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_SEED_BOMB",
+            "MOVE_SWIFT"
+        ]
+    },
+    "evolutions": []
+}

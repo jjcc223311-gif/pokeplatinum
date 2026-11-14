@@ -16,6 +16,7 @@
 #include "battle/battle_controller.h"
 #include "battle/battle_controller_player.h"
 #include "battle/battle_lib.h"
+#include "battle/battle_subscreen.h"
 #include "battle/battle_system.h"
 #include "battle/common.h"
 #include "battle/message_defs.h"
@@ -771,6 +772,23 @@ void BattleController_EmitShowMoveSelectMenu(BattleSystem *battleSys, BattleCont
     }
 
     message.invalidMoves = BattleSystem_CheckInvalidMoves(battleSys, battleCtx, battler, 0, CHECK_INVALID_ALL);
+
+    // While set, the button shows which form it will become (1 / 2; 2 needs the Mega Rock)
+    if (battleCtx->megaRequested[battler]) {
+        message.megaState = Battler_MegaRockChoice(battleCtx, battler) == 2 ? MEGA_BUTTON_ON_2 : MEGA_BUTTON_ON_1;
+    } else if (BattleSystem_CanMegaEvolve(battleSys, battleCtx, battler)) {
+        message.megaState = MEGA_BUTTON_OFF;
+    } else {
+        message.megaState = MEGA_BUTTON_HIDDEN;
+    }
+
+    if (battleCtx->legendaryRequested[battler]) {
+        message.legendaryState = Battler_LegendaryRockChoice(battleCtx, battler) == 2 ? MEGA_BUTTON_ON_2 : MEGA_BUTTON_ON_1;
+    } else if (BattleSystem_CanLegendaryMegaEvolve(battleSys, battleCtx, battler)) {
+        message.legendaryState = MEGA_BUTTON_OFF;
+    } else {
+        message.legendaryState = MEGA_BUTTON_HIDDEN;
+    }
 
     SendMessage(battleSys, COMM_RECIPIENT_CLIENT, battler, &message, sizeof(MoveSelectMenuMessage));
 }

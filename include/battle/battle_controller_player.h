@@ -77,6 +77,8 @@ enum BattleControllerPlayerInput {
     PLAYER_INPUT_MOVE_2,
     PLAYER_INPUT_MOVE_3,
     PLAYER_INPUT_MOVE_4,
+    PLAYER_INPUT_MEGA = 6, // The rainbow Mega button: toggles Mega Evolution for this turn (player only)
+    PLAYER_INPUT_LEGENDARY = 7, // The gold Legendary button: toggles Legendary Mega Evolution for this turn (player only)
 
     PLAYER_INPUT_PARTY_SLOT_1 = 1,
     PLAYER_INPUT_PARTY_SLOT_2,

@@ -128,6 +128,8 @@ Trainer *BattleSystem_GetTrainer(BattleSystem *battleSys, int battler);
  */
 TrainerInfo *BattleSystem_GetTrainerInfo(BattleSystem *battleSys, int battler);
 Bag *BattleSystem_GetBag(BattleSystem *battleSys);
+BOOL BattleSystem_ModernExpShareOn(BattleSystem *battleSys);
+BOOL BattleSystem_IsRiftEncounter(BattleSystem *battleSys);
 BagCursor *BattleSystem_GetBagCursor(BattleSystem *battleSys);
 u32 BattleSystem_GetTrainerGender(BattleSystem *battleSys, int battler);
 

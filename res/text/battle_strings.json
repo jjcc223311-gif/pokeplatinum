@@ -6276,7 +6276,7 @@
         "stopped evolving!\r"
       ]
     },
-    {           
+    {
       "id": "BattleStrings_Text_EllipsesEllipses",
       "en_US": "... ...?\r"
     },
@@ -8487,6 +8487,669 @@
       "en_US": [
         "The Distortion World’s {STRVAR_1 1, 0, 0}\n",
         "appeared!\r"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_LegendaryButton",
+      "en_US": "LEGENDARY"
+    },
+    {
+      "id": "BattleStrings_Text_MegaButton",
+      "en_US": "MEGA"
+    },
+    {
+      "id": "BattleStrings_Text_MegaButton1",
+      "en_US": "MEGA 1"
+    },
+    {
+      "id": "BattleStrings_Text_MegaButton2",
+      "en_US": "MEGA 2"
+    },
+    {
+      "id": "BattleStrings_Text_LegendaryButton1",
+      "en_US": "LEGENDARY 1"
+    },
+    {
+      "id": "BattleStrings_Text_LegendaryButton2",
+      "en_US": "LEGENDARY 2"
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityPutUpABarrier_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "put up a barrier!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityPutUpABarrier_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0} put up a barrier!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityPutUpABarrier_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0} put up a barrier!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityTwistedTheDimensions_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "twisted the dimensions!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityTwistedTheDimensions_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "twisted the dimensions!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityTwistedTheDimensions_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "twisted the dimensions!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilitySoftenedTheBlow_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "softened the blow!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilitySoftenedTheBlow_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0} softened the blow!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilitySoftenedTheBlow_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0} softened the blow!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityPiercedTheProtection_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "pierced the protection!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityPiercedTheProtection_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "pierced the protection!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityPiercedTheProtection_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "pierced the protection!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_AnElectricCurrentRanAcrossTheBattlefield",
+      "en_US": [
+        "An electric current ran across\n",
+        "the battlefield!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_TheElectricityDisappearedFromTheBattlefield",
+      "en_US": [
+        "The electricity disappeared\n",
+        "from the battlefield."
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonIsProtectedByTheElectricTerrain_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} is protected\n",
+        "by the Electric Terrain!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonIsProtectedByTheElectricTerrain_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} is protected\n",
+        "by the Electric Terrain!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonIsProtectedByTheElectricTerrain_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} is protected\n",
+        "by the Electric Terrain!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_DebugMegaFlagOn",
+      "en_US": [
+        "DEBUG: Mega flag ON.\n",
+        "It will Mega Evolve this turn."
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_DebugMegaFlagOff",
+      "en_US": [
+        "DEBUG: Mega flag OFF."
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_DebugMegaBlocked",
+      "en_US": [
+        "DEBUG: Mega pressed, but\n",
+        "CanMegaEvolve said no."
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_DebugLegendaryFlagOn",
+      "en_US": [
+        "DEBUG: Legendary flag ON.\n",
+        "It will Legendary Mega this turn."
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_DebugLegendaryFlagOff",
+      "en_US": [
+        "DEBUG: Legendary flag OFF."
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_DebugLegendaryBlocked",
+      "en_US": [
+        "DEBUG: Legendary pressed, but\n",
+        "CanLegendaryMegaEvolve said no."
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityElectrifiedTheBattlefield_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "electrified the battlefield!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityElectrifiedTheBattlefield_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "electrified the battlefield!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityElectrifiedTheBattlefield_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "electrified the battlefield!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsMoveWasBouncedBackByMagicBounce_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 6, 1, 0}\n",
+        "was bounced back by Magic Bounce!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsMoveWasBouncedBackByMagicBounce_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 6, 1, 0} was bounced back by\f",
+        "Magic Bounce!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsMoveWasBouncedBackByMagicBounce_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 6, 1, 0} was bounced back by\f",
+        "Magic Bounce!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityErasedPokemonsBoosts_AllyAlly",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "erased {STRVAR_1 1, 2, 0}’s boosts!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityErasedPokemonsBoosts_AllyWild",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "erased the wild\f",
+        "{STRVAR_1 1, 2, 0}’s boosts!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityErasedPokemonsBoosts_AllyFoe",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "erased the foe’s\f",
+        "{STRVAR_1 1, 2, 0}’s boosts!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityErasedPokemonsBoosts_WildAlly",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0} erased\f",
+        "{STRVAR_1 1, 2, 0}’s boosts!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityErasedPokemonsBoosts_WildWild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0} erased the wild\f",
+        "{STRVAR_1 1, 2, 0}’s boosts!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityErasedPokemonsBoosts_FoeAlly",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0} erased\f",
+        "{STRVAR_1 1, 2, 0}’s boosts!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityErasedPokemonsBoosts_FoeFoe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0} erased the foe’s\f",
+        "{STRVAR_1 1, 2, 0}’s boosts!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityWashedAwayTheHazards_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "washed away the hazards!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityWashedAwayTheHazards_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "washed away the hazards!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityWashedAwayTheHazards_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "washed away the hazards!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityShatteredTheBarriers_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\n",
+        "shattered the barriers!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityShatteredTheBarriers_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "shattered the barriers!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsAbilityShatteredTheBarriers_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s\n",
+        "{STRVAR_1 5, 1, 0}\f",
+        "shattered the barriers!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_TrPokemonMegaEvolved",
+      "en_US": [
+        "{STRVAR_1 14, 0, 0} {STRVAR_1 3, 1, 0}’s\n",
+        "{STRVAR_1 1, 2, 0} Mega Evolved!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_TrPokemonLegendaryMegaEvolved",
+      "en_US": [
+        "{STRVAR_1 14, 0, 0} {STRVAR_1 3, 1, 0}’s\n",
+        "{STRVAR_1 1, 2, 0} Legendary Mega Evolved!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonTransformedIntoWaterType_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} transformed\n",
+        "into the Water type!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonTransformedIntoWaterType_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} transformed\n",
+        "into the Water type!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonTransformedIntoWaterType_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} transformed\n",
+        "into the Water type!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsTypeChangedToMatch_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s type changed\n",
+        "to match its target’s!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsTypeChangedToMatch_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s type changed\n",
+        "to match its target’s!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsTypeChangedToMatch_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s type changed\n",
+        "to match its target’s!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsStatChangesWereRemoved_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s stat changes\n",
+        "were removed!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsStatChangesWereRemoved_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s stat changes\n",
+        "were removed!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsStatChangesWereRemoved_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s stat changes\n",
+        "were removed!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsBerryWasBurnedUp_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s {STRVAR_1 8, 1, 0}\n",
+        "was burned up!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsBerryWasBurnedUp_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s {STRVAR_1 8, 1, 0}\n",
+        "was burned up!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsBerryWasBurnedUp_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s {STRVAR_1 8, 1, 0}\n",
+        "was burned up!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonReceivedItem_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} received\n",
+        "{STRVAR_1 8, 1, 0}!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonReceivedItem_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} received\n",
+        "{STRVAR_1 8, 1, 0}!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonReceivedItem_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} received\n",
+        "{STRVAR_1 8, 1, 0}!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonSharedItsGuard_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} shared its guard\n",
+        "with the target!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonSharedItsGuard_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} shared its guard\n",
+        "with the target!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonSharedItsGuard_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} shared its guard\n",
+        "with the target!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonSharedItsPower_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} shared its power\n",
+        "with the target!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonSharedItsPower_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} shared its power\n",
+        "with the target!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonSharedItsPower_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} shared its power\n",
+        "with the target!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonFellStraightDown_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} fell\n",
+        "straight down!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonFellStraightDown_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} fell\n",
+        "straight down!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonFellStraightDown_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} fell\n",
+        "straight down!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonWasHurledIntoTheAir_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} was hurled\n",
+        "into the air!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonWasHurledIntoTheAir_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} was hurled\n",
+        "into the air!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonWasHurledIntoTheAir_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} was hurled\n",
+        "into the air!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonCloakedInFreezingLight_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} became cloaked\n",
+        "in a freezing light!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonCloakedInFreezingLight_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} became cloaked\n",
+        "in a freezing light!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonCloakedInFreezingLight_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} became cloaked\n",
+        "in a freezing light!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonCloakedInFreezingAir_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} became cloaked\n",
+        "in freezing air!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonCloakedInFreezingAir_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} became cloaked\n",
+        "in freezing air!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonCloakedInFreezingAir_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} became cloaked\n",
+        "in freezing air!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonTookTheKindOffer_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} took\n",
+        "the kind offer!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonTookTheKindOffer_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0} took\n",
+        "the kind offer!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonTookTheKindOffer_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0} took\n",
+        "the kind offer!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsMoveWasPostponed_Ally",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0}’s move\n",
+        "was postponed!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsMoveWasPostponed_Wild",
+      "en_US": [
+        "The wild {STRVAR_1 1, 0, 0}’s move\n",
+        "was postponed!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_PokemonsMoveWasPostponed_Foe",
+      "en_US": [
+        "The foe’s {STRVAR_1 1, 0, 0}’s move\n",
+        "was postponed!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_WideGuardProtectedTheTeam",
+      "en_US": [
+        "Wide Guard protected\n",
+        "the team!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_QuickGuardProtectedTheTeam",
+      "en_US": [
+        "Quick Guard protected\n",
+        "the team!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_WonderRoomStarted",
+      "en_US": [
+        "It created a bizarre area where\n",
+        "Defense and Sp. Def are swapped!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_WonderRoomEnded",
+      "en_US": [
+        "Wonder Room wore off, and Defense\n",
+        "and Sp. Def returned to normal!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_MagicRoomStarted",
+      "en_US": [
+        "It created a bizarre area where\n",
+        "held items lose their effects!"
+      ]
+    },
+    {
+      "id": "BattleStrings_Text_MagicRoomEnded",
+      "en_US": [
+        "Magic Room wore off, and held\n",
+        "items’ effects returned to normal!"
       ]
     }
   ]

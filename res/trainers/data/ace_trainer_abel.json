@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_GLALIE",
+            "species": "SPECIES_BEARTIC",
             "form": 0,
             "level": 59,
             "item": null,
             "moves": [
+                "MOVE_REST",
+                "MOVE_BLIZZARD",
                 "MOVE_HAIL",
-                "MOVE_ICE_BEAM",
-                "MOVE_SHEER_COLD",
-                "MOVE_CRUNCH"
+                "MOVE_THRASH"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_FERROTHORN",
+            "form": 0,
+            "level": 59,
+            "item": null,
+            "moves": [
+                "MOVE_SELFDESTRUCT",
+                "MOVE_POWER_WHIP",
+                "MOVE_IRON_HEAD",
+                "MOVE_PAYBACK"
             ],
             "iv_scale": 50,
             "ball_seal": 0

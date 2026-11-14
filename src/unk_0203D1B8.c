@@ -26,6 +26,7 @@
 #include "applications/bag/application.h"
 #include "applications/berry_tag.h"
 #include "applications/diploma.h"
+#include "applications/legdex_sections.h"
 #include "applications/easy_chat/main.h"
 #include "applications/frontier/records/main.h"
 #include "applications/frontier/tower_records.h"
@@ -1262,6 +1263,43 @@ BOOL FieldSystem_OpenPokedex(FieldSystem *fieldSystem, PokedexOverlayArgs *args)
         PokedexMain_Main,
         PokedexMain_Exit,
         FS_OVERLAY_ID(pokedex)
+    };
+
+    FieldSystem_StartChildProcess(fieldSystem, &template, args);
+    return TRUE;
+}
+
+// Legendary Pokédex: a separate copy of the Pokédex app (overlay legendary_dex). Its entry points take
+// the same PokedexOverlayArgs as the regular Pokédex.
+int LegDex_PokedexMain_Init(ApplicationManager *appMan, int *state);
+int LegDex_PokedexMain_Main(ApplicationManager *appMan, int *state);
+int LegDex_PokedexMain_Exit(ApplicationManager *appMan, int *state);
+
+BOOL FieldSystem_OpenLegendaryDex(FieldSystem *fieldSystem, PokedexOverlayArgs *args)
+{
+    FS_EXTERN_OVERLAY(legendary_dex);
+
+    static const ApplicationManagerTemplate template = {
+        LegDex_PokedexMain_Init,
+        LegDex_PokedexMain_Main,
+        LegDex_PokedexMain_Exit,
+        FS_OVERLAY_ID(legendary_dex)
+    };
+
+    FieldSystem_StartChildProcess(fieldSystem, &template, args);
+    return TRUE;
+}
+
+// The Legendary Pokédex's home screen (Mega / Types / Abilities sections; it can open the list above)
+BOOL FieldSystem_OpenLegendaryDexSections(FieldSystem *fieldSystem, struct LegDexSectionsArgs *args)
+{
+    FS_EXTERN_OVERLAY(legdex_sections);
+
+    static const ApplicationManagerTemplate template = {
+        LegDexSections_Init,
+        LegDexSections_Main,
+        LegDexSections_Exit,
+        FS_OVERLAY_ID(legdex_sections)
     };
 
     FieldSystem_StartChildProcess(fieldSystem, &template, args);

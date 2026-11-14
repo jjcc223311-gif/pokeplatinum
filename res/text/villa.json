@@ -95,7 +95,7 @@
     {
       "id": "Villa_Text_DawnMessageEntry",
       "en_US": [
-        "Dawn: Wow, {STRVAR_1 3, 1, 0}, this sofa is\n",
+        "Juniper: Wow, {STRVAR_1 3, 1, 0}, this sofa is\n",
         "so sumptuous!\r",
         "You know, I think we have similar\n",
         "tastes, {STRVAR_1 3, 1, 0}.\r"
@@ -191,7 +191,7 @@
     {
       "id": "Villa_Text_DawnMessage0",
       "en_US": [
-        "Dawn: {STRVAR_1 3, 1, 0}, are you going to\n",
+        "Juniper: {STRVAR_1 3, 1, 0}, are you going to\n",
         "collect furniture now?\r",
         "Are you maybe the type who can’t bear\n",
         "to use Technical Machines?\r",
@@ -202,16 +202,16 @@
     {
       "id": "Villa_Text_DawnMessage1",
       "en_US": [
-        "Dawn: I had no idea that you can get\n",
-        "a Villa as a gift.\r",
+        "Juniper: I had no idea that you can\n",
+        "get a Villa as a gift.\r",
         "Who knows what can happen in life?"
       ]
     },
     {
       "id": "Villa_Text_DawnMessage2",
       "en_US": [
-        "Dawn: I’m envious of you having your\n",
-        "own place.\r",
+        "Juniper: I’m envious of you having\n",
+        "your own place.\r",
         "I have to share a bedroom with my\n",
         "little sister!"
       ]
@@ -219,7 +219,7 @@
     {
       "id": "Villa_Text_DawnMessage3",
       "en_US": [
-        "Dawn: Sigh...\r",
+        "Juniper: Sigh...\r",
         "To be with that special someone in a\n",
         "wonderful Villa like this...\r",
         "I think it’s a nice dream to have."
@@ -228,8 +228,8 @@
     {
       "id": "Villa_Text_DawnMessage4",
       "en_US": [
-        "Dawn: You run into so many Pokémon in\n",
-        "the Battle Zone. It’s a bit much.\r",
+        "Juniper: You run into so many Pokémon\n",
+        "in the Battle Zone. It’s a bit much.\r",
         "So, {STRVAR_1 3, 1, 0}, please let me catch\n",
         "a little rest."
       ]
@@ -725,7 +725,7 @@
     {
       "id": "Villa_Text_CandiceMessage0",
       "en_US": [
-        "Candice: Giving you an Icicle Badge made\n",
+        "Dawn: Giving you an Icicle Badge made\n",
         "me think.\r",
         "It made me realize this one thing.\r",
         "I don’t have to act cool out of\n",
@@ -735,7 +735,7 @@
     {
       "id": "Villa_Text_CandiceMessage1",
       "en_US": [
-        "Candice: In a battle, when both sides\n",
+        "Dawn: In a battle, when both sides\n",
         "are down to their last Pokémon...\r",
         "What do you think about then?\r",
         "I put all my trust in that Pokémon\n",
@@ -746,15 +746,15 @@
     {
       "id": "Villa_Text_CandiceMessage2",
       "en_US": [
-        "Candice: Whew...\n",
+        "Dawn: Whew...\n",
         "The Resort Area is pretty warm.\f",
-        "Maybe Candice is overdressed?"
+        "Maybe Dawn is overdressed?"
       ]
     },
     {
       "id": "Villa_Text_CandiceMessage3",
       "en_US": [
-        "Candice: This furniture...\n",
+        "Dawn: This furniture...\n",
         "Oh, I get it... It’s like this...\r",
         "Oh, please don’t mind me."
       ]
@@ -762,7 +762,7 @@
     {
       "id": "Villa_Text_CandiceMessage4",
       "en_US": [
-        "Candice: Why does the Snowpoint Gym\n",
+        "Dawn: Why does the Snowpoint Gym\n",
         "Leader have to guard that icy temple\f",
         "anyway?"
       ]
@@ -770,7 +770,7 @@
     {
       "id": "Villa_Text_VolknerMessage0",
       "en_US": [
-        "Volkner: I was told by Flint that we’re\n",
+        "Hugo: I was told by Nathan that we’re\n",
         "meeting here.\r",
         "...That’s funny.\n",
         "You haven’t heard anything about it?"
@@ -779,7 +779,7 @@
     {
       "id": "Villa_Text_VolknerMessage1",
       "en_US": [
-        "Volkner: Every one of my Pokémon are\n",
+        "Hugo: Every one of my Pokémon are\n",
         "top class in potential.\r",
         "They’re all potential game breakers!"
       ]
@@ -787,7 +787,7 @@
     {
       "id": "Villa_Text_VolknerMessage2",
       "en_US": [
-        "Volkner: Oh, yeah.\n",
+        "Hugo: Oh, yeah.\n",
         "I decided not to join the Elite Four.\r",
         "I got an earful about not renovating\n",
         "the Pokémon League building.\r",
@@ -798,7 +798,7 @@
     {
       "id": "Villa_Text_VolknerMessage3",
       "en_US": [
-        "Volkner: My ELECTIVIRE is a force of\n",
+        "Hugo: My ELECTIVIRE is a force of\n",
         "nature to be reckoned with.\r",
         "No, don’t get me started.\n",
         "I’ll tell you another time."
@@ -807,7 +807,7 @@
     {
       "id": "Villa_Text_VolknerMessage4",
       "en_US": [
-        "Volkner: Hmm...\r",
+        "Hugo: Hmm...\r",
         "This place gives me ideas about how\n",
         "I can renovate my Gym."
       ]
@@ -874,7 +874,7 @@
     {
       "id": "Villa_Text_FlintMessage0",
       "en_US": [
-        "Flint: Hey, you!\r",
+        "Nathan: Hey, you!\r",
         "You used my prize money to buy this\n",
         "furniture, didn’t you?\r",
         "So, I’ve got a right to lounge here,\n",
@@ -884,15 +884,17 @@
     {
       "id": "Villa_Text_FlintAndVolknerMessage0",
       "en_US": [
-        "Volkner: My relationship to Flint?\n",
-        "There’s no love lost, that’s for sure."
+        "Hugo: My relationship to Nathan? We\n",
+        "just grew up together back in Unova.\r",
+        "Tch- There’s no love lost, that’s\n",
+        "for sure."
       ]
     },
     {
       "id": "Villa_Text_FlintMessage1",
       "en_US": [
-        "Flint: Hey, listen, you!\r",
-        "If that Volkner tries to sell you on\n",
+        "Nathan: Hey, listen, you!\r",
+        "If that Hugo tries to sell you on\n",
         "Electric-type Pokémon, ignore him!\r",
         "You have to go with Fire-type Pokémon.\n",
         "It’s the way of the future!"
@@ -901,59 +903,61 @@
     {
       "id": "Villa_Text_FlintAndVolknerMessage1",
       "en_US": [
-        "Volkner: When I got my first Gym Badge,\n",
+        "Hugo: When I got my first Gym Badge,\n",
         "I used the move Thunderbolt.\r",
-        "Ever since, I’ve stuck with the Electric\n",
-        "type even as I got better.\r",
+        "Ever since, I’ve stuck with the\n",
+        "Electric type even as I got better.\r",
         "I do it because I don’t want to ever\n",
         "forget how happy I was when I won.\r",
-        "Incidentally, Flint’s fascination with\n",
-        "the Fire type is only from his name.\r",
-        "Someone told him that a flint is what’s\n",
-        "used to spark a fire, and that was it."
+        "Incidentally, Nathan’s fascination\n",
+        "with the Fire type is only from his\f",
+        "wife.\r",
+        "She told him that a burning desire\n",
+        "to be is what’s used to spark a\f",
+        "fire, and that was it."
       ]
     },
     {
       "id": "Villa_Text_FlintAndVolknerMessage2",
       "en_US": [
-        "Flint: ...Volkner.\r",
-        "Volkner: What?\r",
-        "Flint: Let’s say I’m in a battle, OK?\n",
+        "Nathan: ...Hugo.\r",
+        "Hugo: What?\r",
+        "Nathan: Let’s say I’m in a battle, OK?\n",
         "What if I didn’t use my Poké Balls?\r",
         "Instead, I can have my guys come in\n",
         "and out of my Afro to battle.\r",
         "That’d bewilder the other guy, huh?\n",
         "Wouldn’t that be hilarious?\r",
-        "Volkner: ...Maybe.\n",
+        "Hugo: ...Maybe.\n",
         "Don’t ruin things for others, though."
       ]
     },
     {
       "id": "Villa_Text_FlintAndVolknerMessage3",
       "en_US": [
-        "Flint: Hmm...\r",
-        "Volkner: What’s wrong?\n",
+        "Nathan: Hmm...\r",
+        "Hugo: What’s wrong?\n",
         "You’re looking serious for a change.\r",
-        "Flint: It’s this place.\n",
+        "Nathan: It’s this place.\n",
         "You know how drab the League is?\r",
         "Don’t you think the place should be\n",
         "more, you know, festive?\r",
         "With more decorations, awards, and\n",
         "things like that?\r",
-        "Volkner: Don’t start! That will make\n",
+        "Hugo: Don’t start! That will make\n",
         "my Gym stand out less."
       ]
     },
     {
       "id": "Villa_Text_FlintAndVolknerMessage4",
       "en_US": [
-        "Flint: Say, hey, Volkner.\n",
+        "Nathan: Say, hey, Hugo.\n",
         "What do you say we battle here?\r",
-        "Volkner: ...Are you kidding?\r",
+        "Hugo: ...Are you kidding?\r",
         "That’s why you Elite Four are called\n",
         "irresponsible.\r",
-        "Flint: What, we are?\r",
-        "Volkner: Well, at least you are.\n",
+        "Nathan: What, we are?\r",
+        "Hugo: Well, at least you are.\n",
         "I tell everyone you’re irresponsible."
       ]
     },
@@ -962,7 +966,7 @@
       "en_US": [
         "Maylene: What makes a Gym Leader a\n",
         "good one?\r",
-        "Candice: Gee, I wouldn’t know.\n",
+        "Dawn: Gee, I wouldn’t know.\n",
         "That’s a tough question.\r",
         "...Maybe we should ask Gardenia\n",
         "sometime."
@@ -975,7 +979,7 @@
         "for Pokémon?\r",
         "Would it be funny if someone were to\n",
         "wear those?\r",
-        "Candice: What is it, Maylene?\n",
+        "Dawn: What is it, Maylene?\n",
         "Did you want some Accessories?\f",
         "I’ll give you some of my favorites.\r",
         "Maylene: ...!\n",
@@ -985,20 +989,20 @@
     {
       "id": "Villa_Text_MayleneAndCandiceMessage2",
       "en_US": [
-        "Maylene: ...Candice?\r",
-        "Candice: Yes?\r",
+        "Maylene: ...Dawn?\r",
+        "Dawn: Yes?\r",
         "Maylene: Oh, sorry, it’s nothing!\n",
         "I didn’t say anything!\r",
-        "Candice: Giggle...\n",
+        "Dawn: Giggle...\n",
         "I like lounging here.\r"
       ]
     },
     {
       "id": "Villa_Text_MayleneAndCandiceMessage3",
       "en_US": [
-        "Maylene: Candice, what does it mean to\n",
+        "Maylene: Dawn, what does it mean to\n",
         "be strong?\r",
-        "Candice: I can’t answer that!\r",
+        "Dawn: I can’t answer that!\r",
         "Let’s go look for that answer\n",
         "together.\r",
         "We’ve got Pokémon and {STRVAR_1 3, 1, 0} on\n",
@@ -1010,9 +1014,9 @@
       "id": "Villa_Text_MayleneAndCandiceMessage4",
       "en_US": [
         "Maylene: ...This is delicious!\r",
-        "Candice: Then have some more.\r",
+        "Dawn: Then have some more.\r",
         "Maylene: Yes, please.\r",
-        "Candice: There’s plenty to drink.\n",
+        "Dawn: There’s plenty to drink.\n",
         "You’re a growing girl!"
       ]
     },

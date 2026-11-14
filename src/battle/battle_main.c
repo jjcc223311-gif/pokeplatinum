@@ -695,6 +695,7 @@ static void BattleMain_CopyBattleSysToDTOAndFree(ApplicationManager *appMan)
     SetScreenColorBrightness(DS_SCREEN_MAIN, COLOR_BLACK);
     SetScreenColorBrightness(DS_SCREEN_SUB, COLOR_BLACK);
     BattleSystem_SetBurmyForm(battleSys);
+    BattleSystem_RevertMegaForm(battleSys, battleSys->battleCtx);
 
     if (battleSys->resultMask != BATTLE_RESULT_CAPTURED_MON) {
         BattleSystem_InitCaptureAttempt(battleSys, Party_GetPokemonBySlotIndex(battleSys->parties[BATTLER_ENEMY_1], 0));
@@ -1037,6 +1038,8 @@ static void BattleSys_New(BattleSystem *battleSys, FieldBattleDTO *dto)
     battleSys->bag = Bag_New(HEAP_ID_BATTLE);
 
     Bag_Copy(dto->bag, battleSys->bag);
+    battleSys->modernExpShare = dto->modernExpShare;
+    battleSys->riftEncounter = dto->riftEncounter;
     battleSys->pokedex = Pokedex_New(HEAP_ID_BATTLE);
     Pokedex_Copy(dto->pokedex, battleSys->pokedex);
 

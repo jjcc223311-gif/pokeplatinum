@@ -8,15 +8,29 @@
     "double_battle": true,
     "party": [
         {
-            "species": "SPECIES_BUNEARY",
+            "species": "SPECIES_PANSAGE",
             "form": 0,
             "level": 23,
             "item": null,
             "moves": [
-                "MOVE_FORESIGHT",
-                "MOVE_JUMP_KICK",
-                "MOVE_QUICK_ATTACK",
-                "MOVE_DEFENSE_CURL"
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEECH_SEED",
+                "MOVE_BITE",
+                "MOVE_SEED_BOMB"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_RUFFLET",
+            "form": 0,
+            "level": 23,
+            "item": null,
+            "moves": [
+                "MOVE_WING_ATTACK",
+                "MOVE_HONE_CLAWS",
+                "MOVE_SCARY_FACE",
+                "MOVE_AERIAL_ACE"
             ],
             "iv_scale": 0,
             "ball_seal": 0

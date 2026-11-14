@@ -11,6 +11,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_FOONGUS",
+            "form": 0,
+            "level": 22,
+            "item": null,
+            "moves": [
+                "MOVE_BIDE",
+                "MOVE_MEGA_DRAIN",
+                "MOVE_INGRAIN",
+                "MOVE_FAINT_ATTACK"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GASTLY",
             "form": 0,
             "level": 23,

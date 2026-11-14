@@ -8,7 +8,16 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_PICHU",
+            "species": "SPECIES_STUNFISK",
+            "form": 0,
+            "level": 55,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_AUDINO",
             "form": 0,
             "level": 55,
             "item": null,

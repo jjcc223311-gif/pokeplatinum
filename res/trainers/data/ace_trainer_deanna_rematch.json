@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_AMPHAROS",
+            "species": "SPECIES_SAWSBUCK",
             "form": 0,
             "level": 61,
             "item": null,
             "moves": [
-                "MOVE_DISCHARGE",
-                "MOVE_POWER_GEM",
-                "MOVE_SIGNAL_BEAM",
-                "MOVE_FIRE_PUNCH"
+                "MOVE_HORN_LEECH",
+                "MOVE_NATURE_POWER",
+                "MOVE_DOUBLE_EDGE",
+                "MOVE_SOLAR_BEAM"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_WATCHOG",
+            "form": 0,
+            "level": 61,
+            "item": null,
+            "moves": [
+                "MOVE_HYPER_FANG",
+                "MOVE_MEAN_LOOK",
+                "MOVE_BATON_PASS",
+                "MOVE_SLAM"
             ],
             "iv_scale": 50,
             "ball_seal": 0

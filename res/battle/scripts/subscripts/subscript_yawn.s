@@ -16,8 +16,13 @@ _021:
     CompareVarToValue OPCODE_FLAG_SET, BTLVAR_FIELD_CONDITIONS, FIELD_CONDITION_UPROAR, _077
 
 _036:
+    CheckElectricTerrainSleep BTLSCR_SIDE_EFFECT_MON, _electric_terrain
     CompareMonDataToValue OPCODE_NEQ, BTLSCR_SIDE_EFFECT_MON, BATTLEMON_STATUS, MON_CONDITION_NONE, _077
+    // Infiltrator gets past Safeguard
+    CheckAbility CHECK_HAVE, BTLSCR_ATTACKER, ABILITY_INFILTRATOR, _InfiltratorSkipsSafeguard0
     CompareVarToValue OPCODE_FLAG_SET, BTLVAR_SIDE_CONDITIONS_EFFECT_MON, SIDE_CONDITION_SAFEGUARD, _083
+
+_InfiltratorSkipsSafeguard0:
     CompareVarToValue OPCODE_FLAG_SET, BTLVAR_MOVE_STATUS_FLAGS, MOVE_STATUS_MISSED|MOVE_STATUS_SEMI_INVULNERABLE, _077
     TryYawn _077
     PlayMoveAnimation BTLSCR_ATTACKER
@@ -40,6 +45,12 @@ _077:
     WaitButtonABTime 30
     Call BATTLE_SUBSCRIPT_BUT_IT_FAILED
     GoTo _096
+
+_electric_terrain:
+    WaitButtonABTime 30
+    // {0} is protected by the Electric Terrain!
+    PrintMessage BattleStrings_Text_PokemonIsProtectedByTheElectricTerrain_Ally, TAG_NICKNAME, BTLSCR_SIDE_EFFECT_MON
+    GoTo _089
 
 _083:
     WaitButtonABTime 30

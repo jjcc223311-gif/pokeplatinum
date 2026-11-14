@@ -8,7 +8,7 @@
         "What timing!\r",
         "Those Team Galactic scoundrels are\n",
         "after the legendary Pokémon!\r",
-        "You’ve got to help Dawn!"
+        "You’ve got to help Juniper!"
       ]
     },
     {
@@ -33,7 +33,7 @@
       "id": "LakeVerity_Text_DawnNeedsYourHelp",
       "en_US": [
         "{STRVAR_1 3, 0, 0}!\n",
-        "Dawn needs your help!"
+        "Juniper needs your help!"
       ]
     },
     {
@@ -60,7 +60,7 @@
     {
       "id": "LakeVerity_Text_DawnICouldntBeatThisPerson",
       "en_US": [
-        "Dawn: {STRVAR_1 3, 0, 0}!\n",
+        "Juniper: {STRVAR_1 3, 0, 0}!\n",
         "It’s T-Team Galactic!\r",
         "They’re taking the Pokémon of the\n",
         "lake...\r",
@@ -169,7 +169,7 @@
     {
       "id": "LakeVerity_Text_DawnWhatIsTeamGalacticUpTo",
       "en_US": [
-        "Dawn: {STRVAR_1 3, 0, 0}, what is Team\n",
+        "Juniper: {STRVAR_1 3, 0, 0}, what is Team\n",
         "Galactic up to?\r",
         "Are the abducted Pokémon of the\n",
         "lakes going to be OK?"

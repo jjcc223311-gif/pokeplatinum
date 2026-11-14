@@ -16,5 +16,6 @@ _000:
 _031:
     PlayBattleAnimation BTLSCR_MSG_TEMP, BATTLE_ANIMATION_RESTORE_HP
     Wait 
+    ApplyFumeCloud BTLSCR_MSG_TEMP
     Call BATTLE_SUBSCRIPT_UPDATE_HP
     End 

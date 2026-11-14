@@ -1,0 +1,221 @@
+{
+    "base_stats": {
+        "hp": 50,
+        "attack": 50,
+        "defense": 40,
+        "speed": 64,
+        "special_attack": 50,
+        "special_defense": 40
+    },
+    "types": [
+        "TYPE_WATER",
+        "TYPE_WATER"
+    ],
+    "catch_rate": 255,
+    "base_exp_reward": 59,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 1,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_PECHA_BERRY",
+        "rare": "ITEM_NONE"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_50",
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_MEDIUM_SLOW",
+    "egg_groups": [
+        "EGG_GROUP_WATER_1",
+        "EGG_GROUP_WATER_1"
+    ],
+    "abilities": [
+        "ABILITY_SWIFT_SWIM",
+        "ABILITY_HYDRATION"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_BLUE",
+    "flip_sprite": false,
+    "icon_palette": 0,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_BUBBLE"
+            ],
+            [
+                1,
+                "MOVE_GROWL"
+            ],
+            [
+                5,
+                "MOVE_SUPERSONIC"
+            ],
+            [
+                9,
+                "MOVE_ROUND"
+            ],
+            [
+                12,
+                "MOVE_BUBBLE_BEAM"
+            ],
+            [
+                16,
+                "MOVE_MUD_SHOT"
+            ],
+            [
+                20,
+                "MOVE_AQUA_RING"
+            ],
+            [
+                23,
+                "MOVE_UPROAR"
+            ],
+            [
+                27,
+                "MOVE_MUDDY_WATER"
+            ],
+            [
+                31,
+                "MOVE_RAIN_DANCE"
+            ],
+            [
+                34,
+                "MOVE_FLAIL"
+            ],
+            [
+                38,
+                "MOVE_ECHOED_VOICE"
+            ],
+            [
+                42,
+                "MOVE_HYDRO_PUMP"
+            ],
+            [
+                45,
+                "MOVE_HYPER_VOICE"
+            ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM07",
+            "TM10",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM27",
+            "TM32",
+            "TM36",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM82",
+            "TM87",
+            "TM90",
+            "HM03"
+        ],
+        "by_tutor": [
+            "MOVE_BOUNCE",
+            "MOVE_EARTH_POWER",
+            "MOVE_ENDEAVOR",
+            "MOVE_ICY_WIND",
+            "MOVE_SNORE",
+            "MOVE_UPROAR"
+        ],
+        "egg_moves": [
+            "MOVE_EARTH_POWER",
+            "MOVE_MIST",
+            "MOVE_MUD_BOMB",
+            "MOVE_MUD_SPORT",
+            "MOVE_REFRESH",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SNORE",
+            "MOVE_WATER_PULSE"
+        ]
+    },
+    "evolutions": [
+        [
+            "EVO_LEVEL",
+            25,
+            "SPECIES_PALPITOAD"
+        ]
+    ],
+    "offspring": "SPECIES_TYMPOLE",
+    "footprint": {
+        "has": true,
+        "size": "FOOTPRINT_SMALL",
+        "type": "FOOTPRINT_TYPE_SILENT"
+    },
+    "pokedex_data": {
+        "height_inches": 20,
+        "weight_pounds": 9.9,
+        "body_shape": "SHAPE_HEAD_BASE",
+        "trainer_scale_f": 272,
+        "pokemon_scale_f": 395,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 395,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 24,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 24,
+        "en": {
+            "name": "TYMPOLE",
+            "category": "Tadpole Pokémon",
+            "entry_text": [
+                "It sends out sound waves from its\n",
+                "cheeks that no human ear can hear."
+            ]
+        },
+        "fr": {
+            "name": "TYMPOLE",
+            "category": "Tadpole Pokémon",
+            "entry_text": [
+                "It sends out sound waves from its\n",
+                "cheeks that no human ear can hear."
+            ]
+        },
+        "de": {
+            "name": "TYMPOLE",
+            "category": "Tadpole Pokémon",
+            "entry_text": [
+                "It sends out sound waves from its\n",
+                "cheeks that no human ear can hear."
+            ]
+        },
+        "it": {
+            "name": "TYMPOLE",
+            "category": "Tadpole Pokémon",
+            "entry_text": [
+                "It sends out sound waves from its\n",
+                "cheeks that no human ear can hear."
+            ]
+        },
+        "es": {
+            "name": "TYMPOLE",
+            "category": "Tadpole Pokémon",
+            "entry_text": [
+                "It sends out sound waves from its\n",
+                "cheeks that no human ear can hear."
+            ]
+        },
+        "jp": {
+            "name": "TYMPOLE",
+            "category": "Tadpole Pokémon",
+            "entry_text": [
+                "It sends out sound waves from its\n",
+                "cheeks that no human ear can hear."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

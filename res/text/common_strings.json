@@ -873,6 +873,59 @@
         "It will be fixed if you enter the\n",
         "Hall of Fame again.\r"
       ]
+    },
+    {
+      "id": "CommonStrings_Text_ExpShareTurnedOn",
+      "en_US": [
+        "The Exp. Share was turned on.\r",
+        "All Pokémon in your party will now\n",
+        "get Exp. Points from battles."
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_ExpShareTurnedOff",
+      "en_US": [
+        "The Exp. Share was turned off."
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_DNASplicersFused",
+      "en_US": [
+        "Kyurem and {STRVAR_1 1, 0, 0} were\n",
+        "fused together!"
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_DNASplicersSeparated",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} was separated\n",
+        "from Kyurem!"
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_DNASplicersPartyFull",
+      "en_US": [
+        "There’s no space in your party!"
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_DNASplicersGTSInUse",
+      "en_US": [
+        "A Pokémon is deposited at the GTS.\n",
+        "Take it back before using this."
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_DNASplicersNoEffect",
+      "en_US": [
+        "It won’t have any effect."
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_RevealGlassChangedForme",
+      "en_US": [
+        "{STRVAR_1 1, 0, 0} changed Forme!"
+      ]
     }
   ]
 }

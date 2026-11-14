@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_DRUDDIGON",
+            "form": 0,
+            "level": 56,
+            "item": null,
+            "moves": [
+                "MOVE_NIGHT_SLASH",
+                "MOVE_DRAGON_TAIL",
+                "MOVE_ROCK_CLIMB",
+                "MOVE_SUPERPOWER"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GOLDUCK",
             "form": 0,
             "level": 56,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_SANDSLASH",
+            "species": "SPECIES_ZWEILOUS",
             "form": 0,
             "level": 56,
             "item": null,
             "moves": [
-                "MOVE_EARTHQUAKE",
-                "MOVE_CRUSH_CLAW",
-                "MOVE_POISON_JAB",
-                "MOVE_SAND_TOMB"
+                "MOVE_WORK_UP",
+                "MOVE_DRAGON_RUSH",
+                "MOVE_BODY_SLAM",
+                "MOVE_SCARY_FACE"
             ],
             "iv_scale": 50,
             "ball_seal": 0

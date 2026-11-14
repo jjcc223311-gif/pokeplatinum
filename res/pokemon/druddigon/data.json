@@ -1,0 +1,261 @@
+{
+    "base_stats": {
+        "hp": 77,
+        "attack": 120,
+        "defense": 90,
+        "speed": 48,
+        "special_attack": 60,
+        "special_defense": 90
+    },
+    "types": [
+        "TYPE_DRAGON",
+        "TYPE_DRAGON"
+    ],
+    "catch_rate": 45,
+    "base_exp_reward": 170,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 2,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_DRAGON_FANG"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_50",
+    "hatch_cycles": 30,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_MEDIUM_FAST",
+    "egg_groups": [
+        "EGG_GROUP_DRAGON",
+        "EGG_GROUP_MONSTER"
+    ],
+    "abilities": [
+        "ABILITY_ROUGH_SKIN",
+        "ABILITY_SHEER_FORCE"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_RED",
+    "flip_sprite": false,
+    "icon_palette": 0,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_LEER"
+            ],
+            [
+                1,
+                "MOVE_SCRATCH"
+            ],
+            [
+                5,
+                "MOVE_HONE_CLAWS"
+            ],
+            [
+                9,
+                "MOVE_BITE"
+            ],
+            [
+                13,
+                "MOVE_SCARY_FACE"
+            ],
+            [
+                18,
+                "MOVE_DRAGON_RAGE"
+            ],
+            [
+                21,
+                "MOVE_SLASH"
+            ],
+            [
+                25,
+                "MOVE_CRUNCH"
+            ],
+            [
+                27,
+                "MOVE_DRAGON_CLAW"
+            ],
+            [
+                31,
+                "MOVE_CHIP_AWAY"
+            ],
+            [
+                35,
+                "MOVE_REVENGE"
+            ],
+            [
+                40,
+                "MOVE_NIGHT_SLASH"
+            ],
+            [
+                45,
+                "MOVE_DRAGON_TAIL"
+            ],
+            [
+                49,
+                "MOVE_ROCK_CLIMB"
+            ],
+            [
+                55,
+                "MOVE_SUPERPOWER"
+            ],
+            [
+                62,
+                "MOVE_OUTRAGE"
+            ]
+        ],
+        "by_tm": [
+            "TM02",
+            "TM05",
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM12",
+            "TM15",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM23",
+            "TM26",
+            "TM27",
+            "TM28",
+            "TM32",
+            "TM35",
+            "TM36",
+            "TM39",
+            "TM40",
+            "TM41",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM49",
+            "TM52",
+            "TM56",
+            "TM57",
+            "TM59",
+            "TM65",
+            "TM66",
+            "TM68",
+            "TM76",
+            "TM79",
+            "TM80",
+            "TM82",
+            "TM87",
+            "TM90",
+            "TM91",
+            "HM01",
+            "HM03",
+            "HM04",
+            "HM06"
+        ],
+        "by_tutor": [
+            "MOVE_AQUA_TAIL",
+            "MOVE_FIRE_PUNCH",
+            "MOVE_GUNK_SHOT",
+            "MOVE_HEAT_WAVE",
+            "MOVE_IRON_HEAD",
+            "MOVE_OUTRAGE",
+            "MOVE_SNORE",
+            "MOVE_SUPERPOWER",
+            "MOVE_THUNDER_PUNCH"
+        ],
+        "egg_moves": [
+            "MOVE_CRUSH_CLAW",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_FIRE_FANG",
+            "MOVE_GLARE",
+            "MOVE_IRON_TAIL",
+            "MOVE_METAL_CLAW",
+            "MOVE_POISON_TAIL",
+            "MOVE_PURSUIT",
+            "MOVE_SNATCH",
+            "MOVE_SUCKER_PUNCH",
+            "MOVE_THUNDER_FANG"
+        ]
+    },
+    "evolutions": [],
+    "offspring": "SPECIES_DRUDDIGON",
+    "footprint": {
+        "has": true,
+        "size": "FOOTPRINT_LARGE",
+        "type": "FOOTPRINT_TYPE_TOUGH"
+    },
+    "pokedex_data": {
+        "height_inches": 63,
+        "weight_pounds": 306.4,
+        "body_shape": "SHAPE_BIPEDAL_TAILED",
+        "trainer_scale_f": 298,
+        "pokemon_scale_f": 224,
+        "trainer_scale_m": 292,
+        "pokemon_scale_m": 224,
+        "trainer_pos_f": 7,
+        "pokemon_pos_f": 1,
+        "trainer_pos_m": 6,
+        "pokemon_pos_m": 1,
+        "en": {
+            "name": "DRUDDIGON",
+            "category": "Cave Pokémon",
+            "entry_text": [
+                "It warms itself in sunlight, then\n",
+                "hunts in dark caves using its sharp\n",
+                "claws."
+            ]
+        },
+        "fr": {
+            "name": "DRUDDIGON",
+            "category": "Cave Pokémon",
+            "entry_text": [
+                "It warms itself in sunlight, then\n",
+                "hunts in dark caves using its sharp\n",
+                "claws."
+            ]
+        },
+        "de": {
+            "name": "DRUDDIGON",
+            "category": "Cave Pokémon",
+            "entry_text": [
+                "It warms itself in sunlight, then\n",
+                "hunts in dark caves using its sharp\n",
+                "claws."
+            ]
+        },
+        "it": {
+            "name": "DRUDDIGON",
+            "category": "Cave Pokémon",
+            "entry_text": [
+                "It warms itself in sunlight, then\n",
+                "hunts in dark caves using its sharp\n",
+                "claws."
+            ]
+        },
+        "es": {
+            "name": "DRUDDIGON",
+            "category": "Cave Pokémon",
+            "entry_text": [
+                "It warms itself in sunlight, then\n",
+                "hunts in dark caves using its sharp\n",
+                "claws."
+            ]
+        },
+        "jp": {
+            "name": "DRUDDIGON",
+            "category": "Cave Pokémon",
+            "entry_text": [
+                "It warms itself in sunlight, then\n",
+                "hunts in dark caves using its sharp\n",
+                "claws."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

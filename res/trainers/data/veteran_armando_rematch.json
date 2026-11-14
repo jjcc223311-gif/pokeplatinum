@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_NINJASK",
+            "species": "SPECIES_JELLICENT",
             "form": 0,
             "level": 59,
             "item": null,
             "moves": [
-                "MOVE_BATON_PASS",
-                "MOVE_X_SCISSOR",
-                "MOVE_SWORDS_DANCE",
-                "MOVE_SILVER_WIND"
+                "MOVE_BRINE",
+                "MOVE_RAIN_DANCE",
+                "MOVE_HEX",
+                "MOVE_HYDRO_PUMP"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_REUNICLUS",
+            "form": 0,
+            "level": 59,
+            "item": null,
+            "moves": [
+                "MOVE_DIZZY_PUNCH",
+                "MOVE_SKILL_SWAP",
+                "MOVE_HEAL_BLOCK",
+                "MOVE_WONDER_ROOM"
             ],
             "iv_scale": 100,
             "ball_seal": 0

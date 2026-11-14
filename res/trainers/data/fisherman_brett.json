@@ -8,6 +8,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SWANNA",
+            "form": 0,
+            "level": 42,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MAGIKARP",
             "form": 0,
             "level": 43,
@@ -17,7 +26,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_FINNEON",
+            "species": "SPECIES_BASCULIN",
             "form": 0,
             "level": 42,
             "item": null,

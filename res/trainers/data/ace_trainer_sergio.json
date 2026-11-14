@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_SNOVER",
+            "species": "SPECIES_VANILLISH",
             "form": 0,
             "level": 41,
             "item": null,
             "moves": [
-                "MOVE_ICE_SHARD",
-                "MOVE_SWAGGER",
-                "MOVE_ICY_WIND",
-                "MOVE_WOOD_HAMMER"
+                "MOVE_TAUNT",
+                "MOVE_MIRROR_SHOT",
+                "MOVE_ACID_ARMOR",
+                "MOVE_ICE_BEAM"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_ALOMOMOLA",
+            "form": 0,
+            "level": 41,
+            "item": null,
+            "moves": [
+                "MOVE_WAKE_UP_SLAP",
+                "MOVE_SOAK",
+                "MOVE_WISH",
+                "MOVE_BRINE"
             ],
             "iv_scale": 60,
             "ball_seal": 0

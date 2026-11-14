@@ -14,15 +14,15 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_MR_MIME",
+            "species": "SPECIES_BEHEEYEM",
             "form": 0,
             "level": 69,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_PSYCHIC",
-                "MOVE_THUNDERBOLT",
-                "MOVE_REFLECT",
-                "MOVE_LIGHT_SCREEN"
+                "MOVE_GUARD_SPLIT",
+                "MOVE_POWER_SPLIT",
+                "MOVE_SYNCHRONOISE",
+                "MOVE_WONDER_ROOM"
             ],
             "iv_scale": 250,
             "ball_seal": 0
@@ -42,15 +42,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_BRONZONG",
+            "species": "SPECIES_SLOWBRO",
             "form": 0,
             "level": 70,
             "item": "ITEM_NONE",
             "moves": [
+                "MOVE_AMNESIA",
                 "MOVE_PSYCHIC",
-                "MOVE_GYRO_BALL",
-                "MOVE_EARTHQUAKE",
-                "MOVE_CALM_MIND"
+                "MOVE_RAIN_DANCE",
+                "MOVE_PSYCH_UP"
             ],
             "iv_scale": 250,
             "ball_seal": 0

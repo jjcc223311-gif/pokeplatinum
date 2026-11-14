@@ -4,7 +4,7 @@
     {
       "id": "SandgemTown_Text_DawnTheProfessorIsWaiting",
       "en_US": [
-        "Dawn: Oh! There you are!\n",
+        "Juniper: Oh! There you are!\n",
         "Please, come with me!\f",
         "The professor is waiting!\r"
       ]
@@ -51,7 +51,7 @@
     {
       "id": "SandgemTown_Text_DawnLetsGoInside",
       "en_US": [
-        "Dawn: Wow, what was that?\r",
+        "Juniper: Wow, what was that?\r",
         "Your friend sure seems to be really\n",
         "impatient.\r",
         "Well, anyway...\n",
@@ -100,7 +100,7 @@
     {
       "id": "SandgemTown_Text_DawnIDidntKnowProfessorHadTMs",
       "en_US": [
-        "Dawn: Oh, wow.\n",
+        "Juniper: Oh, wow.\n",
         "I didn’t know the professor had TMs.\r",
         "Was he a Trainer when he was\n",
         "young...?\r"

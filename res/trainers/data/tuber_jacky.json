@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SIMIPOUR",
+            "form": 0,
+            "level": 31,
+            "item": null,
+            "moves": [
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEER",
+                "MOVE_LICK",
+                "MOVE_SCALD"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_BIBAREL",
             "form": 0,
             "level": 32,

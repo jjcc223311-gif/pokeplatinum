@@ -228,6 +228,18 @@ ScriptCommand(BTLCMD_CHECKCURMOVEISTYPE,          BtlCmd_CheckCurMoveIsType)
 ScriptCommand(BTLCMD_LOADARCHIVEDMONDATA,         BtlCmd_LoadArchivedMonData)
 ScriptCommand(BTLCMD_REFRESHMONDATA,              BtlCmd_RefreshMonData)
 ScriptCommand(BTLCMD_END,                         BtlCmd_End)
+ScriptCommand(BTLCMD_CHECKELECTRICTERRAINSLEEP,   BtlCmd_CheckElectricTerrainSleep)
+ScriptCommand(BTLCMD_APPLYFUMECLOUD,              BtlCmd_ApplyFumeCloud)
+ScriptCommand(BTLCMD_NOTIFYSTATUSINFLICTED,       BtlCmd_NotifyStatusInflicted)
+ScriptCommand(BTLCMD_CALCSTOREDPOWERPOWER,  BtlCmd_CalcStoredPowerPower)
+ScriptCommand(BTLCMD_CALCHEAVYSLAMPOWER,  BtlCmd_CalcHeavySlamPower)
+ScriptCommand(BTLCMD_CALCELECTROBALLPOWER,  BtlCmd_CalcElectroBallPower)
+ScriptCommand(BTLCMD_CALCRETALIATEPOWER,  BtlCmd_CalcRetaliatePower)
+ScriptCommand(BTLCMD_CALCECHOEDVOICEPOWER,  BtlCmd_CalcEchoedVoicePower)
+ScriptCommand(BTLCMD_CHECKSYNCHRONOISE,  BtlCmd_CheckSynchronoise)
+ScriptCommand(BTLCMD_TRYSMACKDOWN,  BtlCmd_TrySmackDown)
+ScriptCommand(BTLCMD_TRYTELEKINESIS,  BtlCmd_TryTelekinesis)
+ScriptCommand(BTLCMD_GEN5MOVEEFFECT,  BtlCmd_Gen5MoveEffect)
 
 // clang-format on
 

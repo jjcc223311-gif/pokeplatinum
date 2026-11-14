@@ -94,7 +94,13 @@ typedef struct BattleMon {
     u32 friskAnnounced : 1;
     u32 moldBreakerAnnounced : 1;
     u32 pressureAnnounced : 1;
-    u32 padding0028_0B : 2;
+    u32 silkSwipeUsed : 1; // Silk Swipe: already made its first contact hit since switching in
+    u32 padding0028_0C : 1;
+    // New abilities (bits that were unused padding in this word)
+    u32 newEntryAbilityAnnounced : 1; // Mind Sanctuary / Heartlink / Time Sovereign / Electric Surge
+    u32 distortionVeilUsed : 1; // took its first damaging hit since switching in
+    u32 distortionVeilPending : 1; // show the Distortion Veil message after the move
+    u32 spatialRupturePending : 1; // show the Spatial Rupture message after the move
 
     u8 ppCur[LEARNED_MOVES_MAX];
     u8 ppUps[LEARNED_MOVES_MAX];

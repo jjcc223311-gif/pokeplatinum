@@ -38,10 +38,12 @@
 #include "party.h"
 #include "pokedex_data_index.h"
 #include "pokedex_heightweight.h"
+#include "bag.h"
 #include "pokemon.h"
 #include "string_gf.h"
 #include "trainer_data.h"
 #include "trainer_info.h"
+#include "generated/badges.h"
 #include "unk_0208C098.h"
 
 #include "res/battle/scripts/sub_seq.naix"
@@ -57,6 +59,7 @@ static int ApplyTypeMultiplier(BattleContext *battleCtx, int attacker, int mul, 
 static BOOL NoImmunityOverrides(BattleContext *battleCtx, int itemEffect, int chartEntry);
 static void UpateMoveStatusForTypeMul(int mul, u32 *moveStatusMask);
 static BOOL MoveIsOnDamagingTurn(BattleContext *battleCtx, int move);
+static BOOL Battler_EmperorMantlePriority(BattleContext *battleCtx, int battler, u16 move);
 static u8 Battler_MonType(BattleContext *battleCtx, int battler, enum BattleMonParam paramID);
 static void BattleAI_ClearKnownMoves(BattleContext *battleCtx, u8 battler);
 static void BattleAI_ClearKnownAbility(BattleContext *battleCtx, u8 battler);
@@ -111,6 +114,29 @@ void BattleSystem_InitBattleMon(BattleSystem *battleSys, BattleContext *battleCt
     battleCtx->battleMons[battler].friskAnnounced = FALSE;
     battleCtx->battleMons[battler].moldBreakerAnnounced = FALSE;
     battleCtx->battleMons[battler].pressureAnnounced = FALSE;
+    battleCtx->battleMons[battler].newEntryAbilityAnnounced = FALSE;
+    battleCtx->battleMons[battler].distortionVeilUsed = FALSE;
+    battleCtx->battleMons[battler].silkSwipeUsed = FALSE;
+    battleCtx->crosswireCharged[battler] = FALSE;
+    battleCtx->smackedDown[battler] = FALSE;
+    battleCtx->defiantPending[battler] = FALSE;
+    battleCtx->relicSongPending[battler] = FALSE;
+    battleCtx->telekinesisUntil[battler] = 0;
+    battleCtx->cannonSalvoCount[battler] = 0;
+    battleCtx->rubyConduitCharged[battler] = FALSE;
+    battleCtx->royalParryUsed[battler] = FALSE;
+    battleCtx->gildedClawsUsed[battler] = FALSE;
+    battleCtx->siegeReservoirState[battler] = 0;
+    battleCtx->azureWildfirePending[battler] = FALSE;
+    battleCtx->prismaticGracePending[battler] = FALSE;
+    battleCtx->venomLeveragePending[battler] = FALSE;
+    battleCtx->seismicBreakerPending[battler] = FALSE;
+    battleCtx->omenWingsPending[battler] = FALSE;
+    battleCtx->wakeRunnerUsed[battler] = FALSE;
+    battleCtx->emperorMantleState[battler] = 0;
+    battleCtx->abilityChargeTurn[battler] = 0;
+    battleCtx->battleMons[battler].distortionVeilPending = FALSE;
+    battleCtx->battleMons[battler].spatialRupturePending = FALSE;
     battleCtx->battleMons[battler].type1 = Pokemon_GetValue(mon, MON_DATA_TYPE_1, NULL);
     battleCtx->battleMons[battler].type2 = Pokemon_GetValue(mon, MON_DATA_TYPE_2, NULL);
     battleCtx->battleMons[battler].gender = Pokemon_GetGender(mon);
@@ -1227,11 +1253,13 @@ u8 BattleSystem_CompareBattlerSpeed(BattleSystem *battleSys, BattleContext *batt
 
     if (NO_CLOUD_NINE) {
         if ((battler1Ability == ABILITY_SWIFT_SWIM && WEATHER_IS_RAIN)
+            || (battler1Ability == ABILITY_SAND_RUSH && WEATHER_IS_SAND)
             || (battler1Ability == ABILITY_CHLOROPHYLL && WEATHER_IS_SUN)) {
             battler1Speed *= 2;
         }
 
         if ((battler2Ability == ABILITY_SWIFT_SWIM && WEATHER_IS_RAIN)
+            || (battler2Ability == ABILITY_SAND_RUSH && WEATHER_IS_SAND)
             || (battler2Ability == ABILITY_CHLOROPHYLL && WEATHER_IS_SUN)) {
             battler2Speed *= 2;
         }
@@ -1396,6 +1424,22 @@ u8 BattleSystem_CompareBattlerSpeed(BattleSystem *battleSys, BattleContext *batt
 
         battler1Priority = MOVE_DATA(battler1Move).priority;
         battler2Priority = MOVE_DATA(battler2Move).priority;
+
+        // Prankster: status moves get +1 priority
+        if (Battler_Ability(battleCtx, battler1) == ABILITY_PRANKSTER && MOVE_DATA(battler1Move).class == CLASS_STATUS) {
+            battler1Priority++;
+        }
+        if (Battler_Ability(battleCtx, battler2) == ABILITY_PRANKSTER && MOVE_DATA(battler2Move).class == CLASS_STATUS) {
+            battler2Priority++;
+        }
+
+        // Emperor Mantle: after landing a Fire attack, its next damaging Fighting move gets +1 priority
+        if (Battler_EmperorMantlePriority(battleCtx, battler1, battler1Move)) {
+            battler1Priority++;
+        }
+        if (Battler_EmperorMantlePriority(battleCtx, battler2, battler2Move)) {
+            battler2Priority++;
+        }
     }
 
     if (battler1Priority == battler2Priority) {
@@ -1516,6 +1560,32 @@ static inline void SetupSideEffect(BattleContext *battleCtx, int *effect, int so
     battleCtx->sideEffectIndirectFlags = 0;
 }
 
+static BOOL Move_IsPunching(u16 move);
+
+#define FURNACE_SPARK_BURN_CHANCE 25 // percent
+#define TOXIC_FISTS_POISON_CHANCE 20 // percent
+
+// Moves whose own secondary effect is a burn chance (Furnace Spark raises that chance instead
+// of rolling a second one)
+static BOOL MoveEffect_HasBurnChance(u16 effect)
+{
+    return effect == BATTLE_EFFECT_BURN_HIT
+        || effect == BATTLE_EFFECT_THAW_AND_BURN_HIT
+        || effect == BATTLE_EFFECT_HIGH_CRITICAL_BURN_HIT
+        || effect == BATTLE_EFFECT_RECOIL_BURN_HIT;
+}
+
+static u16 ApplyFurnaceSparkChance(BattleContext *battleCtx, u16 effectChance)
+{
+    if (Battler_Ability(battleCtx, battleCtx->attacker) == ABILITY_FURNACE_SPARK
+        && MoveEffect_HasBurnChance(CURRENT_MOVE_DATA.effect)
+        && effectChance < FURNACE_SPARK_BURN_CHANCE) {
+        return FURNACE_SPARK_BURN_CHANCE;
+    }
+
+    return effectChance;
+}
+
 BOOL BattleSystem_TriggerSecondaryEffect(BattleSystem *battleSys, BattleContext *battleCtx, int *effect)
 {
     BOOL result = FALSE;
@@ -1555,9 +1625,13 @@ BOOL BattleSystem_TriggerSecondaryEffect(BattleSystem *battleSys, BattleContext 
             effectChance = CURRENT_MOVE_DATA.effectChance;
         }
 
-        GF_ASSERT(effectChance != 0);
+        effectChance = ApplyFurnaceSparkChance(battleCtx, effectChance);
 
-        if (BattleSystem_RandNext(battleSys) % 100 < effectChance) {
+        if (Battler_Ability(battleCtx, battleCtx->attacker) == ABILITY_SHEER_FORCE && CURRENT_MOVE_DATA.power) {
+            effectChance = 0; // Sheer Force: added effects are removed (power is raised in the damage calc)
+        }
+
+        if (effectChance && BattleSystem_RandNext(battleSys) % 100 < effectChance) {
             battleCtx->battleStatusMask |= SYSCTL_APPLY_SECONDARY_EFFECT;
         }
 
@@ -1574,7 +1648,11 @@ BOOL BattleSystem_TriggerSecondaryEffect(BattleSystem *battleSys, BattleContext 
             effectChance = CURRENT_MOVE_DATA.effectChance;
         }
 
-        GF_ASSERT(effectChance != 0);
+        effectChance = ApplyFurnaceSparkChance(battleCtx, effectChance);
+
+        if (Battler_Ability(battleCtx, battleCtx->attacker) == ABILITY_SHEER_FORCE && CURRENT_MOVE_DATA.power) {
+            effectChance = 0; // Sheer Force: added effects are removed (power is raised in the damage calc)
+        }
 
         if (BattleSystem_RandNext(battleSys) % 100 < effectChance) {
             SetupSideEffect(battleCtx, effect, SIDE_EFFECT_TYPE_INDIRECT);
@@ -1735,7 +1813,7 @@ void BattleSystem_CheckRedirectionAbilities(BattleSystem *battleSys, BattleConte
 
     if (battleCtx->defender == BATTLER_NONE
         || Battler_Ability(battleCtx, attacker) == ABILITY_NORMALIZE
-        || Battler_Ability(battleCtx, attacker) == ABILITY_MOLD_BREAKER) {
+        || Battler_IsMoldBreaker(battleCtx, attacker)) {
         return;
     }
 
@@ -1982,6 +2060,7 @@ void BattleContext_Init(BattleContext *battleCtx)
     battleCtx->moveEffectChance = 0;
     battleCtx->moveStatusFlags = 0;
     battleCtx->faintedMon = BATTLER_NONE;
+    battleCtx->magicBounceReflected = FALSE;
     battleCtx->sideEffectDirectFlags = MOVE_SUBSCRIPT_PTR_NONE;
     battleCtx->sideEffectIndirectFlags = MOVE_SUBSCRIPT_PTR_NONE;
     battleCtx->sideEffectAbilityFlags = MOVE_SUBSCRIPT_PTR_NONE;
@@ -2373,6 +2452,374 @@ BOOL BattleSystem_CanUseMove(BattleSystem *battleSys, BattleContext *battleCtx, 
     return result;
 }
 
+static BOOL Battler_IsInPlayersOwnParty(BattleSystem *battleSys, int battler)
+{
+    // Excludes the enemy side and an NPC partner's Pokemon in tag battles
+    return BattleSystem_GetBattlerSide(battleSys, battler) == BATTLE_SIDE_PLAYER
+        && BattleSystem_GetParty(battleSys, battler) == BattleSystem_GetParty(battleSys, BATTLER_PLAYER_1);
+}
+
+static BOOL BattleSystem_PlayerHasItem(BattleSystem *battleSys, u16 item)
+{
+    return Bag_CanRemoveItem(BattleSystem_GetBag(battleSys), item, 1, HEAP_ID_BATTLE);
+}
+
+// Checks shared by both buttons
+static BOOL Battler_CanChangeToMegaForm(BattleSystem *battleSys, BattleContext *battleCtx, int battler)
+{
+    BattleMon *mon = &battleCtx->battleMons[battler];
+
+    return (BattleSystem_GetBattleType(battleSys) & BATTLE_TYPE_LINK) == FALSE
+        && Battler_IsInPlayersOwnParty(battleSys, battler)
+        && mon->curHP != 0
+        && (mon->statusVolatile & VOLATILE_CONDITION_TRANSFORM) == FALSE;
+}
+
+// How many of the two forms in `firstSlot` / `firstSlot + 1` the battler's species has (0-2)
+static int Battler_NumMegaSlotForms(BattleContext *battleCtx, int battler, enum MegaSlot firstSlot)
+{
+    const MegaSpeciesEntry *entry = Pokemon_GetMegaSpeciesEntry(battleCtx->battleMons[battler].species);
+
+    if (entry == NULL || entry->hasForm[firstSlot] == FALSE) {
+        return 0;
+    }
+
+    return entry->hasForm[firstSlot + 1] ? 2 : 1;
+}
+
+int Battler_NumMegaForms(BattleContext *battleCtx, int battler)
+{
+    return Battler_NumMegaSlotForms(battleCtx, battler, MEGA_SLOT_MEGA_1);
+}
+
+int Battler_NumLegendaryForms(BattleContext *battleCtx, int battler)
+{
+    return Battler_NumMegaSlotForms(battleCtx, battler, MEGA_SLOT_LEGENDARY_1);
+}
+
+// Holding the Mega Rock picks the second Mega / Legendary Mega (forms 28 / 31) when the species
+// has one; otherwise (and always without the Rock) the first (29 / 30). The Rock is not required.
+// The Legend Mega Rock works exactly like the Mega Rock for regular Mega Evolution only (never for
+// Legendary Mega Evolution), and is never consumed in battle.
+int Battler_MegaRockChoice(BattleContext *battleCtx, int battler)
+{
+    u16 heldItem = battleCtx->battleMons[battler].heldItem;
+
+    return Battler_NumMegaForms(battleCtx, battler) >= 2 && (heldItem == ITEM_MEGA_ROCK || heldItem == ITEM_LEGEND_MEGA_ROCK) ? 2 : 1;
+}
+
+int Battler_LegendaryRockChoice(BattleContext *battleCtx, int battler)
+{
+    return Battler_NumLegendaryForms(battleCtx, battler) >= 2 && battleCtx->battleMons[battler].heldItem == ITEM_MEGA_ROCK ? 2 : 1;
+}
+
+int Battler_MegaForm(BattleContext *battleCtx, int battler, int choice)
+{
+    BattleMon *mon = &battleCtx->battleMons[battler];
+
+    // Every species uses form 29 for its Mega 1 and form 28 for its Mega 2; the table says
+    // which it has. A Pokemon already in any Mega / Legendary Mega form cannot Mega Evolve.
+    if (choice < 1 || choice > Battler_NumMegaForms(battleCtx, battler) || FORM_IS_MEGA(mon->formNum)) {
+        return -1;
+    }
+
+    return Pokemon_MegaSlotForm(choice == 1 ? MEGA_SLOT_MEGA_1 : MEGA_SLOT_MEGA_2);
+}
+
+int Battler_LegendaryForm(BattleContext *battleCtx, int battler, int choice)
+{
+    BattleMon *mon = &battleCtx->battleMons[battler];
+
+    // Forms 30 / 31; Legendary Mega Evolution works from the normal or a Mega form
+    if (choice < 1 || choice > Battler_NumLegendaryForms(battleCtx, battler)
+        || mon->formNum == FORM_LEGENDARY_MEGA_1 || mon->formNum == FORM_LEGENDARY_MEGA_2) {
+        return -1;
+    }
+
+    return Pokemon_MegaSlotForm(choice == 1 ? MEGA_SLOT_LEGENDARY_1 : MEGA_SLOT_LEGENDARY_2);
+}
+
+BOOL BattleSystem_CanMegaEvolve(BattleSystem *battleSys, BattleContext *battleCtx, int battler)
+{
+    u8 slotFlag = FlagIndex(battleCtx->selectedPartySlot[battler]);
+
+    // 1) Can this Pokemon Mega Evolve (is it in the Mega table with a Mega form)?
+    if (Battler_MegaForm(battleCtx, battler, 1) < 0) {
+        return FALSE;
+    }
+
+    // 2) Does the player have the Mega Ring?
+    if (BattleSystem_PlayerHasItem(battleSys, ITEM_MEGA_RING) == FALSE) {
+        return FALSE;
+    }
+
+    // 3) Has it not Mega Evolved or Legendary Mega Evolved this battle?
+    if ((battleCtx->megaEvolvedMask & slotFlag) || (battleCtx->legendaryEvolvedMask & slotFlag)) {
+        return FALSE;
+    }
+
+    // Shared rules: the player's own Pokemon, not in a link battle, able to fight, not Transformed
+    return Battler_CanChangeToMegaForm(battleSys, battleCtx, battler);
+}
+
+BOOL BattleSystem_CanLegendaryMegaEvolve(BattleSystem *battleSys, BattleContext *battleCtx, int battler)
+{
+    // 1) Does this Pokemon have a Legendary Mega Evolution (is it in the table with one)?
+    if (Battler_LegendaryForm(battleCtx, battler, 1) < 0) {
+        return FALSE;
+    }
+
+    // 2) Does the player have the Legendary Mega Necklace?
+    if (BattleSystem_PlayerHasItem(battleSys, ITEM_LEGENDARY_MEGA_NECKLACE) == FALSE) {
+        return FALSE;
+    }
+
+    // 3) Has Legendary Mega Evolution not been used yet this battle (once for the whole team)?
+    if (battleCtx->legendaryUsed) {
+        return FALSE;
+    }
+
+    // Only one battler may have Legendary Mega Evolution requested
+    for (int i = 0; i < BattleSystem_GetMaxBattlers(battleSys); i++) {
+        if (i != battler && battleCtx->legendaryRequested[i]) {
+            return FALSE;
+        }
+    }
+
+    return Battler_CanChangeToMegaForm(battleSys, battleCtx, battler);
+}
+
+// ----- Trainers' Mega / Legendary Mega Evolution -----
+
+// Trainers Mega Evolve in every trainer battle (not wild, not link) once the player has the Coal
+// Badge. They don't need the Mega Ring or the Legend Necklace.
+BOOL BattleSystem_TrainerMegaActive(BattleSystem *battleSys)
+{
+    u32 battleType = BattleSystem_GetBattleType(battleSys);
+
+    return (battleType & BATTLE_TYPE_TRAINER)
+        && (battleType & BATTLE_TYPE_LINK) == FALSE
+        && TrainerInfo_HasBadge(BattleSystem_GetTrainerInfo(battleSys, BATTLER_PLAYER_1), BADGE_ID_COAL);
+}
+
+// The enemy battlers of one trainer share a party; its first battler is the key for that
+// trainer's masks (two trainers in a multi battle get separate keys)
+int BattleSystem_TrainerMegaKey(BattleSystem *battleSys, int battler)
+{
+    Party *party = BattleSystem_GetParty(battleSys, battler);
+
+    for (int i = 0; i < battler; i++) {
+        if (BattleSystem_GetBattlerSide(battleSys, i) == BattleSystem_GetBattlerSide(battleSys, battler)
+            && BattleSystem_GetParty(battleSys, i) == party) {
+            return i;
+        }
+    }
+
+    return battler;
+}
+
+// At the start of the battle: for every trainer Pokemon with a Mega 2 / Legendary 2, roll 50% once.
+// A winner with no held item holds a Mega Rock for this battle (the party is rebuilt from the
+// trainer data every battle, so the data itself never changes).
+void BattleSystem_RollTrainerMegaRocks(BattleSystem *battleSys, BattleContext *battleCtx)
+{
+    if (BattleSystem_TrainerMegaActive(battleSys) == FALSE) {
+        return;
+    }
+
+    for (int battler = 0; battler < BattleSystem_GetMaxBattlers(battleSys); battler++) {
+        if (BattleSystem_GetBattlerSide(battleSys, battler) != BATTLE_SIDE_ENEMY
+            || BattleSystem_TrainerMegaKey(battleSys, battler) != battler) {
+            continue;
+        }
+
+        Party *party = BattleSystem_GetParty(battleSys, battler);
+
+        for (int slot = 0; slot < Party_GetCurrentCount(party); slot++) {
+            Pokemon *mon = Party_GetPokemonBySlotIndex(party, slot);
+            const MegaSpeciesEntry *entry = Pokemon_GetMegaSpeciesEntry(Pokemon_GetValue(mon, MON_DATA_SPECIES, NULL));
+
+            if (entry == NULL) {
+                continue;
+            }
+
+            for (int legendary = 0; legendary < 2; legendary++) {
+                enum MegaSlot second = legendary ? MEGA_SLOT_LEGENDARY_2 : MEGA_SLOT_MEGA_2;
+
+                if (entry->hasForm[second] == FALSE || (BattleSystem_RandNext(battleSys) & 1) == 0) {
+                    continue;
+                }
+
+                if (legendary) {
+                    battleCtx->trainerLegendaryRollMask[battler] |= FlagIndex(slot);
+                } else {
+                    battleCtx->trainerMegaRollMask[battler] |= FlagIndex(slot);
+                }
+
+                if (Pokemon_GetValue(mon, MON_DATA_HELD_ITEM, NULL) == ITEM_NONE) {
+                    int item = ITEM_MEGA_ROCK;
+                    Pokemon_SetValue(mon, MON_DATA_HELD_ITEM, &item);
+                    battleCtx->trainerMegaRockGivenMask[battler] |= FlagIndex(slot);
+                }
+            }
+        }
+    }
+}
+
+// Which form a trainer's Pokemon changes into this turn: 1 / 2 = Mega 1 / 2, 3 / 4 = Legendary
+// 1 / 2, 0 = none. It Mega Evolves on its first turn; a Legendary Mega comes on its next turn
+// after that (or its first turn if it has no Mega), once per battle per trainer.
+int BattleSystem_TrainerMegaChoice(BattleSystem *battleSys, BattleContext *battleCtx, int battler)
+{
+    BattleMon *mon = &battleCtx->battleMons[battler];
+
+    if (BattleSystem_TrainerMegaActive(battleSys) == FALSE
+        || BattleSystem_GetBattlerSide(battleSys, battler) != BATTLE_SIDE_ENEMY
+        || mon->curHP == 0
+        || (mon->statusVolatile & VOLATILE_CONDITION_TRANSFORM)) {
+        return 0;
+    }
+
+    int key = BattleSystem_TrainerMegaKey(battleSys, battler);
+    u8 slotFlag = FlagIndex(battleCtx->selectedPartySlot[battler]);
+    int numMega = Battler_NumMegaForms(battleCtx, battler);
+    int numLegendary = Battler_NumLegendaryForms(battleCtx, battler);
+    BOOL rockGiven = (battleCtx->trainerMegaRockGivenMask[key] & slotFlag) != FALSE;
+    BOOL holdsRock = mon->heldItem == ITEM_MEGA_ROCK;
+
+    if (battleCtx->trainerLegendaryEvolvedMask[key] & slotFlag) {
+        return 0; // can't Mega after a Legendary Mega (or go Legendary twice)
+    }
+
+    if (numMega && (battleCtx->trainerMegaEvolvedMask[key] & slotFlag) == FALSE && FORM_IS_MEGA(mon->formNum) == FALSE) {
+        // A given Mega Rock that was stolen / knocked off means Mega 1; a Pokemon that had its own
+        // item uses the roll
+        BOOL second = numMega >= 2
+            && (rockGiven ? holdsRock : (battleCtx->trainerMegaRollMask[key] & slotFlag) != FALSE);
+        return second ? 2 : 1;
+    }
+
+    if (numLegendary
+        && battleCtx->trainerLegendaryUsed[key] == FALSE
+        && (numMega == 0 || battleCtx->trainerMegaTurn[battler] != battleCtx->totalTurns + 1)) {
+        BOOL second = numLegendary >= 2
+            && (rockGiven ? holdsRock : (battleCtx->trainerLegendaryRollMask[key] & slotFlag) != FALSE);
+        return second ? 4 : 3;
+    }
+
+    return 0;
+}
+
+void BattleSystem_PrepareMegaEvolution(BattleSystem *battleSys, BattleContext *battleCtx, int battler, int newForm, BOOL isLegendary)
+{
+    BattleMon *mon = &battleCtx->battleMons[battler];
+    int partySlot = battleCtx->selectedPartySlot[battler];
+
+    if (Battler_IsInPlayersOwnParty(battleSys, battler) == FALSE) {
+        // A trainer's Pokemon: its party is rebuilt every battle, so nothing needs reverting
+        int key = BattleSystem_TrainerMegaKey(battleSys, battler);
+
+        if (isLegendary) {
+            battleCtx->trainerLegendaryEvolvedMask[key] |= FlagIndex(partySlot);
+            battleCtx->trainerLegendaryUsed[key] = TRUE;
+        } else {
+            battleCtx->trainerMegaEvolvedMask[key] |= FlagIndex(partySlot);
+            battleCtx->trainerMegaTurn[battler] = battleCtx->totalTurns + 1;
+        }
+
+        goto changeForm;
+    }
+
+    // Remember the ORIGINAL form and ability (only on the first change, so Mega -> Legendary
+    // still reverts to the normal form)
+    if ((battleCtx->formChangedMask & FlagIndex(partySlot)) == FALSE) {
+        Pokemon *partyMon = BattleSystem_GetPartyPokemon(battleSys, battler, partySlot);
+
+        battleCtx->formChangedMask |= FlagIndex(partySlot);
+        battleCtx->megaRevertForm[partySlot] = mon->formNum;
+        battleCtx->megaRevertAbility[partySlot] = Pokemon_GetValue(partyMon, MON_DATA_ABILITY, NULL);
+    }
+
+    if (isLegendary) {
+        battleCtx->legendaryEvolvedMask |= FlagIndex(partySlot);
+        battleCtx->legendaryUsed = TRUE;
+    } else {
+        battleCtx->megaEvolvedMask |= FlagIndex(partySlot);
+    }
+
+changeForm:
+    mon->formNum = newForm;
+    mon->type1 = SpeciesData_GetFormValue(mon->species, newForm, SPECIES_DATA_TYPE_1);
+    mon->type2 = SpeciesData_GetFormValue(mon->species, newForm, SPECIES_DATA_TYPE_2);
+
+    // subscript_mega_evolve plays this animation, changes the form, then plays the one after it
+    // (the matching _REVEAL animation)
+    battleCtx->scriptTemp = isLegendary ? BATTLE_ANIMATION_LEGENDARY_MEGA_EVOLVE : BATTLE_ANIMATION_MEGA_EVOLVE;
+
+    // The new ability is applied by subscript_mega_evolve, which reads it from calcTemp
+    int ability1 = SpeciesData_GetFormValue(mon->species, newForm, SPECIES_DATA_ABILITY_1);
+    int ability2 = SpeciesData_GetFormValue(mon->species, newForm, SPECIES_DATA_ABILITY_2);
+    battleCtx->calcTemp = (ability2 != ABILITY_NONE && (mon->personality & 1)) ? ability2 : ability1;
+}
+
+void BattleSystem_PrepareBattleFormChange(BattleSystem *battleSys, BattleContext *battleCtx, int battler, int newForm)
+{
+    BattleMon *mon = &battleCtx->battleMons[battler];
+    int partySlot = battleCtx->selectedPartySlot[battler];
+
+    // The player's Pokemon go back to their original form after the battle (like a Mega)
+    if (Battler_IsInPlayersOwnParty(battleSys, battler)
+        && (battleCtx->formChangedMask & FlagIndex(partySlot)) == FALSE) {
+        Pokemon *partyMon = BattleSystem_GetPartyPokemon(battleSys, battler, partySlot);
+
+        battleCtx->formChangedMask |= FlagIndex(partySlot);
+        battleCtx->megaRevertForm[partySlot] = mon->formNum;
+        battleCtx->megaRevertAbility[partySlot] = Pokemon_GetValue(partyMon, MON_DATA_ABILITY, NULL);
+    }
+
+    mon->formNum = newForm;
+    mon->type1 = SpeciesData_GetFormValue(mon->species, newForm, SPECIES_DATA_TYPE_1);
+    mon->type2 = SpeciesData_GetFormValue(mon->species, newForm, SPECIES_DATA_TYPE_2);
+    battleCtx->calcTemp = mon->ability; // the ability doesn't change
+}
+
+void BattleSystem_RevertMegaForm(BattleSystem *battleSys, BattleContext *battleCtx)
+{
+    for (int slot = 0; slot < MAX_PARTY_SIZE; slot++) {
+        if ((battleCtx->formChangedMask & FlagIndex(slot)) == FALSE) {
+            continue;
+        }
+
+        Pokemon *mon = BattleSystem_GetPartyPokemon(battleSys, BATTLER_PLAYER_1, slot);
+        int form = battleCtx->megaRevertForm[slot];
+        int ability = battleCtx->megaRevertAbility[slot];
+
+        Pokemon_SetValue(mon, MON_DATA_FORM, &form);
+        Pokemon_SetValue(mon, MON_DATA_ABILITY, &ability);
+        Pokemon_CalcLevelAndStats(mon);
+    }
+
+    battleCtx->formChangedMask = 0;
+
+    // Origin Dialga / Palkia only change form outside battle: if their Orb was taken or
+    // swapped during the battle (Thief, Trick, ...), match the form to the held item now.
+    // Same for Giratina, which skips its in-battle revert while Mega Evolved, except in the
+    // Distortion World (where it is forced into Origin Forme).
+    Party *party = BattleSystem_GetParty(battleSys, BATTLER_PLAYER_1);
+    BOOL distortion = (BattleSystem_GetBattleStatusMask(battleSys) & BATTLE_STATUS_DISTORTION) != FALSE;
+
+    for (int slot = 0; slot < Party_GetCurrentCount(party); slot++) {
+        Pokemon *mon = Party_GetPokemonBySlotIndex(party, slot);
+        int species = Pokemon_GetValue(mon, MON_DATA_SPECIES, NULL);
+
+        // Genesect (held Drive) and Keldeo (Secret Sword learned during the battle) too
+        if (species == SPECIES_DIALGA || species == SPECIES_PALKIA || (species == SPECIES_GIRATINA && !distortion)
+            || species == SPECIES_GENESECT || species == SPECIES_KELDEO) {
+            Pokemon_SetGiratinaFormByHeldItem(mon);
+        }
+    }
+}
+
 int Battler_SlotForMove(BattleMon *mon, u16 move)
 {
     int i;
@@ -2396,6 +2843,11 @@ int Battler_SlotForMove(BattleMon *mon, u16 move)
  * The matchup multiplier is assumed to be divided by 10 at a later stage for
  * any computations which make use of it (hence the values 5 and 20).
  */
+static const u8 sTypeMatchupMultipliers[][3];
+
+// Predator Volt: the attacker's Electric moves hit Ground types (other matchups still apply)
+static BOOL PredatorVoltIgnores(int attackerAbility, int chartEntry);
+
 static const u8 sTypeMatchupMultipliers[][3] = {
     { TYPE_NORMAL, TYPE_ROCK, TYPE_MULTI_NOT_VERY_EFF },
     { TYPE_NORMAL, TYPE_STEEL, TYPE_MULTI_NOT_VERY_EFF },
@@ -2505,6 +2957,32 @@ static const u8 sTypeMatchupMultipliers[][3] = {
     { TYPE_STEEL, TYPE_ICE, TYPE_MULTI_SUPER_EFF },
     { TYPE_STEEL, TYPE_ROCK, TYPE_MULTI_SUPER_EFF },
     { TYPE_STEEL, TYPE_STEEL, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_FAIRY, TYPE_FIGHTING, TYPE_MULTI_SUPER_EFF },
+    { TYPE_FAIRY, TYPE_DRAGON, TYPE_MULTI_SUPER_EFF },
+    { TYPE_FAIRY, TYPE_DARK, TYPE_MULTI_SUPER_EFF },
+    { TYPE_FAIRY, TYPE_FIRE, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_FAIRY, TYPE_POISON, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_FAIRY, TYPE_STEEL, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_POISON, TYPE_FAIRY, TYPE_MULTI_SUPER_EFF },
+    { TYPE_STEEL, TYPE_FAIRY, TYPE_MULTI_SUPER_EFF },
+    { TYPE_FIGHTING, TYPE_FAIRY, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_BUG, TYPE_FAIRY, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_DARK, TYPE_FAIRY, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_DRAGON, TYPE_FAIRY, TYPE_MULTI_IMMUNE },
+    // Light. Its immunities are above the 0xFE separator, so Foresight / Odor Sleuth / Scrappy /
+    // Miracle Eye never remove them.
+    { TYPE_LIGHT, TYPE_DARK, TYPE_MULTI_SUPER_EFF },
+    { TYPE_LIGHT, TYPE_GHOST, TYPE_MULTI_SUPER_EFF },
+    { TYPE_LIGHT, TYPE_FLYING, TYPE_MULTI_SUPER_EFF },
+    { TYPE_LIGHT, TYPE_GRASS, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_LIGHT, TYPE_ICE, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_LIGHT, TYPE_LIGHT, TYPE_MULTI_NOT_VERY_EFF },
+    { TYPE_LIGHT, TYPE_NORMAL, TYPE_MULTI_IMMUNE },
+    { TYPE_BUG, TYPE_LIGHT, TYPE_MULTI_SUPER_EFF },
+    { TYPE_POISON, TYPE_LIGHT, TYPE_MULTI_SUPER_EFF },
+    { TYPE_ICE, TYPE_LIGHT, TYPE_MULTI_SUPER_EFF },
+    { TYPE_DARK, TYPE_LIGHT, TYPE_MULTI_IMMUNE },
+    { TYPE_FAIRY, TYPE_LIGHT, TYPE_MULTI_IMMUNE },
 
     { 0xFE, 0xFE, TYPE_MULTI_IMMUNE },
 
@@ -2531,7 +3009,12 @@ static BOOL BasicTypeMulApplies(BattleContext *battleCtx, int attacker, int defe
     int itemEffect = Battler_HeldItemEffect(battleCtx, defender);
     BOOL result = TRUE;
 
-    if ((itemEffect == HOLD_EFFECT_SPEED_DOWN_GROUNDED || (battleCtx->battleMons[defender].moveEffectsMask & MOVE_EFFECT_INGRAIN))
+    if (PredatorVoltIgnores(Battler_Ability(battleCtx, attacker), chartEntry)) {
+        return FALSE;
+    }
+
+    if ((itemEffect == HOLD_EFFECT_SPEED_DOWN_GROUNDED || (battleCtx->battleMons[defender].moveEffectsMask & MOVE_EFFECT_INGRAIN)
+            || battleCtx->smackedDown[defender])
         && sTypeMatchupMultipliers[chartEntry][1] == TYPE_FLYING
         && sTypeMatchupMultipliers[chartEntry][2] == TYPE_MULTI_IMMUNE) {
         result = FALSE;
@@ -2597,12 +3080,17 @@ int BattleSystem_ApplyTypeChart(BattleSystem *battleSys, BattleContext *battleCt
         }
     }
 
-    if (Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_LEVITATE) == TRUE
+    if ((Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_LEVITATE) == TRUE
+            || (Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_LUNAR_REFUGE) == TRUE
+                && (battleCtx->fieldConditionsMask & FIELD_CONDITION_GRAVITY) == FALSE
+                && (battleCtx->battleMons[defender].moveEffectsMask & MOVE_EFFECT_INGRAIN) == FALSE))
         && moveType == TYPE_GROUND
         && defenderItemEffect != HOLD_EFFECT_SPEED_DOWN_GROUNDED) {
         *moveStatusMask |= MOVE_STATUS_LEVITATED;
-    } else if (battleCtx->battleMons[defender].moveEffectsData.magnetRiseTurns
+    } else if ((battleCtx->battleMons[defender].moveEffectsData.magnetRiseTurns || Battler_IsTelekinesisActive(battleCtx, defender))
         && (battleCtx->battleMons[defender].moveEffectsMask & MOVE_EFFECT_INGRAIN) == FALSE
+        && battleCtx->smackedDown[defender] == FALSE
+        && (battleCtx->fieldConditionsMask & FIELD_CONDITION_GRAVITY) == FALSE
         && moveType == TYPE_GROUND
         && defenderItemEffect != HOLD_EFFECT_SPEED_DOWN_GROUNDED) {
         *moveStatusMask |= MOVE_STATUS_MAGNET_RISE;
@@ -2656,7 +3144,8 @@ int BattleSystem_ApplyTypeChart(BattleSystem *battleSys, BattleContext *battleCt
         && (battleCtx->battleStatusMask & SYSCTL_IGNORE_IMMUNITIES) == FALSE) {
         if ((*moveStatusMask & MOVE_STATUS_SUPER_EFFECTIVE) && movePower) {
             if (Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_FILTER) == TRUE
-                || Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_SOLID_ROCK) == TRUE) {
+                || Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_SOLID_ROCK) == TRUE
+                || Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_DIVINE_EDICT) == TRUE) {
                 damage = BattleSystem_Divide(damage * 3, 4);
             }
 
@@ -2695,8 +3184,8 @@ void BattleSystem_CalcEffectiveness(BattleContext *battleCtx, int move, int inTy
         moveType = MOVE_DATA(move).type;
     }
 
-    if (attackerAbility != ABILITY_MOLD_BREAKER
-        && defenderAbility == ABILITY_LEVITATE
+    if (!ABILITY_IS_MOLD_BREAKER(attackerAbility)
+        && (defenderAbility == ABILITY_LEVITATE || defenderAbility == ABILITY_LUNAR_REFUGE)
         && moveType == TYPE_GROUND
         && (battleCtx->fieldConditionsMask & FIELD_CONDITION_GRAVITY) == FALSE
         && defenderItemEffect != HOLD_EFFECT_SPEED_DOWN_GROUNDED) {
@@ -2715,6 +3204,11 @@ void BattleSystem_CalcEffectiveness(BattleContext *battleCtx, int move, int inTy
             }
 
             if (sTypeMatchupMultipliers[chartEntry][0] == moveType) {
+                if (PredatorVoltIgnores(attackerAbility, chartEntry)) {
+                    chartEntry++;
+                    continue;
+                }
+
                 if (sTypeMatchupMultipliers[chartEntry][1] == defenderType1
                     && NoImmunityOverrides(battleCtx, defenderItemEffect, chartEntry) == TRUE) {
                     UpateMoveStatusForTypeMul(sTypeMatchupMultipliers[chartEntry][2], moveStatusMask);
@@ -2731,7 +3225,7 @@ void BattleSystem_CalcEffectiveness(BattleContext *battleCtx, int move, int inTy
         }
     }
 
-    if (attackerAbility != ABILITY_MOLD_BREAKER
+    if (!ABILITY_IS_MOLD_BREAKER(attackerAbility)
         && defenderAbility == ABILITY_WONDER_GUARD
         && MoveIsOnDamagingTurn(battleCtx, move)
         && ((*moveStatusMask & MOVE_STATUS_SUPER_EFFECTIVE) == FALSE
@@ -2753,6 +3247,14 @@ void BattleSystem_CalcEffectiveness(BattleContext *battleCtx, int move, int inTy
  * @param chartEntry
  * @return TRUE if immunities should be respected, FALSE if not.
  */
+static BOOL PredatorVoltIgnores(int attackerAbility, int chartEntry)
+{
+    return attackerAbility == ABILITY_PREDATOR_VOLT
+        && sTypeMatchupMultipliers[chartEntry][0] == TYPE_ELECTRIC
+        && sTypeMatchupMultipliers[chartEntry][1] == TYPE_GROUND
+        && sTypeMatchupMultipliers[chartEntry][2] == TYPE_MULTI_IMMUNE;
+}
+
 static BOOL NoImmunityOverrides(BattleContext *battleCtx, int itemEffect, int chartEntry)
 {
     BOOL result = TRUE;
@@ -3102,6 +3604,10 @@ u8 Battler_Ability(BattleContext *battleCtx, int battler)
         return ABILITY_NONE;
     }
 
+    if (battleCtx->smackedDown[battler] && battleCtx->battleMons[battler].ability == ABILITY_LEVITATE) {
+        return ABILITY_NONE; // Smack Down
+    }
+
     return battleCtx->battleMons[battler].ability;
 }
 
@@ -3109,7 +3615,7 @@ BOOL Battler_IgnorableAbility(BattleContext *battleCtx, int attacker, int defend
 {
     BOOL result = FALSE;
 
-    if (Battler_Ability(battleCtx, attacker) != ABILITY_MOLD_BREAKER) {
+    if (!Battler_IsMoldBreaker(battleCtx, attacker)) {
         if (Battler_Ability(battleCtx, defender) == ability) {
             result = TRUE;
         }
@@ -3483,6 +3989,10 @@ static u16 sSoundMoves[] = {
     MOVE_HYPER_VOICE,
     MOVE_BUG_BUZZ,
     MOVE_CHATTER,
+    MOVE_ROUND, // Gen 5 sound moves
+    MOVE_ECHOED_VOICE,
+    MOVE_RELIC_SONG,
+    MOVE_SNARL,
 };
 
 int BattleSystem_TriggerImmunityAbility(BattleContext *battleCtx, int attacker, int defender)
@@ -3535,10 +4045,32 @@ int BattleSystem_TriggerImmunityAbility(BattleContext *battleCtx, int attacker, 
         subscript = subscript_absorb_and_speed_up_1_stage;
     }
 
+    // Sap Sipper: immune to Grass moves, which raise its Attack instead
+    if (Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_SAP_SIPPER) == TRUE
+        && moveType == TYPE_GRASS
+        && attacker != defender) {
+        subscript = subscript_sap_sipper;
+    }
+
     if (Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_DRY_SKIN) == TRUE
         && moveType == TYPE_WATER
         && (battleCtx->battleStatusMask & SYSCTL_FIRST_OF_MULTI_TURN) == FALSE
         && CURRENT_MOVE_DATA.power) {
+        battleCtx->hpCalcTemp = BattleSystem_Divide(battleCtx->battleMons[defender].maxHP, 4);
+        subscript = subscript_ability_restores_hp;
+    }
+
+    // Live Wire: immune to Electric moves, which raise its Attack and Speed instead
+    if (Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_LIVE_WIRE) == TRUE
+        && moveType == TYPE_ELECTRIC
+        && attacker != defender) {
+        subscript = subscript_live_wire;
+    }
+
+    // Worldroot: immune to Ice moves, which restore 1/4 of its max HP instead (like Volt Absorb)
+    if (Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_WORLDROOT) == TRUE
+        && moveType == TYPE_ICE
+        && attacker != defender) {
         battleCtx->hpCalcTemp = BattleSystem_Divide(battleCtx->battleMons[defender].maxHP, 4);
         subscript = subscript_ability_restores_hp;
     }
@@ -3552,6 +4084,46 @@ BOOL BattleSystem_TriggerTurnEndAbility(BattleSystem *battleSys, BattleContext *
     int subscript;
 
     switch (Battler_Ability(battleCtx, battler)) {
+    case ABILITY_SIEGE_RESERVOIR:
+        // After surviving the first damaging hit taken this stay: restore 1/8 max HP this turn end
+        if (battleCtx->siegeReservoirState[battler] == 1) {
+            battleCtx->siegeReservoirState[battler] = 2;
+
+            if (battleCtx->battleMons[battler].curHP
+                && battleCtx->battleMons[battler].curHP < battleCtx->battleMons[battler].maxHP
+                && (battleCtx->battleMons[battler].moveEffectsMask & MOVE_EFFECT_HEAL_BLOCK) == FALSE) {
+                battleCtx->hpCalcTemp = BattleSystem_Divide(battleCtx->battleMons[battler].maxHP, 8);
+                battleCtx->msgBattlerTemp = battler;
+                subscript = subscript_ability_hp_restore_gradual;
+                result = TRUE;
+            }
+        }
+        break;
+
+    case ABILITY_LIVING_TERRACE:
+        // 1/16 max HP each turn, 1/8 in rain
+        if (battleCtx->battleMons[battler].curHP
+            && battleCtx->battleMons[battler].curHP < battleCtx->battleMons[battler].maxHP
+            && (battleCtx->battleMons[battler].moveEffectsMask & MOVE_EFFECT_HEAL_BLOCK) == FALSE) {
+            battleCtx->hpCalcTemp = BattleSystem_Divide(battleCtx->battleMons[battler].maxHP, (NO_CLOUD_NINE && WEATHER_IS_RAIN) ? 8 : 16);
+            battleCtx->msgBattlerTemp = battler;
+            subscript = subscript_ability_hp_restore_gradual;
+            result = TRUE;
+        }
+        break;
+
+    case ABILITY_PRISM_TIDE:
+    case ABILITY_LUNAR_REFUGE:
+        if (battleCtx->battleMons[battler].curHP
+            && battleCtx->battleMons[battler].curHP < battleCtx->battleMons[battler].maxHP
+            && (battleCtx->battleMons[battler].moveEffectsMask & MOVE_EFFECT_HEAL_BLOCK) == FALSE) {
+            battleCtx->hpCalcTemp = BattleSystem_Divide(battleCtx->battleMons[battler].maxHP, 8);
+            battleCtx->msgBattlerTemp = battler;
+            subscript = subscript_ability_hp_restore_gradual;
+            result = TRUE;
+        }
+        break;
+
     case ABILITY_SPEED_BOOST:
         if (battleCtx->battleMons[battler].curHP
             && battleCtx->battleMons[battler].statBoosts[BATTLE_STAT_SPEED] < MAX_STAT_STAGE
@@ -3563,6 +4135,38 @@ BOOL BattleSystem_TriggerTurnEndAbility(BattleSystem *battleSys, BattleContext *
             result = TRUE;
         }
         break;
+
+    case ABILITY_HEALER: {
+        // 30% chance each turn to cure its partner's status condition (Double Battles)
+        if ((BattleSystem_GetBattleType(battleSys) & BATTLE_TYPE_DOUBLES) == FALSE || battleCtx->battleMons[battler].curHP == 0) {
+            break;
+        }
+
+        int partner = BattleSystem_GetPartner(battleSys, battler);
+
+        if (partner != battler
+            && battleCtx->battleMons[partner].curHP
+            && (battleCtx->battleMons[partner].status & MON_CONDITION_ANY)
+            && BattleSystem_RandNext(battleSys) % 10 < 3) {
+            if (battleCtx->battleMons[partner].status & MON_CONDITION_SLEEP) {
+                battleCtx->msgTemp = MSGCOND_SLEEP;
+            } else if (battleCtx->battleMons[partner].status & MON_CONDITION_ANY_POISON) {
+                battleCtx->msgTemp = MSGCOND_POISON;
+            } else if (battleCtx->battleMons[partner].status & MON_CONDITION_BURN) {
+                battleCtx->msgTemp = MSGCOND_BURN;
+            } else if (battleCtx->battleMons[partner].status & MON_CONDITION_PARALYSIS) {
+                battleCtx->msgTemp = MSGCOND_PARALYSIS;
+            } else {
+                battleCtx->msgTemp = MSGCOND_FREEZE;
+            }
+
+            battleCtx->msgBattlerTemp = battler;
+            battleCtx->sideEffectMon = partner;
+            subscript = subscript_healer;
+            result = TRUE;
+        }
+        break;
+    }
 
     case ABILITY_SHED_SKIN:
         if ((battleCtx->battleMons[battler].status & MON_CONDITION_ANY)
@@ -3632,6 +4236,7 @@ enum SwitchInCheckState {
     SWITCH_IN_CHECK_STATE_SLOW_START,
     SWITCH_IN_CHECK_STATE_MOLD_BREAKER,
     SWITCH_IN_CHECK_STATE_PRESSURE,
+    SWITCH_IN_CHECK_STATE_NEW_ENTRY_ABILITIES, // Mind Sanctuary, Heartlink, Time Sovereign, Electric Surge
     SWITCH_IN_CHECK_STATE_FORM_CHANGE,
     SWITCH_IN_CHECK_STATE_AMULET_COIN,
     SWITCH_IN_CHECK_STATE_FORBIDDEN_STATUS,
@@ -4078,7 +4683,7 @@ int BattleSystem_TriggerEffectOnSwitch(BattleSystem *battleSys, BattleContext *b
 
                 if (battleCtx->battleMons[battler].moldBreakerAnnounced == FALSE
                     && battleCtx->battleMons[battler].curHP
-                    && Battler_Ability(battleCtx, battler) == ABILITY_MOLD_BREAKER) {
+                    && Battler_IsMoldBreaker(battleCtx, battler)) {
                     battleCtx->battleMons[battler].moldBreakerAnnounced = TRUE;
                     battleCtx->msgBattlerTemp = battler;
                     subscript = subscript_mold_breaker;
@@ -4105,6 +4710,90 @@ int BattleSystem_TriggerEffectOnSwitch(BattleSystem *battleSys, BattleContext *b
                     result = SWITCH_IN_CHECK_RESULT_BREAK;
                     break;
                 }
+            }
+
+            if (i == maxBattlers) {
+                battleCtx->switchInCheckState++;
+            }
+            break;
+
+        case SWITCH_IN_CHECK_STATE_NEW_ENTRY_ABILITIES:
+            for (i = 0; i < maxBattlers; i++) {
+                battler = battleCtx->monSpeedOrder[i];
+
+                // Omen Wings: a foe voluntarily switched out while it was in battle
+                if (battleCtx->omenWingsPending[battler]) {
+                    battleCtx->omenWingsPending[battler] = FALSE;
+
+                    if (battleCtx->battleMons[battler].curHP) {
+                        battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+                        battleCtx->sideEffectMon = battler;
+                        battleCtx->msgBattlerTemp = battler;
+                        subscript = subscript_omen_wings;
+                        result = SWITCH_IN_CHECK_RESULT_BREAK;
+                        break;
+                    }
+                }
+
+                if (battleCtx->battleMons[battler].newEntryAbilityAnnounced || battleCtx->battleMons[battler].curHP == 0) {
+                    continue;
+                }
+
+                int side = BattleSystem_GetBattlerSide(battleSys, battler);
+
+                switch (Battler_Ability(battleCtx, battler)) {
+                case ABILITY_MIND_SANCTUARY:
+                    // Reflect and Light Screen for 5 turns (refreshed if already up)
+                    battleCtx->sideConditionsMask[side] |= SIDE_CONDITION_REFLECT | SIDE_CONDITION_LIGHT_SCREEN;
+                    battleCtx->sideConditions[side].reflectTurns = NUM_SCREEN_TURNS;
+                    battleCtx->sideConditions[side].reflectUser = battler;
+                    battleCtx->sideConditions[side].lightScreenTurns = NUM_SCREEN_TURNS;
+                    battleCtx->sideConditions[side].lightScreenUser = battler;
+                    subscript = subscript_mind_sanctuary;
+                    break;
+                case ABILITY_HEARTLINK:
+                    battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+                    battleCtx->sideEffectMon = battler;
+                    subscript = subscript_heartlink;
+                    break;
+                case ABILITY_TIME_SOVEREIGN:
+                    // Trick Room for 5 turns; if it is already up, refresh it instead of ending it
+                    battleCtx->fieldConditionsMask &= ~FIELD_CONDITION_TRICK_ROOM;
+                    battleCtx->fieldConditionsMask |= FIELD_CONDITION_TRICK_ROOM_INIT;
+                    subscript = subscript_time_sovereign;
+                    break;
+                case ABILITY_TIME_LOCK: {
+                    // Only on its first entry each battle: starts Trick Room (5 turns) or, if it is
+                    // already up, refreshes it to at least 3 turns remaining
+                    u8 slotFlag = FlagIndex(battleCtx->selectedPartySlot[battler]);
+
+                    if (battleCtx->timeLockUsedMask[battler] & slotFlag) {
+                        continue;
+                    }
+
+                    battleCtx->timeLockUsedMask[battler] |= slotFlag;
+
+                    int turns = (battleCtx->fieldConditionsMask & FIELD_CONDITION_TRICK_ROOM) >> FIELD_CONDITION_TRICK_ROOM_SHIFT;
+                    turns = turns == 0 ? 5 : (turns < 3 ? 3 : turns);
+                    battleCtx->fieldConditionsMask &= ~FIELD_CONDITION_TRICK_ROOM;
+                    battleCtx->fieldConditionsMask |= turns << FIELD_CONDITION_TRICK_ROOM_SHIFT;
+                    subscript = subscript_time_sovereign; // "twisted the dimensions!"
+                    break;
+                }
+                case ABILITY_ELECTRIC_SURGE:
+                    // Electric Terrain for 5 turns (refreshed if already up; it doesn't stack)
+                    battleCtx->fieldConditionsMask &= ~FIELD_CONDITION_ELECTRIC_TERRAIN;
+                    battleCtx->fieldConditionsMask |= FIELD_CONDITION_ELECTRIC_TERRAIN_INIT;
+                    subscript = subscript_electric_surge;
+                    break;
+                default:
+                    continue;
+                }
+
+                battleCtx->battleMons[battler].newEntryAbilityAnnounced = TRUE;
+                battleCtx->msgBattlerTemp = battler;
+                result = SWITCH_IN_CHECK_RESULT_BREAK;
+                break;
             }
 
             if (i == maxBattlers) {
@@ -4210,6 +4899,77 @@ BOOL BattleSystem_TriggerAbilityOnHit(BattleSystem *battleSys, BattleContext *ba
         return result;
     }
 
+    // Gilded Claws: the first damaging contact hit after entering lowers the target's Defense
+    if (Battler_Ability(battleCtx, battleCtx->attacker) == ABILITY_GILDED_CLAWS
+        && battleCtx->gildedClawsUsed[battleCtx->attacker] == FALSE
+        && ATTACKING_MON.curHP
+        && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+        && (battleCtx->battleStatusMask & SYSCTL_FIRST_OF_MULTI_TURN) == FALSE
+        && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)
+        && (CURRENT_MOVE_DATA.flags & MOVE_FLAG_MAKES_CONTACT)) {
+        battleCtx->gildedClawsUsed[battleCtx->attacker] = TRUE;
+
+        if (DEFENDING_MON.curHP) {
+            battleCtx->sideEffectParam = MOVE_SUBSCRIPT_PTR_DEFENSE_DOWN_1_STAGE;
+            battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+            battleCtx->sideEffectMon = battleCtx->defender;
+            *subscript = subscript_update_stat_stage; // "{0}'s {1} cuts {2}'s Defense!"
+            return TRUE;
+        }
+    }
+
+    // Silk Swipe: the first damaging contact hit after entering knocks off the target's item
+    if (Battler_Ability(battleCtx, battleCtx->attacker) == ABILITY_SILK_SWIPE
+        && ATTACKING_MON.silkSwipeUsed == FALSE
+        && ATTACKING_MON.curHP
+        && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+        && (battleCtx->battleStatusMask & SYSCTL_FIRST_OF_MULTI_TURN) == FALSE
+        && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)
+        && (CURRENT_MOVE_DATA.flags & MOVE_FLAG_MAKES_CONTACT)) {
+        ATTACKING_MON.silkSwipeUsed = TRUE;
+
+        if (DEFENDING_MON.heldItem != ITEM_NONE && battleCtx->moveCur != MOVE_KNOCK_OFF) {
+            *subscript = subscript_silk_swipe;
+            return TRUE;
+        }
+    }
+
+    // Attacker abilities that add a status chance to its own damaging hits
+    // (Furnace Spark: burn on Fire moves; Toxic Fists: poison on punches)
+    if (DEFENDING_MON.curHP
+        && DEFENDING_MON.status == MON_CONDITION_NONE
+        && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+        && (battleCtx->battleStatusMask & SYSCTL_FIRST_OF_MULTI_TURN) == FALSE
+        && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)
+        && CURRENT_MOVE_DATA.power) {
+        int attackerAbility = Battler_Ability(battleCtx, battleCtx->attacker);
+        u8 hitType = battleCtx->moveType ? battleCtx->moveType : CURRENT_MOVE_DATA.type;
+        int statusSeq = 0;
+
+        if (attackerAbility == ABILITY_FURNACE_SPARK
+            && hitType == TYPE_FIRE
+            && MoveEffect_HasBurnChance(CURRENT_MOVE_DATA.effect) == FALSE
+            && BattleSystem_RandNext(battleSys) % 100 < FURNACE_SPARK_BURN_CHANCE) {
+            statusSeq = subscript_burn;
+        } else if (attackerAbility == ABILITY_TOXIC_FISTS
+            && Move_IsPunching(battleCtx->moveCur)
+            && BattleSystem_RandNext(battleSys) % 100 < TOXIC_FISTS_POISON_CHANCE) {
+            statusSeq = subscript_poison;
+        } else if (attackerAbility == ABILITY_POISON_TOUCH
+            && (CURRENT_MOVE_DATA.flags & MOVE_FLAG_MAKES_CONTACT)
+            && BattleSystem_RandNext(battleSys) % 100 < 30) {
+            statusSeq = subscript_poison;
+        }
+
+        if (statusSeq) {
+            *subscript = statusSeq;
+            battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+            battleCtx->sideEffectMon = battleCtx->defender;
+            battleCtx->msgBattlerTemp = battleCtx->attacker;
+            return TRUE;
+        }
+    }
+
     switch (Battler_Ability(battleCtx, battleCtx->defender)) {
     case ABILITY_STATIC:
         if (ATTACKING_MON.curHP
@@ -4254,7 +5014,52 @@ BOOL BattleSystem_TriggerAbilityOnHit(BattleSystem *battleSys, BattleContext *ba
         }
         break;
 
+    case ABILITY_FOSSIL_CITADEL: {
+        // The first physical hit it survives each battle sets Reflect (3 turns) on its side
+        u8 slotFlag = FlagIndex(battleCtx->selectedPartySlot[battleCtx->defender]);
+        int side = BattleSystem_GetBattlerSide(battleSys, battleCtx->defender);
+
+        if ((battleCtx->fossilCitadelUsedMask[battleCtx->defender] & slotFlag) == FALSE
+            && DEFENDING_MON.curHP
+            && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+            && CURRENT_MOVE_DATA.class == CLASS_PHYSICAL
+            && DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken) {
+            battleCtx->fossilCitadelUsedMask[battleCtx->defender] |= slotFlag;
+            battleCtx->sideConditionsMask[side] |= SIDE_CONDITION_REFLECT;
+            if (battleCtx->sideConditions[side].reflectTurns < 3) {
+                battleCtx->sideConditions[side].reflectTurns = 3;
+            }
+            battleCtx->sideConditions[side].reflectUser = battleCtx->defender;
+            battleCtx->msgBattlerTemp = battleCtx->defender;
+
+            *subscript = subscript_mind_sanctuary; // Reflect animation + "put up a barrier!"
+            result = TRUE;
+        }
+        break;
+    }
+
+    case ABILITY_ROYAL_PARRY:
+        // The first contact hit taken since switching in (blunted in the damage calc) also
+        // costs the attacker 1/8 of its max HP
+        if (battleCtx->royalParryUsed[battleCtx->defender] == FALSE
+            && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+            && (battleCtx->battleStatusMask & SYSCTL_FIRST_OF_MULTI_TURN) == FALSE
+            && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)
+            && (CURRENT_MOVE_DATA.flags & MOVE_FLAG_MAKES_CONTACT)) {
+            battleCtx->royalParryUsed[battleCtx->defender] = TRUE;
+
+            if (ATTACKING_MON.curHP && Battler_Ability(battleCtx, battleCtx->attacker) != ABILITY_MAGIC_GUARD) {
+                battleCtx->hpCalcTemp = BattleSystem_Divide(ATTACKING_MON.maxHP * -1, 8);
+                battleCtx->msgBattlerTemp = battleCtx->attacker;
+
+                *subscript = subscript_rough_skin;
+                result = TRUE;
+            }
+        }
+        break;
+
     case ABILITY_ROUGH_SKIN:
+    case ABILITY_IRON_BARBS:
         if (ATTACKING_MON.curHP
             && Battler_Ability(battleCtx, battleCtx->attacker) != ABILITY_MAGIC_GUARD
             && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
@@ -4266,6 +5071,64 @@ BOOL BattleSystem_TriggerAbilityOnHit(BattleSystem *battleSys, BattleContext *ba
             battleCtx->msgBattlerTemp = battleCtx->attacker;
 
             *subscript = subscript_rough_skin;
+            result = TRUE;
+        }
+        break;
+
+    case ABILITY_CURSED_BODY:
+        // 30%: the move that hit it is disabled
+        if (ATTACKING_MON.curHP
+            && ATTACKING_MON.moveEffectsData.disabledMove == MOVE_NONE
+            && battleCtx->moveCur != MOVE_STRUGGLE
+            && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+            && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)
+            && BattleSystem_RandNext(battleSys) % 10 < 3) {
+            ATTACKING_MON.moveEffectsData.disabledMove = battleCtx->moveCur;
+            ATTACKING_MON.moveEffectsData.disabledTurns = 4;
+            battleCtx->msgTemp = battleCtx->moveCur;
+            *subscript = subscript_cursed_body;
+            result = TRUE;
+        }
+        break;
+
+    case ABILITY_JUSTIFIED:
+        // Hit by a Dark move: Attack +1
+        if (DEFENDING_MON.curHP
+            && DEFENDING_MON.statBoosts[BATTLE_STAT_ATTACK] < MAX_STAT_STAGE
+            && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+            && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)
+            && (battleCtx->moveType ? battleCtx->moveType : CURRENT_MOVE_DATA.type) == TYPE_DARK) {
+            battleCtx->sideEffectParam = MOVE_SUBSCRIPT_PTR_ATTACK_UP_1_STAGE;
+            battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+            battleCtx->sideEffectMon = battleCtx->defender;
+            *subscript = subscript_update_stat_stage;
+            result = TRUE;
+        }
+        break;
+
+    case ABILITY_MUMMY:
+        // Contact: the attacker's ability becomes Mummy
+        if (ATTACKING_MON.curHP
+            && ATTACKING_MON.ability != ABILITY_MUMMY
+            && ATTACKING_MON.ability != ABILITY_MULTITYPE
+            && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+            && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)
+            && (CURRENT_MOVE_DATA.flags & MOVE_FLAG_MAKES_CONTACT)) {
+            ATTACKING_MON.ability = ABILITY_MUMMY;
+            *subscript = subscript_mummy;
+            result = TRUE;
+        }
+        break;
+
+    case ABILITY_WEAK_ARMOR:
+        // Physical hit: Defense -1, Speed +1
+        if (DEFENDING_MON.curHP
+            && (battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+            && CURRENT_MOVE_DATA.class == CLASS_PHYSICAL
+            && DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken) {
+            battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+            battleCtx->sideEffectMon = battleCtx->defender;
+            *subscript = subscript_weak_armor;
             result = TRUE;
         }
         break;
@@ -4579,6 +5442,10 @@ BOOL BattleSystem_TriggerHeldItem(BattleSystem *battleSys, BattleContext *battle
     int subscript;
     int itemEffect = Battler_HeldItemEffect(battleCtx, battler);
     int itemPower = Battler_HeldItemPower(battleCtx, battler, ITEM_POWER_CHECK_ALL);
+
+    if (Battler_BerryBlockedByUnnerve(battleSys, battleCtx, battler)) {
+        return FALSE;
+    }
 
     if (battleCtx->battleMons[battler].curHP) {
         switch (itemEffect) {
@@ -4970,6 +5837,10 @@ BOOL BattleSystem_TriggerHeldItemOnStatus(BattleSystem *battleSys, BattleContext
     int itemEffect = Battler_HeldItemEffect(battleCtx, battler);
     int itemPower = Battler_HeldItemPower(battleCtx, battler, ITEM_POWER_CHECK_ALL);
 
+    if (Battler_BerryBlockedByUnnerve(battleSys, battleCtx, battler)) {
+        return FALSE;
+    }
+
     if (battleCtx->battleMons[battler].curHP) {
         switch (itemEffect) {
         case HOLD_EFFECT_HP_RESTORE:
@@ -5359,6 +6230,10 @@ u16 Battler_HeldItem(BattleContext *battleCtx, int battler)
         return ITEM_NONE;
     }
 
+    if (Battle_MagicRoomActive(battleCtx)) {
+        return ITEM_NONE; // Magic Room: held items have no effect
+    }
+
     return battleCtx->battleMons[battler].heldItem;
 }
 
@@ -5497,13 +6372,99 @@ s32 Battler_ItemFlingPower(BattleContext *battleCtx, int battler)
     return BattleSystem_GetItemData(battleCtx, battleCtx->battleMons[battler].heldItem, ITEM_PARAM_FLING_POWER);
 }
 
+// Mold Breaker, Teravolt and Turboblaze: moves ignore the target's ability
+BOOL Battler_IsMoldBreaker(BattleContext *battleCtx, int battler)
+{
+    return ABILITY_IS_MOLD_BREAKER(Battler_Ability(battleCtx, battler));
+}
+
+// Unnerve: an opposing Pokemon with Unnerve stops this battler eating its Berry
+static BOOL Battler_BerryBlockedByUnnerve(BattleSystem *battleSys, BattleContext *battleCtx, int battler)
+{
+    u16 item = battleCtx->battleMons[battler].heldItem;
+
+    return item >= ITEM_CHERI_BERRY && item <= ITEM_ROWAP_BERRY
+        && BattleSystem_CountAbility(battleSys, battleCtx, COUNT_ALIVE_BATTLERS_THEIR_SIDE, battler, ABILITY_UNNERVE);
+}
+
+// Wonder Room / Magic Room (5 turns)
+BOOL Battle_WonderRoomActive(BattleContext *battleCtx)
+{
+    return battleCtx->wonderRoomUntil != 0 && battleCtx->totalTurns + 1 <= battleCtx->wonderRoomUntil;
+}
+
+BOOL Battle_MagicRoomActive(BattleContext *battleCtx)
+{
+    return battleCtx->magicRoomUntil != 0 && battleCtx->totalTurns + 1 <= battleCtx->magicRoomUntil;
+}
+
+// Smack Down: grounded (Levitate / Flying type / Magnet Rise no longer protect from Ground moves)
+BOOL Battler_IsSmackedDown(BattleContext *battleCtx, int battler)
+{
+    return battleCtx->smackedDown[battler];
+}
+
+// Telekinesis: floating (Ground moves miss, every other move hits it)
+BOOL Battler_IsTelekinesisActive(BattleContext *battleCtx, int battler)
+{
+    return battleCtx->telekinesisUntil[battler] != 0 && battleCtx->totalTurns + 1 <= battleCtx->telekinesisUntil[battler];
+}
+
 static inline BOOL BattlerIsGrounded(BattleContext *battleCtx, int battler)
 {
+    if (Battler_IsSmackedDown(battleCtx, battler)) {
+        return TRUE;
+    }
+
+    if (Battler_IsTelekinesisActive(battleCtx, battler)
+        && Battler_HeldItemEffect(battleCtx, battler) != HOLD_EFFECT_SPEED_DOWN_GROUNDED
+        && (battleCtx->fieldConditionsMask & FIELD_CONDITION_GRAVITY) == FALSE) {
+        return FALSE;
+    }
+
     return (Battler_Ability(battleCtx, battler) != ABILITY_LEVITATE
                && battleCtx->battleMons[battler].moveEffectsData.magnetRiseTurns == 0
                && MON_IS_NOT_TYPE(battler, TYPE_FLYING))
         || Battler_HeldItemEffect(battleCtx, battler) == HOLD_EFFECT_SPEED_DOWN_GROUNDED
         || (battleCtx->fieldConditionsMask & FIELD_CONDITION_GRAVITY);
+}
+
+BOOL Battler_RiftPierceActive(BattleContext *battleCtx, int attacker)
+{
+    // Rift Pierce: its special attacks bypass Light Screen and hit through Substitute
+    return Battler_Ability(battleCtx, attacker) == ABILITY_RIFT_PIERCE
+        && CURRENT_MOVE_DATA.class == CLASS_SPECIAL
+        && CURRENT_MOVE_DATA.power;
+}
+
+static BOOL Battler_EmperorMantlePriority(BattleContext *battleCtx, int battler, u16 move)
+{
+    return move != MOVE_NONE
+        && Battler_Ability(battleCtx, battler) == ABILITY_EMPEROR_MANTLE
+        && battleCtx->emperorMantleState[battler] == 1
+        && MOVE_DATA(move).type == TYPE_FIGHTING
+        && MOVE_DATA(move).power;
+}
+
+void BattleSystem_ApplyFumeCloud(BattleSystem *battleSys, BattleContext *battleCtx, int battler)
+{
+    // Fume Cloud: while an opponent with it is active, HP recovered from moves is halved
+    if (battleCtx->hpCalcTemp != 0
+        && BattleSystem_CountAbility(battleSys, battleCtx, COUNT_ALIVE_BATTLERS_THEIR_SIDE, battler, ABILITY_FUME_CLOUD)) {
+        int halved = battleCtx->hpCalcTemp / 2;
+
+        if (halved == 0) {
+            halved = battleCtx->hpCalcTemp > 0 ? 1 : -1;
+        }
+
+        battleCtx->hpCalcTemp = halved;
+    }
+}
+
+BOOL Battler_IsElectricTerrainActive(BattleContext *battleCtx, int battler)
+{
+    return (battleCtx->fieldConditionsMask & FIELD_CONDITION_ELECTRIC_TERRAIN)
+        && BattlerIsGrounded(battleCtx, battler);
 }
 
 static inline int CountAbilityTheirSide(BattleSystem *battleSys, BattleContext *battleCtx, int battler, int ability)
@@ -6311,6 +7272,50 @@ BOOL BattleSystem_TriggerFormChange(BattleSystem *battleSys, BattleContext *batt
     for (i = 0; i < BattleSystem_GetMaxBattlers(battleSys); i++) {
         battleCtx->msgBattlerTemp = battleCtx->monSpeedOrder[i];
 
+        BattleMon *formMon = &battleCtx->battleMons[battleCtx->msgBattlerTemp];
+
+        // Zen Mode: Darmanitan is in Zen Mode while at half HP or less
+        if (formMon->species == SPECIES_DARMANITAN
+            && formMon->curHP
+            && (formMon->statusVolatile & VOLATILE_CONDITION_TRANSFORM) == FALSE
+            && Battler_Ability(battleCtx, battleCtx->msgBattlerTemp) == ABILITY_ZEN_MODE) {
+            int zenForm = formMon->curHP <= formMon->maxHP / 2 ? DARMANITAN_FORM_ZEN : DARMANITAN_FORM_STANDARD;
+
+            if (formMon->formNum != zenForm) {
+                BattleSystem_PrepareBattleFormChange(battleSys, battleCtx, battleCtx->msgBattlerTemp, zenForm);
+                *subscript = subscript_battle_form_change;
+                result = TRUE;
+                break;
+            }
+        }
+
+        // Origin Dialga / Palkia lose their Origin Forme when their Orb is taken (Thief, Knock Off, ...)
+        if ((formMon->species == SPECIES_DIALGA || formMon->species == SPECIES_PALKIA)
+            && formMon->curHP
+            && formMon->formNum == DIALGA_FORM_ORIGIN
+            && (formMon->statusVolatile & VOLATILE_CONDITION_TRANSFORM) == FALSE
+            && formMon->heldItem != Species_GetOriginFormItem(formMon->species)) {
+            BattleSystem_PrepareBattleFormChange(battleSys, battleCtx, battleCtx->msgBattlerTemp, DIALGA_FORM_BASE);
+            *subscript = subscript_battle_form_change;
+            result = TRUE;
+            break;
+        }
+
+        // Meloetta switches between Aria and Pirouette Forme after using Relic Song
+        if (battleCtx->relicSongPending[battleCtx->msgBattlerTemp]) {
+            battleCtx->relicSongPending[battleCtx->msgBattlerTemp] = FALSE;
+
+            if (formMon->species == SPECIES_MELOETTA
+                && formMon->curHP
+                && (formMon->statusVolatile & VOLATILE_CONDITION_TRANSFORM) == FALSE) {
+                BattleSystem_PrepareBattleFormChange(battleSys, battleCtx, battleCtx->msgBattlerTemp,
+                    formMon->formNum == MELOETTA_FORM_PIROUETTE ? MELOETTA_FORM_ARIA : MELOETTA_FORM_PIROUETTE);
+                *subscript = subscript_battle_form_change;
+                result = TRUE;
+                break;
+            }
+        }
+
         if (battleCtx->battleMons[battleCtx->msgBattlerTemp].species == SPECIES_CASTFORM
             && battleCtx->battleMons[battleCtx->msgBattlerTemp].curHP
             && Battler_Ability(battleCtx, battleCtx->msgBattlerTemp) == ABILITY_FORECAST) {
@@ -6327,8 +7332,9 @@ BOOL BattleSystem_TriggerFormChange(BattleSystem *battleSys, BattleContext *batt
                 } else if (WEATHER_IS_SUN
                     && battleCtx->battleMons[battleCtx->msgBattlerTemp].type1 != TYPE_FIRE
                     && battleCtx->battleMons[battleCtx->msgBattlerTemp].type2 != TYPE_FIRE) {
+                    // Sunny Form is Fire/Light
                     battleCtx->battleMons[battleCtx->msgBattlerTemp].type1 = TYPE_FIRE;
-                    battleCtx->battleMons[battleCtx->msgBattlerTemp].type2 = TYPE_FIRE;
+                    battleCtx->battleMons[battleCtx->msgBattlerTemp].type2 = TYPE_LIGHT;
                     battleCtx->battleMons[battleCtx->msgBattlerTemp].formNum = CASTFORM_FORM_SUNNY;
                     *subscript = subscript_form_change;
                     result = TRUE;
@@ -6398,6 +7404,7 @@ BOOL BattleSystem_TriggerFormChange(BattleSystem *battleSys, BattleContext *batt
 
         if (battleCtx->battleMons[battleCtx->msgBattlerTemp].species == SPECIES_ARCEUS
             && battleCtx->battleMons[battleCtx->msgBattlerTemp].curHP
+            && !FORM_IS_MEGA(battleCtx->battleMons[battleCtx->msgBattlerTemp].formNum)
             && Battler_Ability(battleCtx, battleCtx->msgBattlerTemp) == ABILITY_MULTITYPE) {
             arceusForm = Pokemon_GetArceusTypeOf(Item_LoadParam(battleCtx->battleMons[battleCtx->msgBattlerTemp].heldItem, ITEM_PARAM_HOLD_EFFECT, HEAP_ID_BATTLE));
 
@@ -6544,7 +7551,8 @@ static const ItemEffectTypePair sTypeBoostingItems[] = {
     { HOLD_EFFECT_ARCEUS_GHOST, TYPE_GHOST },
     { HOLD_EFFECT_ARCEUS_DRAGON, TYPE_DRAGON },
     { HOLD_EFFECT_ARCEUS_DARK, TYPE_DARK },
-    { HOLD_EFFECT_ARCEUS_STEEL, TYPE_STEEL }
+    { HOLD_EFFECT_ARCEUS_STEEL, TYPE_STEEL },
+    { HOLD_EFFECT_ARCEUS_LIGHT, TYPE_LIGHT }
 };
 
 static const Fraction sStatStageBoosts[] = {
@@ -6581,6 +7589,45 @@ static const u16 sPunchingMoves[] = {
     MOVE_SKY_UPPERCUT
 };
 
+// Sharpness: slicing moves (Platinum has no Sacred Sword / Psycho Cut-likes beyond these)
+static const u16 sSlicingMoves[] = {
+    MOVE_CUT,
+    MOVE_RAZOR_LEAF,
+    MOVE_SLASH,
+    MOVE_FURY_CUTTER,
+    MOVE_AIR_CUTTER,
+    MOVE_AERIAL_ACE,
+    MOVE_LEAF_BLADE,
+    MOVE_NIGHT_SLASH,
+    MOVE_AIR_SLASH,
+    MOVE_X_SCISSOR,
+    MOVE_PSYCHO_CUT,
+    MOVE_CROSS_POISON,
+    MOVE_RAZOR_WIND,
+};
+
+static BOOL Move_IsSlicing(u16 move)
+{
+    for (int i = 0; i < NELEMS(sSlicingMoves); i++) {
+        if (sSlicingMoves[i] == move) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+static BOOL Move_IsPunching(u16 move)
+{
+    for (int i = 0; i < NELEMS(sPunchingMoves); i++) {
+        if (sPunchingMoves[i] == move) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
 typedef struct DamageCalcParams {
     u16 species;
     s16 curHP;
@@ -6597,6 +7644,68 @@ typedef struct DamageCalcParams {
     u8 type1;
     u8 type2;
 } DamageCalcParams;
+
+// Power boosts from the attacker's own new abilities (no message, like Iron Fist / Technician)
+static u16 ApplyNewAbilityPowerMods(int ability, int move, int moveType, u16 movePower, int curHP, int maxHP)
+{
+    int i;
+
+    switch (ability) {
+    case ABILITY_WILL_IGNITION:
+        if (curHP > maxHP / 2) {
+            movePower = movePower * 125 / 100;
+        }
+        break;
+    case ABILITY_DIVINE_EDICT:
+        movePower = movePower * 120 / 100;
+        break;
+    case ABILITY_THORN_BLOOM:
+        if (moveType == TYPE_GRASS || moveType == TYPE_POISON) {
+            movePower = movePower * 130 / 100;
+        }
+        break;
+    case ABILITY_PRISM_TIDE:
+        if (moveType == TYPE_WATER) {
+            movePower = movePower * 130 / 100;
+        }
+        break;
+    case ABILITY_AURA_OVERDRIVE:
+        if (moveType == TYPE_FIGHTING || moveType == TYPE_STEEL) {
+            movePower = movePower * 130 / 100;
+        }
+        break;
+    case ABILITY_SPATIAL_RUPTURE:
+        if (moveType == TYPE_WATER || moveType == TYPE_DRAGON) {
+            movePower = movePower * 125 / 100;
+        }
+        break;
+    case ABILITY_BLAZING_MIND:
+        if (moveType == TYPE_FIRE || moveType == TYPE_FIGHTING) {
+            movePower = movePower * 130 / 100;
+        }
+        break;
+    case ABILITY_PREDATOR_VOLT:
+        if (moveType == TYPE_ELECTRIC) {
+            movePower = movePower * 130 / 100;
+        }
+        break;
+    case ABILITY_TITANS_GRIP:
+        for (i = 0; i < NELEMS(sPunchingMoves); i++) {
+            if (sPunchingMoves[i] == move) {
+                movePower = movePower * 130 / 100;
+                break;
+            }
+        }
+        break;
+    case ABILITY_PRISMATIC_ARMOR:
+        if (moveType == TYPE_GROUND || moveType == TYPE_STEEL) {
+            movePower = movePower * 120 / 100;
+        }
+        break;
+    }
+
+    return movePower;
+}
 
 int BattleSystem_CalcMoveDamage(BattleSystem *battleSys,
     BattleContext *battleCtx,
@@ -6636,11 +7745,25 @@ int BattleSystem_CalcMoveDamage(BattleSystem *battleSys,
     defenseStat = BattleMon_Get(battleCtx, defender, BATTLEMON_DEFENSE, NULL);
     spAttackStat = BattleMon_Get(battleCtx, attacker, BATTLEMON_SP_ATTACK, NULL);
     spDefenseStat = BattleMon_Get(battleCtx, defender, BATTLEMON_SP_DEFENSE, NULL);
+
+    // Wonder Room: Defense and Sp. Def are swapped
+    if (Battle_WonderRoomActive(battleCtx)) {
+        u16 tmp = defenseStat;
+        defenseStat = spDefenseStat;
+        spDefenseStat = tmp;
+    }
+
     attackStage = BattleMon_Get(battleCtx, attacker, BATTLEMON_ATTACK_STAGE, NULL) - DEFAULT_STAT_STAGE;
     defenseStage = BattleMon_Get(battleCtx, defender, BATTLEMON_DEFENSE_STAGE, NULL) - DEFAULT_STAT_STAGE;
     spAttackStage = BattleMon_Get(battleCtx, attacker, BATTLEMON_SP_ATTACK_STAGE, NULL) - DEFAULT_STAT_STAGE;
     spDefenseStage = BattleMon_Get(battleCtx, defender, BATTLEMON_SP_DEFENSE_STAGE, NULL) - DEFAULT_STAT_STAGE;
     attackerLevel = BattleMon_Get(battleCtx, attacker, BATTLEMON_LEVEL, NULL);
+
+    // Foul Play: the target's Attack and Attack stages are used
+    if (MOVE_DATA(move).effect == BATTLE_EFFECT_FOUL_PLAY) {
+        attackStat = BattleMon_Get(battleCtx, defender, BATTLEMON_ATTACK, NULL);
+        attackStage = BattleMon_Get(battleCtx, defender, BATTLEMON_ATTACK_STAGE, NULL) - DEFAULT_STAT_STAGE;
+    }
 
     attackerParams.species = BattleMon_Get(battleCtx, attacker, BATTLEMON_SPECIES, NULL);
     defenderParams.species = BattleMon_Get(battleCtx, defender, BATTLEMON_SPECIES, NULL);
@@ -6893,6 +8016,33 @@ int BattleSystem_CalcMoveDamage(BattleSystem *battleSys,
         spDefenseStage = 0;
     }
 
+    // Aura Overdrive: the target's raised Defense / Sp. Def stages are ignored (drops still count)
+    // Moonlit Hex: its special attacks treat the target's positive Sp. Def stages as zero
+    if (attackerParams.ability == ABILITY_MOONLIT_HEX && moveClass == CLASS_SPECIAL && spDefenseStage > 0) {
+        spDefenseStage = 0;
+    }
+
+    if (attackerParams.ability == ABILITY_AURA_OVERDRIVE) {
+        if (defenseStage > 0) {
+            defenseStage = 0;
+        }
+        if (spDefenseStage > 0) {
+            spDefenseStage = 0;
+        }
+    }
+
+    // Defeatist: Attack and Sp. Atk are halved at half HP or less
+    if (attackerParams.ability == ABILITY_DEFEATIST && attackerParams.curHP * 2 <= attackerParams.maxHP) {
+        attackStat /= 2;
+        spAttackStat /= 2;
+    }
+
+    // Chip Away / Sacred Sword: the target's Defense / Sp. Def stages are ignored
+    if (MOVE_DATA(move).effect == BATTLE_EFFECT_CHIP_AWAY) {
+        defenseStage = 0;
+        spDefenseStage = 0;
+    }
+
     attackStage += DEFAULT_STAT_STAGE;
     defenseStage += DEFAULT_STAT_STAGE;
     spAttackStage += DEFAULT_STAT_STAGE;
@@ -6918,6 +8068,86 @@ int BattleSystem_CalcMoveDamage(BattleSystem *battleSys,
         }
     }
 
+    movePower = ApplyNewAbilityPowerMods(attackerParams.ability, move, moveType, movePower, attackerParams.curHP, attackerParams.maxHP);
+
+    // Sheer Force: moves with an added effect chance get 1.3x power (the effect is removed)
+    if (attackerParams.ability == ABILITY_SHEER_FORCE && MOVE_DATA(move).effectChance) {
+        movePower = movePower * 130 / 100;
+    }
+
+    // Sharpness: slicing moves
+    if (attackerParams.ability == ABILITY_SHARPNESS && Move_IsSlicing(move)) {
+        movePower = movePower * 150 / 100;
+    }
+
+    // Crosswire: after landing an Electric hit, its next damaging move of another type
+    if (attackerParams.ability == ABILITY_CROSSWIRE && battleCtx->crosswireCharged[attacker] && moveType != TYPE_ELECTRIC) {
+        movePower = movePower * 125 / 100;
+    }
+
+    // Cannon Salvo: every third special attack landed during this stay
+    if (attackerParams.ability == ABILITY_CANNON_SALVO
+        && MOVE_DATA(move).class == CLASS_SPECIAL
+        && battleCtx->cannonSalvoCount[attacker] == 2) {
+        movePower = movePower * 140 / 100;
+    }
+
+    // Ruby Conduit: after taking a damaging hit, its next Electric / Light / Dragon attack
+    if (attackerParams.ability == ABILITY_RUBY_CONDUIT
+        && battleCtx->rubyConduitCharged[attacker]
+        && (moveType == TYPE_ELECTRIC || moveType == TYPE_LIGHT || moveType == TYPE_DRAGON)) {
+        movePower = movePower * 125 / 100;
+    }
+
+    // Tide Rush: Water / Light moves vs. a target that hasn't moved yet this turn
+    if (attackerParams.ability == ABILITY_TIDE_RUSH
+        && (moveType == TYPE_WATER || moveType == TYPE_LIGHT)
+        && Battler_MovedThisTurn(battleCtx, defender) == FALSE) {
+        movePower = movePower * 125 / 100;
+    }
+
+    // Hexweaver: Ghost / Fairy moves vs. a target with a major status condition
+    if (attackerParams.ability == ABILITY_HEXWEAVER
+        && (moveType == TYPE_GHOST || moveType == TYPE_FAIRY)
+        && (defenderParams.statusMask & MON_CONDITION_ANY)) {
+        movePower = movePower * 130 / 100;
+    }
+
+    // Winter Chase: Ice / Dark moves vs. a target that switched in this turn
+    if (attackerParams.ability == ABILITY_WINTER_CHASE
+        && (moveType == TYPE_ICE || moveType == TYPE_DARK)
+        && battleCtx->battleMons[defender].moveEffectsData.fakeOutTurnNumber == battleCtx->totalTurns + 1) {
+        movePower = movePower * 130 / 100;
+    }
+
+    // Sand Force: Ground / Rock / Steel moves in a sandstorm
+    if (attackerParams.ability == ABILITY_SAND_FORCE
+        && (moveType == TYPE_GROUND || moveType == TYPE_ROCK || moveType == TYPE_STEEL)
+        && (fieldConditions & FIELD_CONDITION_SANDSTORM)
+        && NO_CLOUD_NINE) {
+        movePower = movePower * 130 / 100;
+    }
+
+    // Stone Engine: recoil moves (not Struggle)
+    if (attackerParams.ability == ABILITY_STONE_ENGINE) {
+        switch (MOVE_DATA(move).effect) {
+        case BATTLE_EFFECT_RECOIL_QUARTER:
+        case BATTLE_EFFECT_RECOIL_THIRD:
+        case BATTLE_EFFECT_RECOIL_HALF:
+        case BATTLE_EFFECT_RECOIL_BURN_HIT:
+        case BATTLE_EFFECT_RECOIL_PARALYZE_HIT:
+            movePower = movePower * 125 / 100;
+            break;
+        }
+    }
+
+    // Electric Terrain: a grounded attacker's Electric moves get 1.5x power
+    if ((fieldConditions & FIELD_CONDITION_ELECTRIC_TERRAIN)
+        && moveType == TYPE_ELECTRIC
+        && BattlerIsGrounded(battleCtx, attacker)) {
+        movePower = movePower * 15 / 10;
+    }
+
     if (NO_CLOUD_NINE) {
         if ((fieldConditions & FIELD_CONDITION_SUNNY) && attackerParams.ability == ABILITY_SOLAR_POWER) {
             spAttackStat = spAttackStat * 15 / 10;
@@ -6934,7 +8164,7 @@ int BattleSystem_CalcMoveDamage(BattleSystem *battleSys,
         }
 
         if ((fieldConditions & FIELD_CONDITION_SUNNY)
-            && Battler_Ability(battleCtx, attacker) != ABILITY_MOLD_BREAKER
+            && !Battler_IsMoldBreaker(battleCtx, attacker)
             && BattleSystem_CountAbility(battleSys, battleCtx, COUNT_ALIVE_BATTLERS_OUR_SIDE, defender, ABILITY_FLOWER_GIFT)) {
             spDefenseStat = spDefenseStat * 15 / 10;
         }
@@ -6942,6 +8172,12 @@ int BattleSystem_CalcMoveDamage(BattleSystem *battleSys,
 
     if (MOVE_DATA(move).effect == BATTLE_EFFECT_HALVE_DEFENSE) {
         defenseStat = defenseStat / 2;
+    }
+
+    // Psyshock / Psystrike / Secret Sword: special attacks against the target's Defense
+    if (MOVE_DATA(move).effect == BATTLE_EFFECT_PSYSHOCK) {
+        spDefenseStat = defenseStat;
+        spDefenseStage = defenseStage;
     }
 
     if (moveClass == CLASS_PHYSICAL) {
@@ -6980,6 +8216,7 @@ int BattleSystem_CalcMoveDamage(BattleSystem *battleSys,
         }
 
         if ((sideConditions & SIDE_CONDITION_REFLECT) != FALSE
+            && attackerParams.ability != ABILITY_INFILTRATOR
             && criticalMul == 1
             && MOVE_DATA(move).effect != BATTLE_EFFECT_REMOVE_SCREENS) {
             if ((battleType & BATTLE_TYPE_DOUBLES)
@@ -7021,6 +8258,8 @@ int BattleSystem_CalcMoveDamage(BattleSystem *battleSys,
         damage /= 50;
 
         if ((sideConditions & SIDE_CONDITION_LIGHT_SCREEN) != FALSE
+            && attackerParams.ability != ABILITY_RIFT_PIERCE
+            && attackerParams.ability != ABILITY_INFILTRATOR
             && criticalMul == 1
             && MOVE_DATA(move).effect != BATTLE_EFFECT_REMOVE_SCREENS) {
             if ((battleType & BATTLE_TYPE_DOUBLES)
@@ -7075,7 +8314,42 @@ int BattleSystem_CalcMoveDamage(BattleSystem *battleSys,
         damage = damage * 15 / 10;
     }
 
+    if (moveClass == CLASS_PHYSICAL && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_ROYAL_AEGIS) == TRUE) {
+        damage = damage * 75 / 100;
+    }
+    if (moveClass == CLASS_SPECIAL && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_PRISMATIC_ARMOR) == TRUE) {
+        damage = damage * 75 / 100;
+    }
+    // Royal Parry: the first contact hit taken since switching in deals 25% less damage
+    if ((MOVE_DATA(move).flags & MOVE_FLAG_MAKES_CONTACT)
+        && battleCtx->royalParryUsed[defender] == FALSE
+        && attacker != defender
+        && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_ROYAL_PARRY) == TRUE) {
+        damage = damage * 75 / 100;
+    }
+    // Pale Mirage: half damage from moves with positive priority
+    if (MOVE_DATA(move).priority > 0 && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_PALE_MIRAGE) == TRUE) {
+        damage /= 2;
+    }
+    // Royal Insulate: 20% less special damage while above half HP
+    if (moveClass == CLASS_SPECIAL
+        && defenderParams.curHP > defenderParams.maxHP / 2
+        && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_ROYAL_INSULATE) == TRUE) {
+        damage = damage * 80 / 100;
+    }
+    // Distortion Veil: the first damaging hit taken since switching in deals half damage
+    if (Battler_DistortionVeilActive(battleCtx, attacker, defender)) {
+        damage /= 2;
+    }
+
     return damage + 2;
+}
+
+BOOL Battler_DistortionVeilActive(BattleContext *battleCtx, int attacker, int defender)
+{
+    return attacker != defender
+        && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_DISTORTION_VEIL) == TRUE
+        && battleCtx->battleMons[defender].distortionVeilUsed == FALSE;
 }
 
 int BattleSystem_CalcDamageVariance(BattleSystem *battleSys, BattleContext *battleCtx, int damage)
@@ -7124,6 +8398,7 @@ int BattleSystem_CalcCriticalMulti(BattleSystem *battleSys, BattleContext *battl
         + (itemEffect == HOLD_EFFECT_CRITRATE_UP)
         + criticalStage
         + (attackerAbility == ABILITY_SUPER_LUCK)
+        + (attackerAbility == ABILITY_AMBUSH_FANGS && battleCtx->battleMons[defender].curHP == battleCtx->battleMons[defender].maxHP)
         + (2 * (itemEffect == HOLD_EFFECT_CHANSEY_CRITRATE_UP && attackerSpecies == SPECIES_CHANSEY))
         + (2 * (itemEffect == HOLD_EFFECT_FARFETCHD_CRITRATE_UP && attackerSpecies == SPECIES_FARFETCHD));
 
@@ -7131,7 +8406,8 @@ int BattleSystem_CalcCriticalMulti(BattleSystem *battleSys, BattleContext *battl
         effectiveCritStage = 4;
     }
 
-    if (BattleSystem_RandNext(battleSys) % sCriticalStageRates[effectiveCritStage] == 0
+    if ((BattleSystem_RandNext(battleSys) % sCriticalStageRates[effectiveCritStage] == 0
+            || MOVE_DATA(battleCtx->moveCur).effect == BATTLE_EFFECT_ALWAYS_CRIT) // Storm Throw / Frost Breath
         && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_BATTLE_ARMOR) == FALSE
         && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_SHELL_ARMOR) == FALSE
         && (sideConditions & SIDE_CONDITION_LUCKY_CHANT) == FALSE
@@ -7626,8 +8902,10 @@ static u8 Battler_MonType(BattleContext *battleCtx, int battler, enum BattleMonP
         GF_ASSERT(FALSE);
     }
 
+    // Mega Arceus is pure Light regardless of its Plate
     if (battleCtx->battleMons[battler].species == SPECIES_ARCEUS
-        && battleCtx->battleMons[battler].ability == ABILITY_MULTITYPE) {
+        && battleCtx->battleMons[battler].ability == ABILITY_MULTITYPE
+        && !FORM_IS_MEGA(battleCtx->battleMons[battler].formNum)) {
         switch (BattleSystem_GetItemData(battleCtx, battleCtx->battleMons[battler].heldItem, ITEM_PARAM_HOLD_EFFECT)) {
         case HOLD_EFFECT_ARCEUS_FIRE:
             type = TYPE_FIRE;
@@ -7687,6 +8965,10 @@ static u8 Battler_MonType(BattleContext *battleCtx, int battler, enum BattleMonP
 
         case HOLD_EFFECT_ARCEUS_DARK:
             type = TYPE_DARK;
+            break;
+
+        case HOLD_EFFECT_ARCEUS_LIGHT:
+            type = TYPE_LIGHT;
             break;
 
         case HOLD_EFFECT_ARCEUS_STEEL:
@@ -7812,6 +9094,23 @@ static BOOL MoveCannotTriggerAnticipation(BattleContext *battleCtx, int move)
  * @param move      The move being used.
  * @return The variable-type of the given move.
  */
+// Techno Blast: the type of the held Drive (Genesect's), else Normal
+int Move_TechnoBlastType(u16 item)
+{
+    switch (Item_GenesectDriveForm(item)) {
+    case GENESECT_FORM_DOUSE:
+        return TYPE_WATER;
+    case GENESECT_FORM_SHOCK:
+        return TYPE_ELECTRIC;
+    case GENESECT_FORM_BURN:
+        return TYPE_FIRE;
+    case GENESECT_FORM_CHILL:
+        return TYPE_ICE;
+    }
+
+    return TYPE_NORMAL;
+}
+
 static int CalcMoveType(BattleSystem *battleSys, BattleContext *battleCtx, int item, int move)
 {
     int type;
@@ -7871,10 +9170,17 @@ static int CalcMoveType(BattleSystem *battleSys, BattleContext *battleCtx, int i
         case HOLD_EFFECT_ARCEUS_DARK:
             type = TYPE_DARK;
             break;
+        case HOLD_EFFECT_ARCEUS_LIGHT:
+            type = TYPE_LIGHT;
+            break;
         default:
             type = TYPE_NORMAL;
             break;
         }
+        break;
+
+    case MOVE_TECHNO_BLAST:
+        type = Move_TechnoBlastType(Battler_HeldItem(battleCtx, item));
         break;
 
     case MOVE_HIDDEN_POWER:
@@ -8153,10 +9459,17 @@ int Move_CalcVariableType(BattleSystem *battleSys, BattleContext *battleCtx, Pok
         case HOLD_EFFECT_ARCEUS_DARK:
             type = TYPE_DARK;
             break;
+        case HOLD_EFFECT_ARCEUS_LIGHT:
+            type = TYPE_LIGHT;
+            break;
         default:
             type = TYPE_NORMAL;
             break;
         }
+        break;
+
+    case MOVE_TECHNO_BLAST:
+        type = Move_TechnoBlastType(Pokemon_GetValue(mon, MON_DATA_HELD_ITEM, NULL));
         break;
 
     case MOVE_HIDDEN_POWER:

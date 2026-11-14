@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SIMIPOUR",
+            "form": 0,
+            "level": 31,
+            "item": null,
+            "moves": [
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEER",
+                "MOVE_LICK",
+                "MOVE_SCALD"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_SCYTHER",
             "form": 0,
             "level": 32,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_PROBOPASS",
+            "species": "SPECIES_FRILLISH",
             "form": 0,
             "level": 31,
             "item": null,
             "moves": [
-                "MOVE_THUNDER_WAVE",
-                "MOVE_ROCK_SLIDE",
-                "MOVE_MAGNET_BOMB",
-                "MOVE_IRON_DEFENSE"
+                "MOVE_BUBBLE_BEAM",
+                "MOVE_RECOVER",
+                "MOVE_WATER_PULSE",
+                "MOVE_OMINOUS_WIND"
             ],
             "iv_scale": 50,
             "ball_seal": 0

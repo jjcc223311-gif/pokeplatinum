@@ -52,6 +52,11 @@ static inline void CheckPokedexIntegrity(const Pokedex *pokedexData)
 
 static BOOL SpeciesInvalid(u16 species)
 {
+    // Gen 5 (#494+) isn't in the original Pokedex: quietly ignore it
+    if (species > POKEDEX_SPECIES_COUNT && species <= NATIONAL_DEX_COUNT) {
+        return TRUE;
+    }
+
     if (species == SPECIES_NONE || species > NATIONAL_DEX_COUNT) {
         GF_ASSERT(FALSE);
         return TRUE;
@@ -722,7 +727,7 @@ u16 Pokedex_CountCaught_National(const Pokedex *pokedexData)
 
     int species;
     int caughtCount = 0;
-    for (species = 1; species <= NATIONAL_DEX_COUNT; species++) {
+    for (species = 1; species <= POKEDEX_SPECIES_COUNT; species++) {
         if (Pokedex_HasCaughtSpecies(pokedexData, species) == TRUE) {
             caughtCount++;
         }
@@ -737,7 +742,7 @@ u16 Pokedex_CountSeen_National(const Pokedex *pokedex)
 
     int species;
     int seenCount = 0;
-    for (species = 1; species <= NATIONAL_DEX_COUNT; species++) {
+    for (species = 1; species <= POKEDEX_SPECIES_COUNT; species++) {
         if (Pokedex_HasSeenSpecies(pokedex, species) == TRUE) {
             seenCount++;
         }
@@ -761,7 +766,7 @@ u16 Pokedex_CountCaught_Local(const Pokedex *pokedexData)
 
     int species;
     int caughtCount = 0;
-    for (species = 1; species <= NATIONAL_DEX_COUNT; species++) {
+    for (species = 1; species <= POKEDEX_SPECIES_COUNT; species++) {
         if (Pokedex_HasCaughtSpecies(pokedexData, species) == TRUE) {
             if (Pokemon_SinnohDexNumber(species) != 0) {
                 caughtCount++;
@@ -778,7 +783,7 @@ u16 Pokedex_CountSeen_Local(const Pokedex *pokedex)
 
     int species;
     int seenCount = 0;
-    for (species = 1; species <= NATIONAL_DEX_COUNT; species++) {
+    for (species = 1; species <= POKEDEX_SPECIES_COUNT; species++) {
         if (Pokedex_HasSeenSpecies(pokedex, species) == TRUE && Pokemon_SinnohDexNumber(species) != 0) {
             seenCount++;
         }
@@ -814,7 +819,7 @@ u16 Pokedex_NumCaught_National(const Pokedex *pokedexData)
     int species;
     u16 numCaught = 0;
 
-    for (species = 1; species <= NATIONAL_DEX_COUNT; species++) {
+    for (species = 1; species <= POKEDEX_SPECIES_COUNT; species++) {
         if (Pokedex_HasCaughtSpecies(pokedexData, species) == TRUE) {
             if (CountsForDexCompletion_National(species) == TRUE) {
                 numCaught++;
@@ -830,7 +835,7 @@ u16 Pokedex_NumSeen_Local(const Pokedex *pokedexData)
     int species;
     u16 numSeen = 0;
 
-    for (species = 1; species <= NATIONAL_DEX_COUNT; species++) {
+    for (species = 1; species <= POKEDEX_SPECIES_COUNT; species++) {
         if (Pokedex_HasSeenSpecies(pokedexData, species) == TRUE) {
             if (Pokemon_SinnohDexNumber(species) != 0
                 && CountsForDexCompletion_Local(species) == TRUE) {
@@ -1081,6 +1086,10 @@ void Pokedex_TurnOnFormDetection(Pokedex *pokedexData)
 
 BOOL Pokedex_IsLanguageObtained(const Pokedex *pokedexData, u16 species, u32 languageIndex)
 {
+    if (species > POKEDEX_SPECIES_COUNT) {
+        return 0; // Gen 5: not in the original Pokedex
+    }
+
     int bitIndex;
 
     GF_ASSERT(languageIndex < 8);
@@ -1122,6 +1131,10 @@ Pokedex *SaveData_GetPokedex(SaveData *saveData)
 
 u32 Pokedex_GetDisplayForm(const Pokedex *pokedexData, int species, int formIndex)
 {
+    if (species > POKEDEX_SPECIES_COUNT) {
+        return 0; // Gen 5: not in the original Pokedex
+    }
+
     CheckPokedexIntegrity(pokedexData);
 
     switch (species) {
@@ -1179,6 +1192,10 @@ u32 Pokedex_GetDisplayForm(const Pokedex *pokedexData, int species, int formInde
 
 u32 Pokedex_NumFormsSeen(const Pokedex *pokedex, int species)
 {
+    if (species > POKEDEX_SPECIES_COUNT) {
+        return 0; // Gen 5: not in the original Pokedex
+    }
+
     CheckPokedexIntegrity(pokedex);
 
     switch (species) {

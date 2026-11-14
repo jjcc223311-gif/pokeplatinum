@@ -563,6 +563,27 @@ SandgemTownLab_EnableNationalDex:
     SetVar VAR_0x8004, ITEM_POKE_RADAR
     SetVar VAR_0x8005, 1
     CallCommonScript CommonScript_AddItemQuantity
+    SetVar VAR_0x8004, ITEM_DNA_SPLICERS
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
+    SetVar VAR_0x8004, ITEM_REVEAL_GLASS
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
+    SetVar VAR_0x8004, ITEM_DOUSE_DRIVE
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
+    SetVar VAR_0x8004, ITEM_SHOCK_DRIVE
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
+    SetVar VAR_0x8004, ITEM_BURN_DRIVE
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
+    SetVar VAR_0x8004, ITEM_CHILL_DRIVE
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
+    SetVar VAR_0x8004, ITEM_LIGHT_PLATE
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
     Message SandgemTownLab_Text_ThatsThePokemonRadar
     WaitButton
     CloseMessage

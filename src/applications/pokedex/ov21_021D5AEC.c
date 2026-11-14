@@ -558,7 +558,7 @@ static BOOL ov21_021D601C(UnkStruct_ov21_021D5B68 *param0, UnkStruct_ov21_021D74
     if (param0->unk_2C) {
         int v0 = PokedexSort_CurrentDisplayIndex(param0->unk_04);
 
-        if (PokedexSort_DisplayIndexToStatusIndex(param0->unk_04, v0) != (NATIONAL_DEX_COUNT + 1)) {
+        if (PokedexSort_DisplayIndexToStatusIndex(param0->unk_04, v0) != (POKEDEX_SPECIES_COUNT + 1)) {
             ov21_021D7464(param1, param0);
             Sound_PlayEffect(SEQ_SE_DP_DECIDE_sseq);
             return 1;
@@ -880,7 +880,7 @@ static void ov21_021D67EC(UnkStruct_ov21_021D71A8 *param0, PokedexGraphicData *p
         if ((v1 >= 0) && (v1 < v3)) {
             dexIndex = PokedexSort_DisplayIndexToStatusIndex(param2->unk_04, v1);
 
-            if (dexIndex != (NATIONAL_DEX_COUNT + 1)) {
+            if (dexIndex != (POKEDEX_SPECIES_COUNT + 1)) {
                 pokeCaughtStatus = PokedexSort_StatusIndexToCaughtStatus(param2->unk_04, dexIndex);
                 v5 = PokedexMain_DisplayNameNumber(param1, param2->unk_04, param3, pokeCaughtStatus->species);
                 displayBox.window = v5;
@@ -908,7 +908,7 @@ static void ov21_021D68C8(UnkStruct_ov21_021D71A8 *param0, PokedexGraphicData *p
     dexIndex = PokedexSort_CurrentStatusIndex(param2->unk_04);
     pokeCaughtStatus = PokedexSort_StatusIndexToCaughtStatus(param2->unk_04, dexIndex);
 
-    if (PokedexSort_DisplayIndexToStatusIndex(param2->unk_04, v1) == (NATIONAL_DEX_COUNT + 1)) {
+    if (PokedexSort_DisplayIndexToStatusIndex(param2->unk_04, v1) == (POKEDEX_SPECIES_COUNT + 1)) {
         PokedexGraphics_SetPokemonCharHide(param1, 0);
 
         if (param0->unk_7C) {
@@ -1085,7 +1085,7 @@ static void ov21_021D6AE4(UnkStruct_ov21_021D71A8 *param0, const UnkStruct_ov21_
         if ((v5 >= 0) && (v5 < v7)) {
             dexIndex = PokedexSort_DisplayIndexToStatusIndex(param1->unk_04, v5);
 
-            if (dexIndex != (NATIONAL_DEX_COUNT + 1)) {
+            if (dexIndex != (POKEDEX_SPECIES_COUNT + 1)) {
                 pokeCaughtStatus = PokedexSort_StatusIndexToCaughtStatus(param1->unk_04, dexIndex);
 
                 if (pokeCaughtStatus->caughtStatus == CS_CAUGHT) {
@@ -1219,7 +1219,7 @@ static void ov21_021D6CC8(UnkStruct_ov21_021D71A8 *param0, PokedexGraphicData *p
         if ((v3 < v1) && (v3 >= 0)) {
             v4 = PokedexSort_DisplayIndexToStatusIndex(param2->unk_04, v3);
 
-            if (v4 != (NATIONAL_DEX_COUNT + 1)) {
+            if (v4 != (POKEDEX_SPECIES_COUNT + 1)) {
                 ov21_021D6D78(param0, param1, param2, param3, v2, v4);
             } else {
                 ov21_021D6DF4(param0, param1, param3, v2, v3 + 1);

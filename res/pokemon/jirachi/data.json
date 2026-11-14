@@ -7,7 +7,7 @@
         "special_attack": 100,
         "special_defense": 100
     },
-    "types": [ "TYPE_STEEL", "TYPE_PSYCHIC" ],
+    "types": [ "TYPE_STEEL", "TYPE_LIGHT" ],
     "catch_rate": 3,
     "base_exp_reward": 215,
     "ev_yields": {

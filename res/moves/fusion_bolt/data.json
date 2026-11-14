@@ -1,0 +1,30 @@
+{
+    "name": "Fusion Bolt",
+    "description": [
+        "The user throws down\n",
+        "a giant thunderbolt.\n",
+        "This attack does\n",
+        "greater damage when\n",
+        "influenced by an"
+    ],
+    "class": "CLASS_PHYSICAL",
+    "type": "TYPE_ELECTRIC",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 5,
+    "effect": {
+        "type": "BATTLE_EFFECT_FUSION_BOLT",
+        "chance": 0
+    },
+    "range": "RANGE_SINGLE_TARGET",
+    "priority": 0,
+    "flags": [
+        "MOVE_FLAG_CAN_PROTECT",
+        "MOVE_FLAG_CAN_MIRROR_MOVE",
+        "MOVE_FLAG_TRIGGERS_KINGS_ROCK"
+    ],
+    "contest": {
+        "effect": "CONTEST_EFFECT_BASIC",
+        "type": "CONTEST_TYPE_COOL"
+    }
+}

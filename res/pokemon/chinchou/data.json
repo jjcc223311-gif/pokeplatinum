@@ -7,7 +7,7 @@
         "special_attack": 56,
         "special_defense": 56
     },
-    "types": [ "TYPE_WATER", "TYPE_ELECTRIC" ],
+    "types": [ "TYPE_WATER", "TYPE_LIGHT" ],
     "catch_rate": 190,
     "base_exp_reward": 90,
     "ev_yields": {

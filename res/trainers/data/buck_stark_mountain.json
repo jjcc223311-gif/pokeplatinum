@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_EXCADRILL",
+            "form": 0,
+            "level": 62,
+            "item": null,
+            "moves": [
+                "MOVE_SWORDS_DANCE",
+                "MOVE_SANDSTORM",
+                "MOVE_DRILL_RUN",
+                "MOVE_FISSURE"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_CLAYDOL",
             "form": 0,
             "level": 63,

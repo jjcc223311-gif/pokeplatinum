@@ -8,15 +8,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_CHATOT",
+            "species": "SPECIES_BOUFFALANT",
             "form": 0,
             "level": 24,
             "item": null,
             "moves": [
+                "MOVE_RAGE",
                 "MOVE_FURY_ATTACK",
-                "MOVE_SING",
-                "MOVE_GROWL",
-                "MOVE_PECK"
+                "MOVE_HORN_ATTACK",
+                "MOVE_SCARY_FACE"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_RUFFLET",
+            "form": 0,
+            "level": 24,
+            "item": null,
+            "moves": [
+                "MOVE_WING_ATTACK",
+                "MOVE_HONE_CLAWS",
+                "MOVE_SCARY_FACE",
+                "MOVE_AERIAL_ACE"
             ],
             "iv_scale": 0,
             "ball_seal": 0

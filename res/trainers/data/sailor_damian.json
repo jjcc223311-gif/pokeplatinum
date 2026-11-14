@@ -8,14 +8,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_WINGULL",
+            "species": "SPECIES_TIRTOUGA",
             "form": 0,
             "level": 31,
             "item": null,
             "moves": [
-                "MOVE_WATER_PULSE",
-                "MOVE_WING_ATTACK",
-                "MOVE_QUICK_ATTACK"
+                "MOVE_CRUNCH",
+                "MOVE_WIDE_GUARD",
+                "MOVE_BRINE",
+                "MOVE_SMACK_DOWN"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_SIMIPOUR",
+            "form": 0,
+            "level": 31,
+            "item": null,
+            "moves": [
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEER",
+                "MOVE_LICK",
+                "MOVE_SCALD"
             ],
             "iv_scale": 10,
             "ball_seal": 0

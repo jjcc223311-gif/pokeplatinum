@@ -16,6 +16,7 @@ _031:
     CompareVarToValue OPCODE_FLAG_SET, BTLVAR_FIELD_CONDITIONS, FIELD_CONDITION_UPROAR, _292
 
 _047:
+    CheckElectricTerrainSleep BTLSCR_SIDE_EFFECT_MON, _electric_terrain
     CompareMonDataToValue OPCODE_NEQ, BTLSCR_SIDE_EFFECT_MON, BATTLEMON_STATUS, MON_CONDITION_NONE, _237
     GoTo _147
 
@@ -45,10 +46,15 @@ _102:
     CompareVarToValue OPCODE_FLAG_SET, BTLVAR_FIELD_CONDITIONS, FIELD_CONDITION_UPROAR, _292
 
 _118:
+    CheckElectricTerrainSleep BTLSCR_SIDE_EFFECT_MON, _electric_terrain
     CompareMonDataToValue OPCODE_NEQ, BTLSCR_SIDE_EFFECT_MON, BATTLEMON_STATUS, MON_CONDITION_NONE, _237
     CompareVarToValue OPCODE_EQU, BTLVAR_SIDE_EFFECT_TYPE, SIDE_EFFECT_TYPE_ABILITY, _147
     CompareVarToValue OPCODE_FLAG_SET, BTLVAR_MOVE_STATUS_FLAGS, MOVE_STATUS_MISSED|MOVE_STATUS_SEMI_INVULNERABLE, _237
+    // Infiltrator gets past Safeguard
+    CheckAbility CHECK_HAVE, BTLSCR_ATTACKER, ABILITY_INFILTRATOR, _InfiltratorSkipsSafeguard0
     CompareVarToValue OPCODE_FLAG_SET, BTLVAR_SIDE_CONDITIONS_EFFECT_MON, SIDE_CONDITION_SAFEGUARD, _319
+
+_InfiltratorSkipsSafeguard0:
     CompareVarToValue OPCODE_NEQ, BTLVAR_SIDE_EFFECT_TYPE, SIDE_EFFECT_TYPE_DIRECT, _147
     PlayMoveAnimation BTLSCR_ATTACKER
     Wait 
@@ -58,6 +64,7 @@ _147:
     Wait 
     Random 3, 2
     UpdateMonDataFromVar OPCODE_FLAG_ON, BTLSCR_SIDE_EFFECT_MON, BATTLEMON_STATUS, BTLVAR_CALC_TEMP
+    NotifyStatusInflicted
     CompareVarToValue OPCODE_EQU, BTLVAR_SIDE_EFFECT_TYPE, SIDE_EFFECT_TYPE_ABILITY, _170
     // {0} fell asleep!
     PrintMessage BattleStrings_Text_PokemonFellAsleep_Ally, TAG_NICKNAME, BTLSCR_SIDE_EFFECT_MON
@@ -142,6 +149,15 @@ _319:
     WaitButtonABTime 30
     // {0} is protected by Safeguard!
     PrintMessage BattleStrings_Text_PokemonIsProtectedBySafeguard_Ally, TAG_NICKNAME, BTLSCR_SIDE_EFFECT_MON
+
+_electric_terrain:
+    CompareVarToValue OPCODE_EQU, BTLVAR_SIDE_EFFECT_TYPE, SIDE_EFFECT_TYPE_INDIRECT, _337
+    CompareVarToValue OPCODE_EQU, BTLVAR_SIDE_EFFECT_TYPE, SIDE_EFFECT_TYPE_ABILITY, _337
+    CompareVarToValue OPCODE_EQU, BTLVAR_SIDE_EFFECT_TYPE, SIDE_EFFECT_TYPE_MOVE_EFFECT, _337
+    WaitButtonABTime 30
+    // {0} is protected by the Electric Terrain!
+    PrintMessage BattleStrings_Text_PokemonIsProtectedByTheElectricTerrain_Ally, TAG_NICKNAME, BTLSCR_SIDE_EFFECT_MON
+    GoTo _330
 
 _330:
     Wait 

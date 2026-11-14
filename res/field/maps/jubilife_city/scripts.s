@@ -1438,6 +1438,9 @@ JubilifeCity_GivePoketch:
     PlayFanfare SEQ_FANFA4_sseq
     WaitFanfare
     Message JubilifeCity_Text_AddAppsToPoketch
+    SetVar VAR_0x8004, ITEM_MOBILE_PC
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
     CloseMessage
     GetPlayerDir VAR_RESULT
     GoToIfEq VAR_RESULT, DIR_NORTH, JubilifeCity_PoketchCoPresidentLeaveNorthWestEast

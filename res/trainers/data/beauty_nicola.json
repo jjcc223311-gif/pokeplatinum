@@ -8,6 +8,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_WATCHOG",
+            "form": 0,
+            "level": 44,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_LOPUNNY",
             "form": 0,
             "level": 45,

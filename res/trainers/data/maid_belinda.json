@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_TRANQUILL",
+            "form": 0,
+            "level": 24,
+            "item": null,
+            "moves": [
+                "MOVE_QUICK_ATTACK",
+                "MOVE_AIR_CUTTER",
+                "MOVE_ROOST",
+                "MOVE_DETECT"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_CLEFAIRY",
             "form": 0,
             "level": 25,

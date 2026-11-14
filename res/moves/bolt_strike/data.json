@@ -1,0 +1,31 @@
+{
+    "name": "Bolt Strike",
+    "description": [
+        "The user charges its\n",
+        "target, surrounding\n",
+        "itself with a great\n",
+        "amount of\n",
+        "electricity. It may"
+    ],
+    "class": "CLASS_PHYSICAL",
+    "type": "TYPE_ELECTRIC",
+    "power": 130,
+    "accuracy": 85,
+    "pp": 5,
+    "effect": {
+        "type": "BATTLE_EFFECT_PARALYZE_HIT",
+        "chance": 20
+    },
+    "range": "RANGE_SINGLE_TARGET",
+    "priority": 0,
+    "flags": [
+        "MOVE_FLAG_MAKES_CONTACT",
+        "MOVE_FLAG_CAN_PROTECT",
+        "MOVE_FLAG_CAN_MIRROR_MOVE",
+        "MOVE_FLAG_HIDES_SHADOWS"
+    ],
+    "contest": {
+        "effect": "CONTEST_EFFECT_BASIC",
+        "type": "CONTEST_TYPE_COOL"
+    }
+}

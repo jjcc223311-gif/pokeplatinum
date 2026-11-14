@@ -10,14 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_BUIZEL",
+            "species": "SPECIES_STUNFISK",
             "form": 0,
             "level": 20,
             "item": null,
             "moves": [
-                "MOVE_WATER_GUN",
-                "MOVE_SWIFT",
-                "MOVE_QUICK_ATTACK"
+                "MOVE_BIDE",
+                "MOVE_THUNDER_SHOCK",
+                "MOVE_MUD_SHOT",
+                "MOVE_CAMOUFLAGE"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_ROGGENROLA",
+            "form": 0,
+            "level": 20,
+            "item": null,
+            "moves": [
+                "MOVE_HEADBUTT",
+                "MOVE_ROCK_BLAST",
+                "MOVE_MUD_SLAP",
+                "MOVE_IRON_DEFENSE"
             ],
             "iv_scale": 0,
             "ball_seal": 0

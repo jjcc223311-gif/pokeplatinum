@@ -105,6 +105,15 @@
         "Rt. 210\n",
         "Solaceon Town"
       ]
+    },
+    {
+      "id": "Route210South_Text_FoundThisInSomeRuins",
+      "en_US": [
+        "Cynthia: Oh, hey! I found this while\n",
+        "I was searching some ruins.\r",
+        "I already have one, so here...\n",
+        "You should take it."
+      ]
     }
   ]
 }

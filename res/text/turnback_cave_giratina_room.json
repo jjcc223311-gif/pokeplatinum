@@ -30,6 +30,24 @@
         "That where life has faded...\r",
         "A place where two worlds overlap..."
       ]
+    },
+    {
+      "id": "TurnbackCaveGiratinaRoom_Text_LegendMegaRockResonates",
+      "en_US": [
+        "The Legend Mega Rock begins\n",
+        "resonating with the portal...\r",
+        "A mysterious energy is attempting\n",
+        "to tear open another dimension.\r",
+        "Consume one Legend Mega Rock to\n",
+        "enter the Distorted Rift?"
+      ]
+    },
+    {
+      "id": "TurnbackCaveGiratinaRoom_Text_RiftRemainsSilent",
+      "en_US": [
+        "The Legend Mega Rock glows faintly...\r",
+        "...but the rift remains silent.\r"
+      ]
     }
   ]
 }

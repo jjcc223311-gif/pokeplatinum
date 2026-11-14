@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_TRANQUILL",
+            "form": 0,
+            "level": 25,
+            "item": null,
+            "moves": [
+                "MOVE_QUICK_ATTACK",
+                "MOVE_AIR_CUTTER",
+                "MOVE_ROOST",
+                "MOVE_DETECT"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_CLEFAIRY",
             "form": 0,
             "level": 25,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_KADABRA",
+            "species": "SPECIES_SCRAGGY",
             "form": 0,
             "level": 25,
             "item": null,
             "moves": [
-                "MOVE_PSYBEAM",
-                "MOVE_PSYCHO_CUT",
-                "MOVE_REFLECT",
-                "MOVE_LIGHT_SCREEN"
+                "MOVE_HEADBUTT",
+                "MOVE_SWAGGER",
+                "MOVE_BRICK_BREAK",
+                "MOVE_PAYBACK"
             ],
             "iv_scale": 60,
             "ball_seal": 0

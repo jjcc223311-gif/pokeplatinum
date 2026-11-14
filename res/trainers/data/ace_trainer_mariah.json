@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_BLISSEY",
+            "species": "SPECIES_WATCHOG",
             "form": 0,
             "level": 45,
             "item": null,
             "moves": [
-                "MOVE_DOUBLE_EDGE",
-                "MOVE_SING",
-                "MOVE_SOFTBOILED",
-                "MOVE_LIGHT_SCREEN"
+                "MOVE_HYPER_FANG",
+                "MOVE_MEAN_LOOK",
+                "MOVE_BATON_PASS",
+                "MOVE_SLAM"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_MIENFOO",
+            "form": 0,
+            "level": 45,
+            "item": null,
+            "moves": [
+                "MOVE_DRAIN_PUNCH",
+                "MOVE_JUMP_KICK",
+                "MOVE_U_TURN",
+                "MOVE_QUICK_GUARD"
             ],
             "iv_scale": 50,
             "ball_seal": 0

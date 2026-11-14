@@ -1,0 +1,29 @@
+{
+    "name": "Bulldoze",
+    "description": [
+        "The user stomps down\n",
+        "on the ground and\n",
+        "attacks everything in\n",
+        "the area. Hit\n",
+        "Pokémon’s Speed stat"
+    ],
+    "class": "CLASS_PHYSICAL",
+    "type": "TYPE_GROUND",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+        "type": "BATTLE_EFFECT_LOWER_SPEED_HIT",
+        "chance": 100
+    },
+    "range": "RANGE_ALL_ADJACENT",
+    "priority": 0,
+    "flags": [
+        "MOVE_FLAG_CAN_PROTECT",
+        "MOVE_FLAG_CAN_MIRROR_MOVE"
+    ],
+    "contest": {
+        "effect": "CONTEST_EFFECT_BASIC",
+        "type": "CONTEST_TYPE_TOUGH"
+    }
+}

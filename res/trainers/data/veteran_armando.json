@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_MUK",
+            "species": "SPECIES_REUNICLUS",
             "form": 0,
             "level": 53,
             "item": null,
             "moves": [
-                "MOVE_ACID_ARMOR",
-                "MOVE_TOXIC",
-                "MOVE_SLUDGE_BOMB",
-                "MOVE_DARK_PULSE"
+                "MOVE_PAIN_SPLIT",
+                "MOVE_PSYCHIC",
+                "MOVE_DIZZY_PUNCH",
+                "MOVE_SKILL_SWAP"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_JELLICENT",
+            "form": 0,
+            "level": 53,
+            "item": null,
+            "moves": [
+                "MOVE_BRINE",
+                "MOVE_RAIN_DANCE",
+                "MOVE_HEX",
+                "MOVE_HYDRO_PUMP"
             ],
             "iv_scale": 100,
             "ball_seal": 0

@@ -274,6 +274,8 @@ void FieldBattleDTO_InitFromGameState(FieldBattleDTO *dto, const FieldSystem *fi
     dto->palPad = SaveData_GetPalPad(saveData);
     dto->mapHeaderID = mapHeaderID;
     dto->saveData = saveData;
+    dto->modernExpShare = VarsFlags_CheckFlag(SaveData_GetVarsFlags(saveData), FLAG_EXP_SHARE_ON)
+        && Bag_CanRemoveItem(bag, ITEM_MODERN_EXP_SHARE, 1, HEAP_ID_FIELD1);
 }
 
 void FieldBattleDTO_Init(FieldBattleDTO *dto, const FieldSystem *fieldSystem)

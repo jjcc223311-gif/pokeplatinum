@@ -31,15 +31,15 @@
         },
         {
             "level": 50,
-            "species": "SPECIES_ROSELIA"
+            "species": "SPECIES_LEAVANNY"
         },
         {
             "level": 48,
-            "species": "SPECIES_BEAUTIFLY"
+            "species": "SPECIES_GALVANTULA"
         },
         {
             "level": 48,
-            "species": "SPECIES_DUSTOX"
+            "species": "SPECIES_HERACROSS"
         },
         {
             "level": 48,
@@ -109,12 +109,12 @@
         {
             "level_max": 45,
             "level_min": 35,
-            "species": "SPECIES_SURSKIT"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 55,
             "level_min": 35,
-            "species": "SPECIES_MASQUERAIN"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 55,

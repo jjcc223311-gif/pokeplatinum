@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_DEWOTT",
+            "form": 0,
+            "level": 24,
+            "item": null,
+            "moves": [
+                "MOVE_WATER_SPORT",
+                "MOVE_FOCUS_ENERGY",
+                "MOVE_RAZOR_SHELL",
+                "MOVE_FURY_CUTTER"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_ROSELIA",
             "form": 0,
             "level": 24,
@@ -23,15 +37,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_RALTS",
+            "species": "SPECIES_DRILBUR",
             "form": 0,
             "level": 24,
             "item": null,
             "moves": [
-                "MOVE_PSYCHIC",
-                "MOVE_MAGICAL_LEAF",
-                "MOVE_CALM_MIND",
-                "MOVE_DOUBLE_TEAM"
+                "MOVE_FURY_SWIPES",
+                "MOVE_METAL_CLAW",
+                "MOVE_DIG",
+                "MOVE_HONE_CLAWS"
             ],
             "iv_scale": 50,
             "ball_seal": 0

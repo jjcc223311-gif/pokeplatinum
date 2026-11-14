@@ -11,6 +11,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_TYNAMO",
+            "form": 0,
+            "level": 29,
+            "item": null,
+            "moves": [
+                "MOVE_CHARGE_BEAM",
+                "MOVE_SPARK",
+                "MOVE_TACKLE",
+                "MOVE_THUNDER_WAVE"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_KADABRA",
             "form": 0,
             "level": 30,

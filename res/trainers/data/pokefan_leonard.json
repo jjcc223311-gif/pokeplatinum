@@ -11,7 +11,16 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_PICHU",
+            "species": "SPECIES_RUFFLET",
+            "form": 0,
+            "level": 19,
+            "item": "ITEM_NONE",
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_BLITZLE",
             "form": 0,
             "level": 19,
             "item": "ITEM_SITRUS_BERRY",

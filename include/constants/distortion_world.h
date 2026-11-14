@@ -92,4 +92,10 @@ enum DistWorldMapObjectEventTurnbackCaveLocalID {
     DIST_WORLD_MAP_OBJECT_TURNBACK_CAVE_GRISEOUS_ORB_ITEM,
 };
 
+// Distorted Rift (copy of the Turnback Cave room)
+enum DistWorldMapObjectEventDistortedRiftLocalID {
+    DIST_WORLD_MAP_OBJECT_RIFT_PORTAL = DIST_WORLD_MAP_OBJECT_BASE_LOCAL_ID,
+    DIST_WORLD_MAP_OBJECT_RIFT_LEGENDARY,
+};
+
 #endif // POKEPLATINUM_CONSTANTS_DISTORTION_WORLD_H

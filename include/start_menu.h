@@ -11,7 +11,10 @@
 #include "menu.h"
 #include "string_list.h"
 
-#define MAX_START_MENU_OPTIONS 7
+#define MAX_START_MENU_OPTIONS 10
+
+// Mobile PC: CommonScript_MobilePC (Pokemon Storage System from anywhere)
+#define SCRIPT_ID_MOBILE_PC (2000 + 59)
 
 typedef struct StartMenu {
     Window primaryWindow;
@@ -27,10 +30,12 @@ typedef struct StartMenu {
     u32 spriteCount;
     u32 hideOptionFlags;
     BOOL inUnionRoom;
+    u8 rowPitch; // pixels between options (24, smaller when the menu has more than 7 options)
     FieldTaskFunc callback;
     ItemUseContext itemUseCtx;
     FieldMoveContext fieldMoveContext;
     void *taskData;
+    void *legDexListArgs; // Legendary Pokédex: the list's PokedexOverlayArgs while it is open
     void *additionalTaskContext;
 } StartMenu;
 
@@ -64,6 +69,7 @@ extern const u8 gAllSummaryScreenPages[];
 
 BOOL FieldSystem_IsInValidLocation(FieldSystem *fieldSystem);
 void StartMenu_Open(FieldSystem *fieldSystem);
+BOOL FieldSystem_CanUseMobilePC(FieldSystem *fieldSystem);
 void StartMenu_OpenUnionRoom(FieldSystem *fieldSystem);
 void StartMenu_OpenColosseum(FieldSystem *fieldSystem);
 void StartMenu_OpenFromScript(FieldSystem *fieldSystem);

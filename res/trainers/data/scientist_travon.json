@@ -11,6 +11,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_ELGYEM",
+            "form": 0,
+            "level": 19,
+            "item": null,
+            "moves": [
+                "MOVE_HEAL_BLOCK",
+                "MOVE_MIRACLE_EYE",
+                "MOVE_PSYBEAM",
+                "MOVE_HEADBUTT"
+            ],
+            "iv_scale": 20,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_KADABRA",
             "form": 0,
             "level": 20,

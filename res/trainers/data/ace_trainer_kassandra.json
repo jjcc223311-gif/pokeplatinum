@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_JUMPLUFF",
+            "species": "SPECIES_CHANDELURE",
             "form": 0,
             "level": 58,
             "item": null,
             "moves": [
-                "MOVE_MEMENTO",
-                "MOVE_GIGA_DRAIN",
-                "MOVE_TOXIC",
-                "MOVE_BOUNCE"
+                "MOVE_CONFUSE_RAY",
+                "MOVE_FLAME_BURST",
+                "MOVE_HEX",
+                "MOVE_SMOG"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_SIMISAGE",
+            "form": 0,
+            "level": 58,
+            "item": null,
+            "moves": [
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEER",
+                "MOVE_LICK",
+                "MOVE_SEED_BOMB"
             ],
             "iv_scale": 50,
             "ball_seal": 0

@@ -431,6 +431,69 @@ int BattleSystem_CheckInvalidMoves(BattleSystem *battleSys, BattleContext *battl
 BOOL BattleSystem_CanUseMove(BattleSystem *battleSys, BattleContext *battleCtx, int battler, int moveSlot, BattleMessage *msgOut);
 
 /**
+ * @brief Number of Mega forms (0-2) / Legendary Mega forms (0-2) of the battler's species.
+ */
+int Battler_NumMegaForms(BattleContext *battleCtx, int battler);
+int Battler_NumLegendaryForms(BattleContext *battleCtx, int battler);
+int Battler_MegaRockChoice(BattleContext *battleCtx, int battler);
+BOOL Battler_IsElectricTerrainActive(BattleContext *battleCtx, int battler);
+void BattleSystem_ApplyFumeCloud(BattleSystem *battleSys, BattleContext *battleCtx, int battler);
+BOOL Battler_RiftPierceActive(BattleContext *battleCtx, int attacker);
+#define ABILITY_IS_MOLD_BREAKER(ability) ((ability) == ABILITY_MOLD_BREAKER || (ability) == ABILITY_TERAVOLT || (ability) == ABILITY_TURBOBLAZE)
+BOOL Battler_IsMoldBreaker(BattleContext *battleCtx, int battler);
+BOOL Battle_WonderRoomActive(BattleContext *battleCtx);
+BOOL Battle_MagicRoomActive(BattleContext *battleCtx);
+BOOL Battler_IsSmackedDown(BattleContext *battleCtx, int battler);
+BOOL Battler_IsTelekinesisActive(BattleContext *battleCtx, int battler);
+BOOL BattleSystem_TrainerMegaActive(BattleSystem *battleSys);
+int BattleSystem_TrainerMegaKey(BattleSystem *battleSys, int battler);
+void BattleSystem_RollTrainerMegaRocks(BattleSystem *battleSys, BattleContext *battleCtx);
+int BattleSystem_TrainerMegaChoice(BattleSystem *battleSys, BattleContext *battleCtx, int battler);
+
+BOOL Battler_DistortionVeilActive(BattleContext *battleCtx, int attacker, int defender);
+int Battler_LegendaryRockChoice(BattleContext *battleCtx, int battler);
+
+/**
+ * @brief Get the form the battler would Mega Evolve into for the Mega button's choice
+ * (1 = FORM_MEGA_1, 2 = FORM_MEGA_2), or -1 if its species has no such Mega in
+ * res/pokemon/mega_forms.json or it is already in a Mega form.
+ */
+int Battler_MegaForm(BattleContext *battleCtx, int battler, int choice);
+
+/**
+ * @brief Get the form the battler would Legendary Mega Evolve into for the Legendary button's
+ * choice (1 = FORM_LEGENDARY_MEGA_1, 2 = FORM_LEGENDARY_MEGA_2), from its normal or Mega form,
+ * or -1 if its species has no such form or it already is a Legendary Mega.
+ */
+int Battler_LegendaryForm(BattleContext *battleCtx, int battler, int choice);
+
+/**
+ * @brief Check if the player's battler may be set to Mega Evolve this turn
+ * (Mega Ring, once per Pokemon, never after Legendary Mega Evolution).
+ */
+BOOL BattleSystem_CanMegaEvolve(BattleSystem *battleSys, BattleContext *battleCtx, int battler);
+
+/**
+ * @brief Check if the player's battler may be set to Legendary Mega Evolve this turn
+ * (Legendary Mega Necklace, once per battle for the whole team).
+ */
+BOOL BattleSystem_CanLegendaryMegaEvolve(BattleSystem *battleSys, BattleContext *battleCtx, int battler);
+
+/**
+ * @brief Set the battler's form, types and (via calcTemp) new ability ahead of running
+ * subscript_mega_evolve, and remember what to restore when the battle ends.
+ */
+void BattleSystem_PrepareMegaEvolution(BattleSystem *battleSys, BattleContext *battleCtx, int battler, int newForm, BOOL isLegendary);
+
+/**
+ * @brief Restore every Mega / Legendary Mega Evolved party Pokemon to its original form and
+ * ability. Called when the battle ends, before the parties are copied back out of the battle.
+ */
+// Zen Mode / Meloetta: set a battler's new form and types; subscript_battle_form_change does the rest
+void BattleSystem_PrepareBattleFormChange(BattleSystem *battleSys, BattleContext *battleCtx, int battler, int newForm);
+void BattleSystem_RevertMegaForm(BattleSystem *battleSys, BattleContext *battleCtx);
+
+/**
  * @brief Determine which slot of the Pokemon's moveset contains a given move.
  *
  * @param mon
@@ -1469,6 +1532,9 @@ int BattleAI_PostKOSwitchIn(BattleSystem *battleSys, int battler);
  * @return The AI's switched-to slot for the battler.
  */
 int BattleAI_SwitchedSlot(BattleSystem *battleSys, int battler);
+
+// Techno Blast: the type of the held Drive, else Normal
+int Move_TechnoBlastType(u16 item);
 
 /**
  * @brief Compute the variable-type of a move, given its use by a given Pokemon.

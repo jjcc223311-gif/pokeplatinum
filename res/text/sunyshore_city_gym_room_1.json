@@ -43,14 +43,14 @@
       "id": "SunyshoreGymRoom1_Text_GymStatue_BeforeBadge",
       "en_US": [
         "Sunyshore City Pokémon Gym\r",
-        "Leader: Volkner"
+        "Leader: Hugo"
       ]
     },
     {
       "id": "SunyshoreGymRoom1_Text_GymStatue_AfterBadge",
       "en_US": [
         "Sunyshore City Pokémon Gym\r",
-        "Leader: Volkner\n",
+        "Leader: Hugo\n",
         "Certified Trainers:\f",
         "{STRVAR_1 3, 0, 0}"
       ]
@@ -59,7 +59,7 @@
       "id": "SunyshoreGymRoom1_Text_GymStatue_AfterRivalBadge",
       "en_US": [
         "Sunyshore City Pokémon Gym\r",
-        "Leader: Volkner\n",
+        "Leader: Hugo\n",
         "Certified Trainers:\f",
         "{STRVAR_1 3, 0, 0}\f",
         "{STRVAR_1 3, 1, 0}"

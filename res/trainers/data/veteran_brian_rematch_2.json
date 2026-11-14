@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_FLOATZEL",
+            "species": "SPECIES_AMOONGUSS",
             "form": 0,
             "level": 60,
             "item": null,
             "moves": [
-                "MOVE_WATERFALL",
-                "MOVE_ICE_FANG",
-                "MOVE_QUICK_ATTACK",
-                "MOVE_CRUNCH"
+                "MOVE_SYNTHESIS",
+                "MOVE_CLEAR_SMOG",
+                "MOVE_SOLAR_BEAM",
+                "MOVE_RAGE_POWDER"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_FERROTHORN",
+            "form": 0,
+            "level": 60,
+            "item": null,
+            "moves": [
+                "MOVE_SELFDESTRUCT",
+                "MOVE_POWER_WHIP",
+                "MOVE_IRON_HEAD",
+                "MOVE_PAYBACK"
             ],
             "iv_scale": 100,
             "ball_seal": 0

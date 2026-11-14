@@ -42,6 +42,10 @@ u16 BattleHallWinRecords_GetRecordForSpecies(SaveData *saveData, BattleHallWinRe
         return 0;
     }
 
+    if (species >= POKEDEX_MAX_SPECIES) {
+        return 0; // Gen 5 species have no stored record (the save array is vanilla-sized)
+    }
+
     switch (challengeType) {
     case FRONTIER_CHALLENGE_SINGLE:
         return records->singleStreaks[species];
@@ -59,6 +63,10 @@ static u16 WriteWinRecord(BattleHallWinRecords *records, int challengeType, int 
 {
     if (streak > 9999) {
         streak = 9999;
+    }
+
+    if (species >= POKEDEX_MAX_SPECIES) {
+        return streak; // not stored (vanilla-sized save array)
     }
 
     switch (challengeType) {

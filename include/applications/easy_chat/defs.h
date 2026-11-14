@@ -71,10 +71,20 @@ enum ABCModeChars {
     ABC_MODE_CHAR_COUNT,
 };
 
-#define MOVE_WORD(move)           (TEXT_BANK_SPECIES_NAME_ENTRY_COUNT + move)
-#define TYPE_WORD(type)           (MOVE_WORD(TEXT_BANK_MOVE_NAMES_UPPERCASE_ENTRY_COUNT) + type)
-#define ABILITY_WORD(ability)     (TYPE_WORD(TEXT_BANK_POKEMON_TYPE_NAMES_ENTRY_COUNT) + ability)
-#define TRAINER_WORD(bankEntry)   (ABILITY_WORD(TEXT_BANK_ABILITY_NAMES_UPPERCASE_ENTRY_COUNT) + bankEntry)
+// Only the original 496 species name slots (SPECIES_NONE to the vanilla Bad Egg) are easy chat
+// words, so adding Gen 5 species doesn't shift every later word ID.
+#define EASY_CHAT_SPECIES_WORD_COUNT 496
+// Easy chat only exposes the 18 original type names, so word IDs (stored in saves) do not shift.
+#define EASY_CHAT_TYPE_WORD_COUNT 18
+// Likewise, only the original 468 move names (MOVE_NONE to MOVE_SHADOW_FORCE) are easy chat words.
+#define EASY_CHAT_MOVE_WORD_COUNT 468
+// And only the original 124 ability names (ABILITY_NONE to ABILITY_BAD_DREAMS).
+#define EASY_CHAT_ABILITY_WORD_COUNT 124
+
+#define MOVE_WORD(move)           (EASY_CHAT_SPECIES_WORD_COUNT + move)
+#define TYPE_WORD(type)           (MOVE_WORD(EASY_CHAT_MOVE_WORD_COUNT) + type)
+#define ABILITY_WORD(ability)     (TYPE_WORD(EASY_CHAT_TYPE_WORD_COUNT) + ability)
+#define TRAINER_WORD(bankEntry)   (ABILITY_WORD(EASY_CHAT_ABILITY_WORD_COUNT) + bankEntry)
 #define PEOPLE_WORD(bankEntry)    (TRAINER_WORD(TEXT_BANK_TRAINER_WORDS_ENTRY_COUNT) + bankEntry)
 #define GREETING_WORD(bankEntry)  (PEOPLE_WORD(TEXT_BANK_PEOPLE_WORDS_ENTRY_COUNT) + bankEntry)
 #define LIFESTYLE_WORD(bankEntry) (GREETING_WORD(TEXT_BANK_GREETINGS_ENTRY_COUNT) + bankEntry)

@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_GOLBAT",
+            "species": "SPECIES_CONKELDURR",
             "form": 0,
             "level": 38,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_AIR_CUTTER",
-                "MOVE_BITE",
-                "MOVE_TOXIC",
-                "MOVE_SUPERSONIC"
+                "MOVE_CHIP_AWAY",
+                "MOVE_BULK_UP",
+                "MOVE_ROCK_SLIDE",
+                "MOVE_DYNAMIC_PUNCH"
+            ],
+            "iv_scale": 200,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_GARBODOR",
+            "form": 0,
+            "level": 38,
+            "item": "ITEM_NONE",
+            "moves": [
+                "MOVE_SWALLOW",
+                "MOVE_BODY_SLAM",
+                "MOVE_SLUDGE_BOMB",
+                "MOVE_CLEAR_SMOG"
             ],
             "iv_scale": 200,
             "ball_seal": 0

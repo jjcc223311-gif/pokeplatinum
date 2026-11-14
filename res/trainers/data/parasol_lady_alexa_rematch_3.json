@@ -8,7 +8,7 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_HIPPOWDON",
+            "species": "SPECIES_WHIMSICOTT",
             "form": 0,
             "level": 50,
             "item": null,
@@ -26,7 +26,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_MANTINE",
+            "species": "SPECIES_CACTURNE",
             "form": 0,
             "level": 50,
             "item": null,

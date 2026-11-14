@@ -97,7 +97,7 @@
     {
       "id": "CanalaveLibrary3F_Text_DawnCountOnMe",
       "en_US": [
-        "Dawn: You can count on me!\n",
+        "Juniper: You can count on me!\n",
         "It will help with my Pokédex, too.\r",
         "{STRVAR_1 3, 0, 0}, you’ll go, too,\n",
         "won’t you?\r"
@@ -125,11 +125,11 @@
     },
     {
       "id": "CanalaveLibrary3F_Text_DawnToLakeVerity",
-      "en_US": "Rowan: Dawn, you go to Lake Verity.\r"
+      "en_US": "Rowan: Juniper, you go to Lake Verity.\r"
     },
     {
       "id": "CanalaveLibrary3F_Text_DawnWillDo",
-      "en_US": "Dawn: Will do!\r"
+      "en_US": "Juniper: Will do!\r"
     },
     {
       "id": "CanalaveLibrary3F_Text_LucasToLakeVerity",

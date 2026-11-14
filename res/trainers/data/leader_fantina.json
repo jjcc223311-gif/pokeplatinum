@@ -13,6 +13,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_LITWICK",
+            "form": 0,
+            "level": 24,
+            "item": "ITEM_NONE",
+            "moves": [
+                "MOVE_NIGHT_SHADE",
+                "MOVE_WILL_O_WISP",
+                "MOVE_FLAME_BURST",
+                "MOVE_IMPRISON"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_DUSKULL",
             "form": 0,
             "level": 24,
@@ -27,15 +41,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_HAUNTER",
+            "species": "SPECIES_GOLETT",
             "form": 0,
             "level": 24,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_SHADOW_CLAW",
-                "MOVE_SUCKER_PUNCH",
-                "MOVE_HYPNOSIS",
-                "MOVE_CONFUSE_RAY"
+                "MOVE_ROLLOUT",
+                "MOVE_SHADOW_PUNCH",
+                "MOVE_IRON_DEFENSE",
+                "MOVE_MEGA_PUNCH"
             ],
             "iv_scale": 100,
             "ball_seal": 0

@@ -11,6 +11,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SIMISAGE",
+            "form": 0,
+            "level": 46,
+            "item": null,
+            "moves": [
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEER",
+                "MOVE_LICK",
+                "MOVE_SEED_BOMB"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_PACHIRISU",
             "form": 0,
             "level": 47,

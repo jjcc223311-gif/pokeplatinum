@@ -1,0 +1,31 @@
+{
+    "name": "Low Sweep",
+    "description": [
+        "The user attacks\n",
+        "the target’s legs\n",
+        "swiftly, reducing\n",
+        "the target’s Speed\n",
+        "stat."
+    ],
+    "class": "CLASS_PHYSICAL",
+    "type": "TYPE_FIGHTING",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+        "type": "BATTLE_EFFECT_LOWER_SPEED_HIT",
+        "chance": 100
+    },
+    "range": "RANGE_SINGLE_TARGET",
+    "priority": 0,
+    "flags": [
+        "MOVE_FLAG_MAKES_CONTACT",
+        "MOVE_FLAG_CAN_PROTECT",
+        "MOVE_FLAG_CAN_MIRROR_MOVE",
+        "MOVE_FLAG_HIDES_HP_GAUGES"
+    ],
+    "contest": {
+        "effect": "CONTEST_EFFECT_BASIC",
+        "type": "CONTEST_TYPE_COOL"
+    }
+}

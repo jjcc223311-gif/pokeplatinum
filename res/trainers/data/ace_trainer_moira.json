@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_SANDSLASH",
+            "species": "SPECIES_ARCHEOPS",
             "form": 0,
             "level": 56,
             "item": null,
             "moves": [
-                "MOVE_SLASH",
-                "MOVE_GYRO_BALL",
-                "MOVE_DIG",
-                "MOVE_X_SCISSOR"
+                "MOVE_ENDEAVOR",
+                "MOVE_U_TURN",
+                "MOVE_ROCK_SLIDE",
+                "MOVE_DRAGON_CLAW"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_VANILLUXE",
+            "form": 0,
+            "level": 56,
+            "item": null,
+            "moves": [
+                "MOVE_ACID_ARMOR",
+                "MOVE_ICE_BEAM",
+                "MOVE_HAIL",
+                "MOVE_MIRROR_COAT"
             ],
             "iv_scale": 50,
             "ball_seal": 0

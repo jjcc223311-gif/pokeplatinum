@@ -10,6 +10,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_MARACTUS",
+            "form": 0,
+            "level": 58,
+            "item": null,
+            "moves": null,
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_CARNIVINE",
             "form": 0,
             "level": 60,
@@ -28,7 +37,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_DEWGONG",
+            "species": "SPECIES_SWANNA",
             "form": 0,
             "level": 58,
             "item": null,

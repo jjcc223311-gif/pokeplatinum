@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_ELECTABUZZ",
+            "species": "SPECIES_JELLICENT",
             "form": 0,
             "level": 40,
             "item": null,
             "moves": [
-                "MOVE_THUNDERBOLT",
-                "MOVE_SWIFT",
-                "MOVE_QUICK_ATTACK",
-                "MOVE_THUNDER_WAVE"
+                "MOVE_WATER_PULSE",
+                "MOVE_OMINOUS_WIND",
+                "MOVE_BRINE",
+                "MOVE_RAIN_DANCE"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_CRYOGONAL",
+            "form": 0,
+            "level": 40,
+            "item": null,
+            "moves": [
+                "MOVE_ACID_ARMOR",
+                "MOVE_ICE_BEAM",
+                "MOVE_LIGHT_SCREEN",
+                "MOVE_REFLECT"
             ],
             "iv_scale": 50,
             "ball_seal": 0

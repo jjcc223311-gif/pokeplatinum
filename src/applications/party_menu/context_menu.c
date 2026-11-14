@@ -230,10 +230,11 @@ static void PartyMenu_SelectItemTake(PartyMenuApplication *application, int *par
 
         if (fieldSystem == NULL
             || fieldSystem->location->mapHeaderID < MAP_HEADER_DISTORTION_WORLD_1F
-            || fieldSystem->location->mapHeaderID > MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM) {
+            || (fieldSystem->location->mapHeaderID > MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM
+                && fieldSystem->location->mapHeaderID != MAP_HEADER_DISTORTED_RIFT)) {
             int newForm = Pokemon_SetGiratinaFormByHeldItem(mon);
 
-            if (application->partyMembers[application->currPartySlot].heldItem == ITEM_GRISEOUS_ORB && newForm == 0) {
+            if (Pokemon_IsOriginFormItem(mon, application->partyMembers[application->currPartySlot].heldItem) && newForm == 0) {
                 result = PARTY_MENU_STATE_PRINTING_FORM_CHANGE;
             }
         }

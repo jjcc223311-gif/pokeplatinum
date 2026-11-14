@@ -19,15 +19,15 @@
         },
         {
             "level": 32,
-            "species": "SPECIES_GEODUDE"
+            "species": "SPECIES_DURANT"
         },
         {
             "level": 33,
-            "species": "SPECIES_GRAVELER"
+            "species": "SPECIES_KLINK"
         },
         {
             "level": 31,
-            "species": "SPECIES_ONIX"
+            "species": "SPECIES_DURANT"
         },
         {
             "level": 33,
@@ -43,7 +43,7 @@
         },
         {
             "level": 30,
-            "species": "SPECIES_GEODUDE"
+            "species": "SPECIES_METANG"
         },
         {
             "level": 31,

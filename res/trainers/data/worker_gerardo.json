@@ -8,14 +8,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_MAGNEMITE",
+            "species": "SPECIES_KLINK",
             "form": 0,
             "level": 35,
             "item": null,
             "moves": [
-                "MOVE_SUPERSONIC",
-                "MOVE_MAGNET_BOMB",
-                "MOVE_SPARK"
+                "MOVE_GEAR_GRIND",
+                "MOVE_BIND",
+                "MOVE_CHARGE_BEAM",
+                "MOVE_AUTOTOMIZE"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_JOLTIK",
+            "form": 0,
+            "level": 35,
+            "item": null,
+            "moves": [
+                "MOVE_GASTRO_ACID",
+                "MOVE_SLASH",
+                "MOVE_ELECTRO_BALL",
+                "MOVE_SIGNAL_BEAM"
             ],
             "iv_scale": 10,
             "ball_seal": 0

@@ -11,6 +11,18 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_BLITZLE",
+            "form": 0,
+            "level": 5,
+            "item": null,
+            "moves": [
+                "MOVE_QUICK_ATTACK",
+                "MOVE_TAIL_WHIP"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_STARLY",
             "form": 0,
             "level": 6,

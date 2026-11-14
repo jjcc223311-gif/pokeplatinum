@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_WATCHOG",
+            "form": 0,
+            "level": 21,
+            "item": null,
+            "moves": [
+                "MOVE_SAND_ATTACK",
+                "MOVE_CRUNCH",
+                "MOVE_HYPNOSIS",
+                "MOVE_CONFUSE_RAY"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_PACHIRISU",
             "form": 0,
             "level": 22,

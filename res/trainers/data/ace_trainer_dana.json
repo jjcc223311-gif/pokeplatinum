@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_MIGHTYENA",
+            "species": "SPECIES_AUDINO",
             "form": 0,
             "level": 55,
             "item": null,
             "moves": [
-                "MOVE_CRUNCH",
-                "MOVE_SUCKER_PUNCH",
-                "MOVE_IRON_TAIL",
-                "MOVE_SCARY_FACE"
+                "MOVE_AFTER_YOU",
+                "MOVE_SIMPLE_BEAM",
+                "MOVE_DOUBLE_EDGE",
+                "MOVE_LAST_RESORT"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_ACCELGOR",
+            "form": 0,
+            "level": 55,
+            "item": null,
+            "moves": [
+                "MOVE_U_TURN",
+                "MOVE_BUG_BUZZ",
+                "MOVE_RECOVER",
+                "MOVE_POWER_SWAP"
             ],
             "iv_scale": 50,
             "ball_seal": 0

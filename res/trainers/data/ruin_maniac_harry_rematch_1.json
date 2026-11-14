@@ -10,6 +10,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_ARCHEOPS",
+            "form": 0,
+            "level": 41,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_BRONZOR",
             "form": 0,
             "level": 44,
@@ -28,7 +37,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_CRANIDOS",
+            "species": "SPECIES_STUNFISK",
             "form": 0,
             "level": 41,
             "item": null,

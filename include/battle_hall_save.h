@@ -12,6 +12,9 @@
 #define HALL_SAVE_POKEMON_INDICES 4
 #define HALL_SAVE_STREAK_FLAGS    5
 
+// The Battle Hall (and its save data) only tracks the 18 original types (Normal through Dark).
+#define HALL_NUM_TYPES 18
+
 typedef struct BattleHallSave {
     u8 challengeType : 3;
     u8 didSave : 1;

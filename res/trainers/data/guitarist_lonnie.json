@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_AUDINO",
+            "form": 0,
+            "level": 46,
+            "item": null,
+            "moves": [
+                "MOVE_TAKE_DOWN",
+                "MOVE_HEAL_PULSE",
+                "MOVE_AFTER_YOU",
+                "MOVE_SIMPLE_BEAM"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_RAICHU",
             "form": 0,
             "level": 47,

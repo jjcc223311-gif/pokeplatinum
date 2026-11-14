@@ -1,0 +1,32 @@
+{
+    "name": "Heat Crash",
+    "description": [
+        "The user slams its\n",
+        "target with its\n",
+        "flame- covered body.\n",
+        "The more the user\n",
+        "outweighs the target,"
+    ],
+    "class": "CLASS_PHYSICAL",
+    "type": "TYPE_FIRE",
+    "power": 1,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+        "type": "BATTLE_EFFECT_HEAVY_SLAM",
+        "chance": 0
+    },
+    "range": "RANGE_SINGLE_TARGET",
+    "priority": 0,
+    "flags": [
+        "MOVE_FLAG_MAKES_CONTACT",
+        "MOVE_FLAG_CAN_PROTECT",
+        "MOVE_FLAG_CAN_MIRROR_MOVE",
+        "MOVE_FLAG_TRIGGERS_KINGS_ROCK",
+        "MOVE_FLAG_HIDES_SHADOWS"
+    ],
+    "contest": {
+        "effect": "CONTEST_EFFECT_BASIC",
+        "type": "CONTEST_TYPE_COOL"
+    }
+}

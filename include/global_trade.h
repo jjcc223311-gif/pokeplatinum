@@ -16,6 +16,8 @@ GlobalTrade *SaveData_GetGlobalTrade(SaveData *saveData);
 int GlobalTrade_SaveSize(void);
 void GlobalTrade_Init(GlobalTrade *globalTrade);
 int GlobalTrade_IsPokemonListed(GlobalTrade *globalTrade);
+BOOL GlobalTrade_HasFusedPartner(GlobalTrade *globalTrade);
+void GlobalTrade_SetFusedPartner(GlobalTrade *globalTrade, Pokemon *mon);
 void GlobalTrade_SetPokemonListed(GlobalTrade *globalTrade, int listed);
 void GlobalTrade_CopyFromStoredPokemon(GlobalTrade *globalTrade, Pokemon *mon);
 void GlobalTrade_CopyToStoredPokemon(GlobalTrade *globalTrade, Pokemon *mon, int unused);

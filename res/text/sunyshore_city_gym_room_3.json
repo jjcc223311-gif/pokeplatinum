@@ -7,16 +7,18 @@
         "...All right, challenger.\r",
         "It’s not often, but some Trainers\n",
         "manage to come and challenge me.\r",
-        "But they’ve all been boring battles.\n",
+        "But they’ve all been boring battles,\n",
+        "and make me miss my family all the\f",
+        "more.\r",
         "I didn’t break a sweat beating them.\r",
-        "...Sigh...\n",
-        "I’m Volkner, the Gym Leader.\r",
+        "...Sigh... I’m Hugo, the Gym Leader.\r",
         "They say I’m the top Gym Leader in\n",
         "Sinnoh, but...\r",
         "Anyway, I guess we’d better get this\n",
         "done.\r",
-        "I hope you’re the Trainer who’ll make\n",
-        "me remember how fun it is to battle!\r"
+        "I hope you’re the Trainer who’ll\n",
+        "make me remember how fun it is to\f",
+        "battle!\r"
       ]
     },
     {
@@ -37,7 +39,7 @@
       "id": "SunyshoreGymRoom3_Text_VolknerReceiveBeaconBadge",
       "en_US": [
         "{STRVAR_1 3, 0, 0} received\n",
-        "the Beacon Badge from Volkner."
+        "the Beacon Badge from Hugo."
       ]
     },
     {

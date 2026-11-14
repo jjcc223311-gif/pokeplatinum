@@ -12,6 +12,7 @@ _000:
     Wait 
 
 _026:
+    ApplyFumeCloud BTLSCR_MSG_TEMP
     Call BATTLE_SUBSCRIPT_UPDATE_HP
     // {0} regained health!
     PrintMessage BattleStrings_Text_PokemonRegainedHealth_Ally, TAG_NICKNAME, BTLSCR_MSG_TEMP

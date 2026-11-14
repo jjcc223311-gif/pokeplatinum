@@ -2773,5 +2773,15 @@
     "maps": [
       ["MAP_648"]
     ]
+  },
+  {
+    "id": "DistortedRift",
+    "name": "m_dun3412_",
+    "headers": [],
+    "altitudes": [],
+    "maps": [
+      ["MAP_666", "MAP_667"],
+      ["MAP_668", "MAP_669"]
+    ]
   }
 ]

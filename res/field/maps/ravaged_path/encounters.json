@@ -19,15 +19,15 @@
         },
         {
             "level": 3,
-            "species": "SPECIES_ZUBAT"
+            "species": "SPECIES_WOOBAT"
         },
         {
             "level": 3,
-            "species": "SPECIES_ZUBAT"
+            "species": "SPECIES_WHISMUR"
         },
         {
             "level": 6,
-            "species": "SPECIES_PSYDUCK"
+            "species": "SPECIES_WOOBAT"
         },
         {
             "level": 6,
@@ -165,12 +165,12 @@
         {
             "level_max": 25,
             "level_min": 10,
-            "species": "SPECIES_MAGIKARP"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 25,
             "level_min": 10,
-            "species": "SPECIES_BARBOACH"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 25,

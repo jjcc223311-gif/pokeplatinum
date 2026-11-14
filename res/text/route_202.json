@@ -4,7 +4,7 @@
     {
       "id": "Route202_Text_DawnDidYouTellYourFamily",
       "en_US": [
-        "Dawn: {STRVAR_1 3, 1, 0}?!\r",
+        "Juniper: {STRVAR_1 3, 1, 0}?!\r",
         "Did you tell your family that you’re\n",
         "helping the professor?\r",
         "...You didn’t, did you?\r",
@@ -17,7 +17,7 @@
     {
       "id": "Route202_Text_DawnGoTellYourFamily",
       "en_US": [
-        "Dawn: You should go tell your family\n",
+        "Juniper: You should tell your family\n",
         "that you’re helping the professor.\r",
         "The faster the better, too.\r"
       ]
@@ -25,7 +25,7 @@
     {
       "id": "Route202_Text_DawnIllDemonstrateHowToCatch",
       "en_US": [
-        "Dawn: Oh, that’s right!\r",
+        "Juniper: Oh, that’s right!\r",
         "{STRVAR_1 3, 1, 0}, I haven’t shown you\n",
         "how to catch a Pokémon.\r",
         "I’ll demonstrate how to catch \n",
@@ -35,7 +35,7 @@
     {
       "id": "Route202_Text_DawnIllGiveYouFivePokeBalls",
       "en_US": [
-        "Dawn: Giggle...\n",
+        "Juniper: Giggle...\n",
         "See? Isn’t it neat?\r",
         "Actually, it’s better to lower your\n",
         "target’s HP more than I did.\r",
@@ -157,7 +157,7 @@
     {
       "id": "Route202_Text_DawnLetMeShowPokeRadar",
       "en_US": [
-        "Dawn: Hi, {STRVAR_1 3, 0, 0}!\n",
+        "Juniper: Hi, {STRVAR_1 3, 0, 0}!\n",
         "I was waiting for you.\r",
         "Let me show you how the Poké Radar\n",
         "works.\r",
@@ -168,7 +168,7 @@
     {
       "id": "Route202_Text_DawnPokemonInPatchOfGrass",
       "en_US": [
-        "Dawn: See?\n",
+        "Juniper: See?\n",
         "Did you notice the tall grass rustling?\r",
         "There’s a Pokémon in that patch of tall\n",
         "grass.\r",

@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_BOUFFALANT",
+            "form": 0,
+            "level": 26,
+            "item": null,
+            "moves": [
+                "MOVE_FURY_ATTACK",
+                "MOVE_HORN_ATTACK",
+                "MOVE_SCARY_FACE",
+                "MOVE_REVENGE"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_CHATOT",
             "form": 0,
             "level": 27,

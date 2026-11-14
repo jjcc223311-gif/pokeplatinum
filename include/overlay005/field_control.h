@@ -16,7 +16,8 @@ typedef struct FieldInput {
     u16 dummy3 : 1;
     u16 dummy4 : 1;
     u16 dummy5 : 1;
-    u16 padding : 4;
+    u16 mobilePC : 1; // L + R: open the Pokemon Storage System (Mobile PC)
+    u16 padding : 3;
     u8 playerDir;
     s8 transitionDir;
     u16 pressedKeys;

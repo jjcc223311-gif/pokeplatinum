@@ -141,6 +141,8 @@ struct BattleSystem {
     u32 padding_2474_1 : 31;
     SysTask *playbackStopButton;
     u8 recordedChatter[MAX_BATTLERS];
+    BOOL modernExpShare;
+    BOOL riftEncounter;
 };
 
 #endif // POKEPLATINUM_STRUCT_BATTLE_SYSTEM_H

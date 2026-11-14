@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SAMUROTT",
+            "form": 0,
+            "level": 59,
+            "item": null,
+            "moves": [
+                "MOVE_ENCORE",
+                "MOVE_AQUA_TAIL",
+                "MOVE_RETALIATE",
+                "MOVE_SWORDS_DANCE"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_ROSERADE",
             "form": 0,
             "level": 59,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_GARDEVOIR",
+            "species": "SPECIES_EXCADRILL",
             "form": 0,
             "level": 61,
             "item": null,
             "moves": [
-                "MOVE_PSYCHIC",
-                "MOVE_MAGICAL_LEAF",
-                "MOVE_CALM_MIND",
-                "MOVE_DOUBLE_TEAM"
+                "MOVE_EARTHQUAKE",
+                "MOVE_SWORDS_DANCE",
+                "MOVE_SANDSTORM",
+                "MOVE_DRILL_RUN"
             ],
             "iv_scale": 50,
             "ball_seal": 0

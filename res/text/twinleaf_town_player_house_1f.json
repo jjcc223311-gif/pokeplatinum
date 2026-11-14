@@ -171,6 +171,25 @@
       ]
     },
     {
+      "id": "TwinleafTownPlayerHouse1F_Text_FathersPokedex",
+      "en_US": [
+        "I know you already have a Pokédex,\n",
+        "but I was going through some of\r",
+        "your father’s old things again,\n",
+        "and I found his Pokédex.\f",
+        "I think you should have this too.\r",
+        "That way, you’ll have a little of\n",
+        "both of us with you on your journey.\r"
+      ]
+    },
+    {
+      "id": "TwinleafTownPlayerHouse1F_Text_PlayerReceivedLegendaryDex",
+      "en_US": [
+        "{STRVAR_1 3, 0, 0} received the\n",
+        "{COLOR 1}Legendary Pokédex{COLOR 0}!"
+      ]
+    },
+    {
       "id": "TwinleafTownPlayerHouse1F_Text_IWishICouldGoInstead",
       "en_US": [
         "Gee, a journey full of adventure...\n",
@@ -408,6 +427,54 @@
         "I get worried seeing the news...\r",
         "But you’re all right, aren’t you?\n",
         "After all, you’re never alone."
+      ]
+    },
+    {
+      "id": "TwinleafTownPlayerHouse1F_Text_MegaRing",
+      "en_US": [
+        "Oh, what’s this?\n",
+        "Oh yeah, I forgot to give this to you.\r",
+        "It used to be your dad’s, and since\n",
+        "you have a Pokémon now,\r",
+        "I think it could help you, sweetie."
+      ]
+    },
+    {
+      "id": "TwinleafTownPlayerHouse1F_Text_ExpShare",
+      "en_US": [
+        "And take this too, sweetie.\r",
+        "It’s an Exp. Share!"
+      ]
+    },
+    {
+      "id": "TwinleafTownPlayerHouse1F_Text_ExpShareExplain",
+      "en_US": [
+        "While it’s on, every Pokémon in your\n",
+        "party gets Exp. Points, even if they\r",
+        "didn’t battle. I already turned it on.\r",
+        "You can switch it off from your Bag\n",
+        "anytime you like."
+      ]
+    },
+    {
+      "id": "TwinleafTownPlayerHouse1F_Text_RiftTestAskCatchAll",
+      "en_US": [
+        "TEST: Mark every Distorted Rift\n",
+        "Pokémon as caught (Arceus test)?"
+      ]
+    },
+    {
+      "id": "TwinleafTownPlayerHouse1F_Text_RiftTestCaughtAll",
+      "en_US": [
+        "TEST: Done. The next Rift visit\n",
+        "will be Arceus.\r"
+      ]
+    },
+    {
+      "id": "TwinleafTownPlayerHouse1F_Text_RiftTestAskWarp",
+      "en_US": [
+        "TEST: Warp to the portal room in\n",
+        "Turnback Cave?"
       ]
     }
   ]

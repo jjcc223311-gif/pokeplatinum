@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_LIEPARD",
+            "form": 0,
+            "level": 57,
+            "item": null,
+            "moves": [
+                "MOVE_NIGHT_SLASH",
+                "MOVE_SNATCH",
+                "MOVE_NASTY_PLOT",
+                "MOVE_SUCKER_PUNCH"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_RATICATE",
             "form": 0,
             "level": 57,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_DRIFBLIM",
+            "species": "SPECIES_SWANNA",
             "form": 0,
             "level": 58,
             "item": null,
             "moves": [
-                "MOVE_EXPLOSION",
-                "MOVE_SHADOW_BALL",
-                "MOVE_TOXIC",
-                "MOVE_FLY"
+                "MOVE_RAIN_DANCE",
+                "MOVE_TAILWIND",
+                "MOVE_BRAVE_BIRD",
+                "MOVE_HURRICANE"
             ],
             "iv_scale": 100,
             "ball_seal": 0

@@ -24,15 +24,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_ROSERADE",
+            "species": "SPECIES_MUSHARNA",
             "form": 0,
             "level": 35,
             "item": null,
             "moves": [
-                "MOVE_GIGA_DRAIN",
-                "MOVE_TOXIC_SPIKES",
-                "MOVE_LEECH_SEED",
-                "MOVE_GRASS_WHISTLE"
+                "MOVE_DEFENSE_CURL",
+                "MOVE_HYPNOSIS",
+                "MOVE_LUCKY_CHANT",
+                "MOVE_PSYBEAM"
             ],
             "iv_scale": 100,
             "ball_seal": 0
@@ -52,15 +52,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_RAPIDASH",
+            "species": "SPECIES_SLOWPOKE",
             "form": 0,
             "level": 35,
             "item": null,
             "moves": [
-                "MOVE_FIRE_SPIN",
-                "MOVE_TAKE_DOWN",
-                "MOVE_STOMP",
-                "MOVE_TAIL_WHIP"
+                "MOVE_DISABLE",
+                "MOVE_HEADBUTT",
+                "MOVE_WATER_PULSE",
+                "MOVE_ZEN_HEADBUTT"
             ],
             "iv_scale": 100,
             "ball_seal": 0

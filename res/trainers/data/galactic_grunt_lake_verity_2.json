@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_PAWNIARD",
+            "form": 0,
+            "level": 33,
+            "item": null,
+            "moves": [
+                "MOVE_SCARY_FACE",
+                "MOVE_METAL_CLAW",
+                "MOVE_SLASH",
+                "MOVE_ASSURANCE"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GLAMEOW",
             "form": 0,
             "level": 33,
@@ -22,15 +36,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_GOLBAT",
+            "species": "SPECIES_ZOROARK",
             "form": 0,
             "level": 33,
             "item": null,
             "moves": [
-                "MOVE_AIR_CUTTER",
-                "MOVE_WING_ATTACK",
-                "MOVE_BITE",
-                "MOVE_SUPERSONIC"
+                "MOVE_SCARY_FACE",
+                "MOVE_TAUNT",
+                "MOVE_FOUL_PLAY",
+                "MOVE_NIGHT_SLASH"
             ],
             "iv_scale": 30,
             "ball_seal": 0

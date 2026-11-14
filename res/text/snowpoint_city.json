@@ -32,7 +32,7 @@
     {
       "id": "SnowpointCity_Text_LetThatPersonIn",
       "en_US": [
-        "Candice: It’s OK!\n",
+        "Dawn: It’s OK!\n",
         "You can let that person in.\r"
       ]
     },
@@ -85,7 +85,7 @@
     {
       "id": "SnowpointCity_Text_CandiceIsTeachingMe",
       "en_US": [
-        "Candice is teaching me about Pokémon.\r",
+        "Dawn is teaching me about Pokémon.\r",
         "She says I have to start by making\n",
         "friends with Pokémon."
       ]
@@ -184,7 +184,7 @@
       "id": "SnowpointCity_Text_SignPokemonGym",
       "en_US": [
         "Snowpoint City Pokémon Gym\n",
-        "Leader: Candice\f",
+        "Leader: Dawn\f",
         "The Diamond Dust Girl!"
       ]
     }

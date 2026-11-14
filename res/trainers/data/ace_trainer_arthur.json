@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_THROH",
+            "form": 0,
+            "level": 54,
+            "item": null,
+            "moves": [
+                "MOVE_ENDURE",
+                "MOVE_WIDE_GUARD",
+                "MOVE_SUPERPOWER",
+                "MOVE_REVERSAL"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GASTRODON",
             "form": 0,
             "level": 54,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_BEEDRILL",
+            "species": "SPECIES_GALVANTULA",
             "form": 0,
             "level": 54,
             "item": null,
             "moves": [
-                "MOVE_POISON_JAB",
-                "MOVE_U_TURN",
-                "MOVE_AERIAL_ACE",
-                "MOVE_SWORDS_DANCE"
+                "MOVE_SIGNAL_BEAM",
+                "MOVE_AGILITY",
+                "MOVE_SUCKER_PUNCH",
+                "MOVE_DISCHARGE"
             ],
             "iv_scale": 50,
             "ball_seal": 0

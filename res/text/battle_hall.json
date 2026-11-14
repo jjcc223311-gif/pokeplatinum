@@ -832,7 +832,7 @@
     {
       "id": "BattleHall_Text_Dawn",
       "en_US": [
-        "Dawn: Hi, {STRVAR_1 3, 0, 0}.\n",
+        "Juniper: Hi, {STRVAR_1 3, 0, 0}.\n",
         "Do you know what I’ve been doing?\r",
         "I go looking for the Pokémon that take\n",
         "the stage with you.\r",

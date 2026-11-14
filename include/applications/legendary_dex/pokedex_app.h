@@ -1,0 +1,36 @@
+#ifndef POKEPLATINUM_LEGDEX_POKEDEX_APP_H
+#define POKEPLATINUM_LEGDEX_POKEDEX_APP_H
+
+#include "applications/legendary_dex/pokedex_graphics.h"
+#include "applications/legendary_dex/pokedex_sort_data.h"
+#include "applications/legendary_dex/pokedex_updater.h"
+#include "applications/legendary_dex/struct_ov21_021D423C_decl.h"
+#include "applications/legendary_dex/struct_ov21_021D4660.h"
+#include "applications/legendary_dex/struct_ov21_021E68F4.h"
+
+#include "pokedex_memory.h"
+
+typedef struct PokedexApp {
+    BOOL unk_00;
+    enum HeapID heapID;
+    PokedexMemory *pokedexMemory;
+    PokedexSortData sortData;
+    PokedexGraphicData graphicData;
+    int unk_1A60;
+    int unk_1A64;
+    int unk_1A68;
+    int unk_1A6C;
+    UnkStruct_ov21_021D423C *unk_1A70;
+    UnkStruct_ov21_021D423C *unk_1A74;
+    UnkStruct_ov21_021D423C *unk_1A78;
+    UnkStruct_ov21_021D423C *unk_1A7C;
+    UnkStruct_ov21_021D4660 unk_1A80;
+    PokedexScreenManager unk_1A94[10];
+    PokedexScreenManager unk_1C24[8];
+    PokedexUpdater *unk_1D64;
+    PokedexUpdater *unk_1D68;
+    PokedexUpdater *unk_1D6C;
+    PokedexUpdater *unk_1D70;
+} PokedexApp;
+
+#endif // POKEPLATINUM_LEGDEX_POKEDEX_APP_H

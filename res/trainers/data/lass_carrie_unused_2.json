@@ -8,15 +8,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_CHATOT",
+            "species": "SPECIES_COTTONEE",
             "form": 0,
             "level": 23,
             "item": null,
             "moves": [
-                "MOVE_FURY_ATTACK",
-                "MOVE_SING",
-                "MOVE_GROWL",
-                "MOVE_PECK"
+                "MOVE_MEGA_DRAIN",
+                "MOVE_COTTON_SPORE",
+                "MOVE_RAZOR_LEAF",
+                "MOVE_POISON_POWDER"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_MARACTUS",
+            "form": 0,
+            "level": 23,
+            "item": null,
+            "moves": [
+                "MOVE_MEGA_DRAIN",
+                "MOVE_SYNTHESIS",
+                "MOVE_COTTON_SPORE",
+                "MOVE_NEEDLE_ARM"
             ],
             "iv_scale": 0,
             "ball_seal": 0

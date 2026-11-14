@@ -19,11 +19,11 @@
         },
         {
             "level": 5,
-            "species": "SPECIES_BIDOOF"
+            "species": "SPECIES_PURRLOIN"
         },
         {
             "level": 4,
-            "species": "SPECIES_ABRA"
+            "species": "SPECIES_POOCHYENA"
         },
         {
             "level": 5,
@@ -31,7 +31,7 @@
         },
         {
             "level": 5,
-            "species": "SPECIES_SHINX"
+            "species": "SPECIES_PURRLOIN"
         },
         {
             "level": 6,
@@ -109,12 +109,12 @@
         {
             "level_max": 40,
             "level_min": 20,
-            "species": "SPECIES_GOLDUCK"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 40,
             "level_min": 20,
-            "species": "SPECIES_GOLDUCK"
+            "species": "SPECIES_AZUMARILL"
         },
         {
             "level_max": 40,
@@ -165,12 +165,12 @@
         {
             "level_max": 25,
             "level_min": 10,
-            "species": "SPECIES_MAGIKARP"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 25,
             "level_min": 10,
-            "species": "SPECIES_GOLDEEN"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 25,
@@ -193,7 +193,7 @@
         {
             "level_max": 55,
             "level_min": 40,
-            "species": "SPECIES_GYARADOS"
+            "species": "SPECIES_CRAWDAUNT"
         },
         {
             "level_max": 55,

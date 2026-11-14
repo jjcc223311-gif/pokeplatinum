@@ -8,7 +8,7 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_MAGIKARP",
+            "species": "SPECIES_TYMPOLE",
             "form": 0,
             "level": 8,
             "item": null,
@@ -17,7 +17,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_MAGIKARP",
+            "species": "SPECIES_TYMPOLE",
             "form": 0,
             "level": 10,
             "item": null,
@@ -26,7 +26,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_MAGIKARP",
+            "species": "SPECIES_TYMPOLE",
             "form": 0,
             "level": 12,
             "item": null,

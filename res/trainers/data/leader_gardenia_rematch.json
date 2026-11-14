@@ -27,15 +27,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_CHERRIM",
+            "species": "SPECIES_SAWSBUCK",
             "form": 0,
             "level": 62,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_SOLAR_BEAM",
-                "MOVE_TOXIC",
-                "MOVE_SUNNY_DAY",
-                "MOVE_LEECH_SEED"
+                "MOVE_HORN_LEECH",
+                "MOVE_NATURE_POWER",
+                "MOVE_DOUBLE_EDGE",
+                "MOVE_SOLAR_BEAM"
             ],
             "iv_scale": 200,
             "ball_seal": 0
@@ -55,15 +55,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_TORTERRA",
+            "species": "SPECIES_SHIFTRY",
             "form": 0,
             "level": 63,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_WOOD_HAMMER",
-                "MOVE_CRUNCH",
-                "MOVE_EARTHQUAKE",
-                "MOVE_STONE_EDGE"
+                "MOVE_WHIRLWIND",
+                "MOVE_NASTY_PLOT",
+                "MOVE_RAZOR_LEAF",
+                "MOVE_LEAF_STORM"
             ],
             "iv_scale": 200,
             "ball_seal": 0

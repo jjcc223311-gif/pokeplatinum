@@ -653,7 +653,7 @@
     {
       "id": "Battleground_Text_CandiceAskBattle",
       "en_US": [
-        "Candice: Hiya!\n",
+        "Dawn: Hiya!\n",
         "What’s up?\r",
         "I bet you can’t tell what I’m thinking!\r",
         "I’ll give the answer away.\n",
@@ -663,28 +663,28 @@
     {
       "id": "Battleground_Text_CandiceIntro",
       "en_US": [
-        "Candice: This time, Candice is going to\n",
+        "Dawn: This time, Dawn is going to\n",
         "push through on willpower!\r"
       ]
     },
     {
       "id": "Battleground_Text_CandiceDeclinedBattle",
       "en_US": [
-        "Candice: Oh...\n",
+        "Dawn: Oh...\n",
         "Did my willpower intimidate you?"
       ]
     },
     {
       "id": "Battleground_Text_CandiceAskBattleAgain",
       "en_US": [
-        "Candice: Listen, listen.\n",
-        "You’ll battle Candice, won’t you?"
+        "Dawn: Listen, listen.\n",
+        "You’ll battle Dawn, won’t you?"
       ]
     },
     {
       "id": "Battleground_Text_CandiceDefeat",
       "en_US": [
-        "Candice: Oh, wow, your scarf is totally\n",
+        "Dawn: Oh, wow, your scarf is totally\n",
         "in fashion.\r",
         "I wish I had one like that."
       ]
@@ -692,7 +692,7 @@
     {
       "id": "Battleground_Text_CandiceAskBattle2",
       "en_US": [
-        "Candice: Candice is on fire!\r",
+        "Dawn: Dawn is on fire!\r",
         "I’m blazing hot!\r",
         "Hot enough to melt Ice-type Pokémon!\r",
         "I need a battle to cool me down!"
@@ -701,26 +701,26 @@
     {
       "id": "Battleground_Text_CandiceIntro2",
       "en_US": [
-        "Candice: OK! I’ll show you how good\n",
-        "Candice...\r",
+        "Dawn: OK! I’ll show you how good\n",
+        "Dawn...\r",
         "I mean, how good my Pokémon can be!\r"
       ]
     },
     {
       "id": "Battleground_Text_CandiceDeclinedBattle2",
-      "en_US": "Candice: Awww!"
+      "en_US": "Dawn: Awww!"
     },
     {
       "id": "Battleground_Text_CandiceAskBattleAgain2",
       "en_US": [
-        "Candice: You really want to battle\n",
+        "Dawn: You really want to battle\n",
         "with me, don’t you?"
       ]
     },
     {
       "id": "Battleground_Text_CandiceDefeat2",
       "en_US": [
-        "Candice: Awww!\n",
+        "Dawn: Awww!\n",
         "That’s it!\r",
         "I’m going to train so I can throw a\n",
         "Focus Punch myself!"
@@ -729,7 +729,7 @@
     {
       "id": "Battleground_Text_VolknerAskBattle",
       "en_US": [
-        "Volkner: Your Pokémon...\n",
+        "Hugo: Your Pokémon...\n",
         "I can feel their power!\r",
         "Of course, you can sense the power of\n",
         "my Pokémon, can’t you?\r",
@@ -739,7 +739,7 @@
     {
       "id": "Battleground_Text_VolknerIntro",
       "en_US": [
-        "Volkner: Yeah! It’s electric, this\n",
+        "Hugo: Yeah! It’s electric, this\n",
         "feeling of anticipation!\r",
         "Let’s do it!\n",
         "We’re going to make some sparks fly!\r"
@@ -748,21 +748,21 @@
     {
       "id": "Battleground_Text_VolknerDeclinedBattle",
       "en_US": [
-        "Volkner: Aww, come on now.\n",
+        "Hugo: Aww, come on now.\n",
         "Don’t disappoint me..."
       ]
     },
     {
       "id": "Battleground_Text_VolknerAskBattleAgain",
       "en_US": [
-        "Volkner: Hm? What’s up?\n",
+        "Hugo: Hm? What’s up?\n",
         "You do want to battle?"
       ]
     },
     {
       "id": "Battleground_Text_VolknerDefeat",
       "en_US": [
-        "Volkner: Winning makes me happy, and\n",
+        "Hugo: Winning makes me happy, and\n",
         "losing leaves me angry...\r",
         "That’s no great revelation, but it’s\n",
         "what makes me stronger."
@@ -771,7 +771,7 @@
     {
       "id": "Battleground_Text_VolknerAskBattle2",
       "en_US": [
-        "Volkner: My ELECTIVIRE demands tough\n",
+        "Hugo: My ELECTIVIRE demands tough\n",
         "opponents.\r",
         "I’m willing to beg.\n",
         "Let’s battle!"
@@ -780,21 +780,21 @@
     {
       "id": "Battleground_Text_VolknerIntro2",
       "en_US": [
-        "Volkner: You! And me!\n",
+        "Hugo: You! And me!\n",
         "Let’s make some sparks fly!\r"
       ]
     },
     {
       "id": "Battleground_Text_VolknerDeclinedBattle2",
       "en_US": [
-        "Volkner: Well, yeah, an ELECTIVIRE is\n",
+        "Hugo: Well, yeah, an ELECTIVIRE is\n",
         "intimidating. I hear you..."
       ]
     },
     {
       "id": "Battleground_Text_VolknerAskBattleAgain2",
       "en_US": [
-        "Volkner: Hm? What’s up?\n",
+        "Hugo: Hm? What’s up?\n",
         "You’re willing to face my ELECTIVIRE?\f",
         "And help toughen up my Pokémon?"
       ]
@@ -802,7 +802,7 @@
     {
       "id": "Battleground_Text_VolknerDefeat2",
       "en_US": [
-        "Volkner: Some Trainers have Pokémon\n",
+        "Hugo: Some Trainers have Pokémon\n",
         "they just have to have in their party.\r",
         "For me, ELECTIVIRE is that Pokémon..."
       ]

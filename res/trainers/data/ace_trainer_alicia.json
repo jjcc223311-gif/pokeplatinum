@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_SNEASEL",
+            "species": "SPECIES_VANILLISH",
             "form": 0,
             "level": 40,
             "item": null,
             "moves": [
-                "MOVE_ICY_WIND",
-                "MOVE_SLASH",
-                "MOVE_SCREECH",
-                "MOVE_FAINT_ATTACK"
+                "MOVE_TAUNT",
+                "MOVE_MIRROR_SHOT",
+                "MOVE_ACID_ARMOR",
+                "MOVE_ICE_BEAM"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_CRYOGONAL",
+            "form": 0,
+            "level": 40,
+            "item": null,
+            "moves": [
+                "MOVE_ACID_ARMOR",
+                "MOVE_ICE_BEAM",
+                "MOVE_LIGHT_SCREEN",
+                "MOVE_REFLECT"
             ],
             "iv_scale": 60,
             "ball_seal": 0

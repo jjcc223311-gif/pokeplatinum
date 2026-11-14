@@ -1,0 +1,224 @@
+{
+    "base_stats": {
+        "hp": 55,
+        "attack": 85,
+        "defense": 55,
+        "speed": 60,
+        "special_attack": 50,
+        "special_defense": 55
+    },
+    "types": [
+        "TYPE_BUG",
+        "TYPE_FIRE"
+    ],
+    "catch_rate": 45,
+    "base_exp_reward": 72,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 1,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_50",
+    "hatch_cycles": 40,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_SLOW",
+    "egg_groups": [
+        "EGG_GROUP_BUG",
+        "EGG_GROUP_BUG"
+    ],
+    "abilities": [
+        "ABILITY_FLAME_BODY",
+        "ABILITY_NONE"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_WHITE",
+    "flip_sprite": false,
+    "icon_palette": 1,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_EMBER"
+            ],
+            [
+                1,
+                "MOVE_STRING_SHOT"
+            ],
+            [
+                10,
+                "MOVE_LEECH_LIFE"
+            ],
+            [
+                20,
+                "MOVE_TAKE_DOWN"
+            ],
+            [
+                30,
+                "MOVE_FLAME_CHARGE"
+            ],
+            [
+                40,
+                "MOVE_BUG_BITE"
+            ],
+            [
+                50,
+                "MOVE_DOUBLE_EDGE"
+            ],
+            [
+                60,
+                "MOVE_FLAME_WHEEL"
+            ],
+            [
+                70,
+                "MOVE_BUG_BUZZ"
+            ],
+            [
+                80,
+                "MOVE_AMNESIA"
+            ],
+            [
+                90,
+                "MOVE_THRASH"
+            ],
+            [
+                100,
+                "MOVE_FLARE_BLITZ"
+            ]
+        ],
+        "by_tm": [
+            "TM04",
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM16",
+            "TM17",
+            "TM19",
+            "TM20",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM29",
+            "TM32",
+            "TM35",
+            "TM38",
+            "TM42",
+            "TM44",
+            "TM50",
+            "TM61",
+            "TM82",
+            "TM87",
+            "TM89",
+            "TM90"
+        ],
+        "by_tutor": [
+            "MOVE_HEAT_WAVE",
+            "MOVE_MAGNET_RISE",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_SNORE",
+            "MOVE_ZEN_HEADBUTT"
+        ],
+        "egg_moves": [
+            "MOVE_ENDURE",
+            "MOVE_FORESIGHT",
+            "MOVE_HARDEN",
+            "MOVE_MAGNET_RISE",
+            "MOVE_MORNING_SUN",
+            "MOVE_STRING_SHOT",
+            "MOVE_ZEN_HEADBUTT"
+        ]
+    },
+    "evolutions": [
+        [
+            "EVO_LEVEL",
+            59,
+            "SPECIES_VOLCARONA"
+        ]
+    ],
+    "offspring": "SPECIES_LARVESTA",
+    "footprint": {
+        "has": true,
+        "size": "FOOTPRINT_SMALL",
+        "type": "FOOTPRINT_TYPE_SCARY"
+    },
+    "pokedex_data": {
+        "height_inches": 43,
+        "weight_pounds": 63.5,
+        "body_shape": "SHAPE_INSECTOID",
+        "trainer_scale_f": 272,
+        "pokemon_scale_f": 293,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 293,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 15,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 15,
+        "en": {
+            "name": "LARVESTA",
+            "category": "Torch Pokémon",
+            "entry_text": [
+                "It gives off fire from its five\n",
+                "horns. It is said to come from the\n",
+                "sun."
+            ]
+        },
+        "fr": {
+            "name": "LARVESTA",
+            "category": "Torch Pokémon",
+            "entry_text": [
+                "It gives off fire from its five\n",
+                "horns. It is said to come from the\n",
+                "sun."
+            ]
+        },
+        "de": {
+            "name": "LARVESTA",
+            "category": "Torch Pokémon",
+            "entry_text": [
+                "It gives off fire from its five\n",
+                "horns. It is said to come from the\n",
+                "sun."
+            ]
+        },
+        "it": {
+            "name": "LARVESTA",
+            "category": "Torch Pokémon",
+            "entry_text": [
+                "It gives off fire from its five\n",
+                "horns. It is said to come from the\n",
+                "sun."
+            ]
+        },
+        "es": {
+            "name": "LARVESTA",
+            "category": "Torch Pokémon",
+            "entry_text": [
+                "It gives off fire from its five\n",
+                "horns. It is said to come from the\n",
+                "sun."
+            ]
+        },
+        "jp": {
+            "name": "LARVESTA",
+            "category": "Torch Pokémon",
+            "entry_text": [
+                "It gives off fire from its five\n",
+                "horns. It is said to come from the\n",
+                "sun."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

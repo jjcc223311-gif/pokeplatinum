@@ -865,6 +865,587 @@
         "Reduces a sleeping foe’s\n",
         "HP."
       ]
+    },
+    {
+      "id": "pl_msg_00000612_00124",
+      "en_US": [
+        "Sets Reflect and Light\n",
+        "Screen when it enters."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00125",
+      "en_US": [
+        "Ups Attack and Sp. Atk\n",
+        "when it enters battle."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00126",
+      "en_US": [
+        "Powers up moves while\n",
+        "HP is above half."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00127",
+      "en_US": [
+        "Powers up moves; softens\n",
+        "super-effective hits."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00128",
+      "en_US": [
+        "Electric moves boost its\n",
+        "Attack and Speed."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00129",
+      "en_US": [
+        "Ups Grass/Poison moves\n",
+        "and heals from damage."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00130",
+      "en_US": [
+        "Ups Water moves and\n",
+        "restores HP each turn."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00131",
+      "en_US": [
+        "Immune to Ground moves;\n",
+        "restores HP each turn."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00132",
+      "en_US": [
+        "Boosts Fighting/Steel\n",
+        "moves; ignores defenses."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00133",
+      "en_US": [
+        "Ups Water/Dragon moves\n",
+        "and pierces Protect."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00134",
+      "en_US": [
+        "Softens the first hit;\n",
+        "Ghost moves restore HP."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00135",
+      "en_US": [
+        "Twists the dimensions\n",
+        "when it enters battle."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00136",
+      "en_US": [
+        "Ups Fire/Fighting moves;\n",
+        "self stat drops blocked."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00137",
+      "en_US": [
+        "Softens physical hits;\n",
+        "foes can’t cut stats."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00138",
+      "en_US": [
+        "Ice moves restore HP\n",
+        "instead of hurting it."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00139",
+      "en_US": [
+        "Ups Electric moves; they\n",
+        "can hit Ground types."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00140",
+      "en_US": [
+        "Ups punches; damaging\n",
+        "moves never miss."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00141",
+      "en_US": [
+        "Softens special hits;\n",
+        "ups Ground/Steel moves."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00142",
+      "en_US": [
+        "Electrifies the field\n",
+        "when it enters battle."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00143",
+      "en_US": [
+        "Ghost/Fairy moves hit\n",
+        "statused foes harder."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00144",
+      "en_US": [
+        "Ice/Dark moves hit foes\n",
+        "that just switched in."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00145",
+      "en_US": [
+        "Powers Rock/Ground/Steel\n",
+        "moves in a sandstorm."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00146",
+      "en_US": [
+        "Powers up recoil moves;\n",
+        "halves recoil damage."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00147",
+      "en_US": [
+        "Water/Light moves hit\n",
+        "foes yet to move harder."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00148",
+      "en_US": [
+        "Crits more easily vs.\n",
+        "foes at full HP."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00149",
+      "en_US": [
+        "Punches may also\n",
+        "poison the target."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00150",
+      "en_US": [
+        "Fire moves have at least\n",
+        "a 25% chance to burn."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00151",
+      "en_US": [
+        "Powers up slicing\n",
+        "moves."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00152",
+      "en_US": [
+        "Fairy/Light hits restore\n",
+        "some of its HP."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00153",
+      "en_US": [
+        "Foes recover less HP\n",
+        "from moves."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00154",
+      "en_US": [
+        "Its first Ice hit calls\n",
+        "hail. No hail damage."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00155",
+      "en_US": [
+        "Reflects status moves\n",
+        "back at the user."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00156",
+      "en_US": [
+        "Its first contact hit\n",
+        "knocks off foe’s item."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00157",
+      "en_US": [
+        "Special moves ignore\n",
+        "foes’ Sp. Def boosts."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00158",
+      "en_US": [
+        "Halves damage from\n",
+        "priority moves."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00159",
+      "en_US": [
+        "Takes less special dmg\n",
+        "while above half HP."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00160",
+      "en_US": [
+        "Restores HP every turn,\n",
+        "more in the rain."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00161",
+      "en_US": [
+        "Electric hits power up\n",
+        "its next other move."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00162",
+      "en_US": [
+        "Every third special hit\n",
+        "deals more damage."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00163",
+      "en_US": [
+        "Taking a hit powers its\n",
+        "next Elec/Light/Dragon."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00164",
+      "en_US": [
+        "Blunts and punishes the\n",
+        "first contact hit taken."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00165",
+      "en_US": [
+        "Its first physical hit\n",
+        "taken sets up Reflect."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00166",
+      "en_US": [
+        "Its first KO in battle\n",
+        "boosts its Speed."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00167",
+      "en_US": [
+        "At half HP, boosts Atk\n",
+        "and Sp. Atk once."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00168",
+      "en_US": [
+        "Twists the dimensions\n",
+        "on its first entry."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00169",
+      "en_US": [
+        "Its first contact hit\n",
+        "lowers foe’s Defense."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00170",
+      "en_US": [
+        "Heals after surviving\n",
+        "its first hit taken."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00171",
+      "en_US": [
+        "Its first burn heals it\n",
+        "and ups its Speed."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00172",
+      "en_US": [
+        "At half HP, erases the\n",
+        "attacker’s stat boosts."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00173",
+      "en_US": [
+        "Its first Water/Light\n",
+        "hit clears hazards."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00174",
+      "en_US": [
+        "Poisoning a foe also\n",
+        "lowers its Defense."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00175",
+      "en_US": [
+        "Rock/Ground hits break\n",
+        "screens once a battle."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00176",
+      "en_US": [
+        "Special moves bypass\n",
+        "Light Screen and Subs."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00177",
+      "en_US": [
+        "A Fire hit gives its next\n",
+        "Fighting move priority."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00178",
+      "en_US": [
+        "Ghost hits on foes that\n",
+        "moved disable a move."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00179",
+      "en_US": [
+        "Boosts Atk and Speed when\n",
+        "a foe first flees."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00180",
+      "en_US": [
+        "Cures its first status\n",
+        "from a foe and heals."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00181",
+      "en_US": [
+        "Protects the Pokémon\n",
+        "from Defense drops."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00182",
+      "en_US": [
+        "May disable a move\n",
+        "used on the Pokémon."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00183",
+      "en_US": [
+        "Lowers stats when HP\n",
+        "drops below half."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00184",
+      "en_US": [
+        "Sharply raises Attack\n",
+        "when stats are lowered."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00185",
+      "en_US": [
+        "May heal an ally’s\n",
+        "status conditions."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00186",
+      "en_US": [
+        "Enters battle disguised\n",
+        "as the last Pokémon."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00187",
+      "en_US": [
+        "Passes through the foe’s\n",
+        "barrier and strikes."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00188",
+      "en_US": [
+        "Inflicts damage to the\n",
+        "foe on contact."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00189",
+      "en_US": [
+        "Raises Attack when hit\n",
+        "by a Dark-type move."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00190",
+      "en_US": [
+        "Raises Attack after\n",
+        "knocking out a foe."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00191",
+      "en_US": [
+        "Contact with this Pokémon\n",
+        "spreads this Ability."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00192",
+      "en_US": [
+        "Protects the Pokémon\n",
+        "from weather damage."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00193",
+      "en_US": [
+        "May poison targets\n",
+        "when a move makes contact."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00194",
+      "en_US": [
+        "Gives priority to\n",
+        "status moves."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00195",
+      "en_US": [
+        "Restores a little HP\n",
+        "when withdrawn."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00196",
+      "en_US": [
+        "Boosts Speed in a\n",
+        "sandstorm."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00197",
+      "en_US": [
+        "Boosts Attack when hit\n",
+        "by a Grass-type move."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00198",
+      "en_US": [
+        "Removes added effects\n",
+        "to increase move damage."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00199",
+      "en_US": [
+        "Anticipates an ally’s\n",
+        "attack and dodges it."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00200",
+      "en_US": [
+        "Moves can be used\n",
+        "regardless of Abilities."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00201",
+      "en_US": [
+        "Moves can be used\n",
+        "regardless of Abilities."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00202",
+      "en_US": [
+        "Makes the foe nervous\n",
+        "and unable to eat Berries."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00203",
+      "en_US": [
+        "Boosts the accuracy of\n",
+        "its allies and itself."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00204",
+      "en_US": [
+        "Physical hits lower\n",
+        "Defense and raise Speed."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00205",
+      "en_US": [
+        "Makes status moves more\n",
+        "likely to miss."
+      ]
+    },
+    {
+      "id": "pl_msg_00000612_00206",
+      "en_US": [
+        "Changes form when its\n",
+        "HP drops below half."
+      ]
     }
   ]
 }

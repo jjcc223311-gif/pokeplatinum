@@ -11,6 +11,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_TRUBBISH",
+            "form": 0,
+            "level": 26,
+            "item": null,
+            "moves": [
+                "MOVE_SLUDGE",
+                "MOVE_STOCKPILE",
+                "MOVE_SWALLOW",
+                "MOVE_TAKE_DOWN"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MAGNEMITE",
             "form": 0,
             "level": 30,
@@ -23,15 +37,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_KADABRA",
+            "species": "SPECIES_MUNNA",
             "form": 0,
             "level": 26,
             "item": null,
             "moves": [
-                "MOVE_PSYBEAM",
-                "MOVE_DISABLE",
-                "MOVE_KINESIS",
-                "MOVE_THUNDER_PUNCH"
+                "MOVE_MOONLIGHT",
+                "MOVE_HYPNOSIS",
+                "MOVE_ZEN_HEADBUTT",
+                "MOVE_SYNCHRONOISE"
             ],
             "iv_scale": 0,
             "ball_seal": 0

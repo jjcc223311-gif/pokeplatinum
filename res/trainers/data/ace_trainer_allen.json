@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_GASTLY",
+            "species": "SPECIES_BOUFFALANT",
             "form": 0,
             "level": 21,
             "item": null,
             "moves": [
-                "MOVE_NIGHT_SHADE",
-                "MOVE_SUCKER_PUNCH",
-                "MOVE_CURSE",
-                "MOVE_CONFUSE_RAY"
+                "MOVE_RAGE",
+                "MOVE_FURY_ATTACK",
+                "MOVE_HORN_ATTACK",
+                "MOVE_SCARY_FACE"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_TRANQUILL",
+            "form": 0,
+            "level": 21,
+            "item": null,
+            "moves": [
+                "MOVE_LEER",
+                "MOVE_QUICK_ATTACK",
+                "MOVE_AIR_CUTTER",
+                "MOVE_ROOST"
             ],
             "iv_scale": 60,
             "ball_seal": 0

@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SWANNA",
+            "form": 0,
+            "level": 43,
+            "item": null,
+            "moves": [
+                "MOVE_AIR_SLASH",
+                "MOVE_ROOST",
+                "MOVE_RAIN_DANCE",
+                "MOVE_TAILWIND"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GLALIE",
             "form": 0,
             "level": 44,

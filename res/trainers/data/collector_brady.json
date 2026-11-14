@@ -17,7 +17,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_TANGELA",
+            "species": "SPECIES_LITWICK",
             "form": 0,
             "level": 21,
             "item": null,
@@ -26,7 +26,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_YANMA",
+            "species": "SPECIES_TEDDIURSA",
             "form": 0,
             "level": 21,
             "item": null,
@@ -44,7 +44,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_CROAGUNK",
+            "species": "SPECIES_TRANQUILL",
             "form": 0,
             "level": 21,
             "item": null,

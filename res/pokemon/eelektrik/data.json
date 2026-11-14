@@ -1,0 +1,230 @@
+{
+    "base_stats": {
+        "hp": 65,
+        "attack": 85,
+        "defense": 70,
+        "speed": 40,
+        "special_attack": 75,
+        "special_defense": 70
+    },
+    "types": [
+        "TYPE_ELECTRIC",
+        "TYPE_ELECTRIC"
+    ],
+    "catch_rate": 60,
+    "base_exp_reward": 142,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 2,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_50",
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_SLOW",
+    "egg_groups": [
+        "EGG_GROUP_AMORPHOUS",
+        "EGG_GROUP_AMORPHOUS"
+    ],
+    "abilities": [
+        "ABILITY_LEVITATE",
+        "ABILITY_NONE"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_BLUE",
+    "flip_sprite": false,
+    "icon_palette": 2,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_CHARGE_BEAM"
+            ],
+            [
+                1,
+                "MOVE_HEADBUTT"
+            ],
+            [
+                1,
+                "MOVE_SPARK"
+            ],
+            [
+                1,
+                "MOVE_THUNDER_WAVE"
+            ],
+            [
+                9,
+                "MOVE_BIND"
+            ],
+            [
+                19,
+                "MOVE_ACID"
+            ],
+            [
+                29,
+                "MOVE_DISCHARGE"
+            ],
+            [
+                39,
+                "MOVE_CRUNCH"
+            ],
+            [
+                44,
+                "MOVE_THUNDERBOLT"
+            ],
+            [
+                49,
+                "MOVE_ACID_SPRAY"
+            ],
+            [
+                54,
+                "MOVE_COIL"
+            ],
+            [
+                59,
+                "MOVE_WILD_CHARGE"
+            ],
+            [
+                64,
+                "MOVE_GASTRO_ACID"
+            ],
+            [
+                69,
+                "MOVE_ZAP_CANNON"
+            ],
+            [
+                74,
+                "MOVE_THRASH"
+            ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM16",
+            "TM17",
+            "TM18",
+            "TM19",
+            "TM21",
+            "TM23",
+            "TM24",
+            "TM25",
+            "TM27",
+            "TM32",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM57",
+            "TM70",
+            "TM73",
+            "TM82",
+            "TM87",
+            "TM89",
+            "TM90",
+            "TM91"
+        ],
+        "by_tutor": [
+            "MOVE_AQUA_TAIL",
+            "MOVE_BOUNCE",
+            "MOVE_GASTRO_ACID",
+            "MOVE_KNOCK_OFF",
+            "MOVE_MAGNET_RISE",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_SNORE"
+        ],
+        "egg_moves": []
+    },
+    "evolutions": [
+        [
+            "EVO_USE_ITEM",
+            "ITEM_THUNDERSTONE",
+            "SPECIES_EELEKTROSS"
+        ]
+    ],
+    "offspring": "SPECIES_TYNAMO",
+    "footprint": {
+        "has": false,
+        "size": "FOOTPRINT_LARGE",
+        "type": "FOOTPRINT_TYPE_TOUGH"
+    },
+    "pokedex_data": {
+        "height_inches": 47,
+        "weight_pounds": 48.5,
+        "body_shape": "SHAPE_FINS",
+        "trainer_scale_f": 256,
+        "pokemon_scale_f": 249,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 249,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 0,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 0,
+        "en": {
+            "name": "EELEKTRIK",
+            "category": "EleFish Pokémon",
+            "entry_text": [
+                "It wraps around its prey and\n",
+                "paralyzes it with electricity from\n",
+                "its circles."
+            ]
+        },
+        "fr": {
+            "name": "EELEKTRIK",
+            "category": "EleFish Pokémon",
+            "entry_text": [
+                "It wraps around its prey and\n",
+                "paralyzes it with electricity from\n",
+                "its circles."
+            ]
+        },
+        "de": {
+            "name": "EELEKTRIK",
+            "category": "EleFish Pokémon",
+            "entry_text": [
+                "It wraps around its prey and\n",
+                "paralyzes it with electricity from\n",
+                "its circles."
+            ]
+        },
+        "it": {
+            "name": "EELEKTRIK",
+            "category": "EleFish Pokémon",
+            "entry_text": [
+                "It wraps around its prey and\n",
+                "paralyzes it with electricity from\n",
+                "its circles."
+            ]
+        },
+        "es": {
+            "name": "EELEKTRIK",
+            "category": "EleFish Pokémon",
+            "entry_text": [
+                "It wraps around its prey and\n",
+                "paralyzes it with electricity from\n",
+                "its circles."
+            ]
+        },
+        "jp": {
+            "name": "EELEKTRIK",
+            "category": "EleFish Pokémon",
+            "entry_text": [
+                "It wraps around its prey and\n",
+                "paralyzes it with electricity from\n",
+                "its circles."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

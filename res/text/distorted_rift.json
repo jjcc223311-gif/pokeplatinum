@@ -1,0 +1,30 @@
+{
+  "key": 28771,
+  "messages": [
+    {
+      "id": "DistortedRift_Text_LeapIntoPortal",
+      "en_US": [
+        "There is the portal leading back to\n",
+        "the Turnback Cave.\r",
+        "Leap into the portal and return to\n",
+        "the Turnback Cave?"
+      ]
+    },
+    {
+      "id": "DistortedRift_Text_PlayerLeaptIntoPortal",
+      "en_US": "{STRVAR_1 3, 0, 0} leapt into the portal.\r"
+    },
+    {
+      "id": "DistortedRift_Text_ArceusDescends",
+      "en_US": [
+        "The rift trembles...\r",
+        "An overwhelming presence descends\n",
+        "from beyond the void!"
+      ]
+    },
+    {
+      "id": "DistortedRift_Text_VanishedIntoTheVoid",
+      "en_US": "{STRVAR_1 0, 0, 0} vanished into the void..."
+    }
+  ]
+}

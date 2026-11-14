@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_FRILLISH",
+            "form": 0,
+            "level": 37,
+            "item": null,
+            "moves": [
+                "MOVE_WATER_PULSE",
+                "MOVE_OMINOUS_WIND",
+                "MOVE_BRINE",
+                "MOVE_RAIN_DANCE"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MR_MIME",
             "form": 0,
             "level": 37,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_DUSCLOPS",
+            "species": "SPECIES_CONKELDURR",
             "form": 0,
             "level": 39,
             "item": null,
             "moves": [
-                "MOVE_WILL_O_WISP",
-                "MOVE_SHADOW_PUNCH",
-                "MOVE_PURSUIT",
-                "MOVE_CONFUSE_RAY"
+                "MOVE_CHIP_AWAY",
+                "MOVE_BULK_UP",
+                "MOVE_ROCK_SLIDE",
+                "MOVE_DYNAMIC_PUNCH"
             ],
             "iv_scale": 50,
             "ball_seal": 0

@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_STARAPTOR",
+            "species": "SPECIES_AMOONGUSS",
             "form": 0,
             "level": 54,
             "item": null,
             "moves": [
-                "MOVE_BRAVE_BIRD",
-                "MOVE_TAKE_DOWN",
-                "MOVE_ENDEAVOR",
-                "MOVE_QUICK_ATTACK"
+                "MOVE_SYNTHESIS",
+                "MOVE_CLEAR_SMOG",
+                "MOVE_SOLAR_BEAM",
+                "MOVE_RAGE_POWDER"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_SEISMITOAD",
+            "form": 0,
+            "level": 54,
+            "item": null,
+            "moves": [
+                "MOVE_FLAIL",
+                "MOVE_DRAIN_PUNCH",
+                "MOVE_ECHOED_VOICE",
+                "MOVE_HYDRO_PUMP"
             ],
             "iv_scale": 50,
             "ball_seal": 0

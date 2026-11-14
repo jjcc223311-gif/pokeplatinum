@@ -708,6 +708,12 @@ int PokedexGraphics_GetAnimIDfromType(int monType)
     case TYPE_DARK:
         animID = 12;
         break;
+    case TYPE_FAIRY:
+        animID = 18;
+        break;
+    case TYPE_LIGHT:
+        animID = 19; // cell 19 of res/graphics/pokedex/type_icons
+        break;
     }
 
     return animID;

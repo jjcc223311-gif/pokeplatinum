@@ -641,6 +641,7 @@ enum MapHeaderID {
     MAP_HEADER_ICEBERG_RUINS,
     MAP_HEADER_ROUTE_228_ROCK_PEAK_RUINS,
     MAP_HEADER_ROCK_PEAK_RUINS,
+    MAP_HEADER_DISTORTED_RIFT,
 
     // Add any new headers here, before the following entries
     MAP_HEADER_INVALID,
@@ -1316,6 +1317,10 @@ enum MapFileID {
     MAP_663,
     MAP_664,
     MAP_665,
+    MAP_666,
+    MAP_667,
+    MAP_668,
+    MAP_669,
 
     MAP_NONE = 0xFFFF,
 };

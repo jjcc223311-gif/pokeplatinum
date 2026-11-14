@@ -1,5 +1,5 @@
 {
-    "name": "Dawn",
+    "name": "Juniper",
     "class": "TRAINER_CLASS_DP_PLAYER_FEMALE",
     "items": [
         "ITEM_POTION"
@@ -11,6 +11,20 @@
     ],
     "double_battle": false,
     "party": [
+        {
+            "species": "SPECIES_SOLOSIS",
+            "form": 0,
+            "level": 12,
+            "item": null,
+            "moves": [
+                "MOVE_PSYWAVE",
+                "MOVE_REFLECT",
+                "MOVE_ROLLOUT",
+                "MOVE_SNATCH"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
         {
             "species": "SPECIES_PIPLUP",
             "form": 0,

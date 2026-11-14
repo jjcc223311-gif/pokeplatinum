@@ -10,14 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_DRIFLOON",
+            "species": "SPECIES_WHIRLIPEDE",
             "form": 0,
             "level": 28,
             "item": null,
             "moves": [
-                "MOVE_SPIT_UP",
-                "MOVE_SWALLOW",
-                "MOVE_STOCKPILE"
+                "MOVE_POISON_TAIL",
+                "MOVE_IRON_DEFENSE",
+                "MOVE_BUG_BITE",
+                "MOVE_VENOSHOCK"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_MARACTUS",
+            "form": 0,
+            "level": 28,
+            "item": null,
+            "moves": [
+                "MOVE_SYNTHESIS",
+                "MOVE_COTTON_SPORE",
+                "MOVE_NEEDLE_ARM",
+                "MOVE_GIGA_DRAIN"
             ],
             "iv_scale": 10,
             "ball_seal": 0

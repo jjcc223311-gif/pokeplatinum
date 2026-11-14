@@ -9,6 +9,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SWOOBAT",
+            "form": 0,
+            "level": 47,
+            "item": null,
+            "moves": [
+                "MOVE_AIR_SLASH",
+                "MOVE_FUTURE_SIGHT",
+                "MOVE_PSYCHIC",
+                "MOVE_ENDEAVOR"
+            ],
+            "iv_scale": 150,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_SEAKING",
             "form": 0,
             "level": 48,

@@ -9,7 +9,7 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_GEODUDE",
+            "species": "SPECIES_GOLETT",
             "form": 0,
             "level": 17,
             "item": null,
@@ -27,7 +27,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_ONIX",
+            "species": "SPECIES_SANDSHREW",
             "form": 0,
             "level": 19,
             "item": null,

@@ -87,6 +87,12 @@ endforeach
 #   - Castform forms have only unique sprites.
 form_registry_json = files('form_registry.json')
 
+# mega_forms.json lists every species with a Mega (form 29) and/or Legendary Mega (form 30)
+# and the directory of each form's data.json and sprites. speciesproc packs the data and
+# generates the C table; make_pl_otherpoke.py appends the sprites after every other member.
+mega_forms_json = files('mega_forms.json')
+extra_forms_json = files('extra_forms.json') # e.g. Light Arceus: forms with appended sprites
+
 form_registry = custom_target('form_registry',
     output: [
         'form_data.order',
@@ -167,6 +173,13 @@ poke_icon_files += [
     rotom_mow_icon,
 ]
 
+# Icons of the appended forms (Megas, Origin Dialga / Palkia, Gen 5 forms, ...), right after
+# rotom_mow; generated with tools/scripts/make_form_icons.py, which also writes the matching
+# sFormIcons table (include/data/form_icons.h)
+foreach form_dir : fs.read('form_icons.txt').strip().splitlines()
+    poke_icon_files += files(form_dir + '/icon.png')
+endforeach
+
 otherpoke_files = []
 num_keys = otherpoke_index.keys().length()
 foreach key : range(num_keys)
@@ -205,6 +218,7 @@ species_data = custom_target('species_data',
         'species_footprint_types.h',
         'species_egg_moves.h',
         'species_icon_palettes.h',
+        'mega_forms.h',
         'species_name.json',
         'species_name_with_articles.json',
         'species_pokedex_entry_en.json',
@@ -246,8 +260,8 @@ species_data = custom_target('species_data',
 )
 
 species_data_outputs = species_data.to_list()
-h_headers += species_data_outputs.slice(9, 15)
-species_text_banks = species_data_outputs.slice(15, species_data_outputs.length())
+h_headers += species_data_outputs.slice(9, 16)
+species_text_banks = species_data_outputs.slice(16, species_data_outputs.length())
 
 pokedex_listings = custom_target('pokedex_listings',
     output: [
@@ -316,10 +330,17 @@ pl_otherpoke_narc = custom_target('pl_otherpoke.narc',
     input: [
         otherpoke_files,
         form_sprites_shared,
+        mega_forms_json,
+        extra_forms_json,
     ],
     depends: [ py_consts_generators ],
+    depfile: 'pl_otherpoke.d',
     command: [
         make_pl_otherpoke_py,
+        '--mega-forms', mega_forms_json,
+        '--extra-forms', extra_forms_json,
+        '--pokemon-dir', pokemon_data_root,
+        '--depfile', '@DEPFILE@',
         '--nitrogfx', nitrogfx_exe,
         '--narc', nitroarc_exe,
         '--private-dir', '@PRIVATE_DIR@',

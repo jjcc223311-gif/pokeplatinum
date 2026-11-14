@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_STARAPTOR",
+            "species": "SPECIES_FOONGUS",
             "form": 0,
             "level": 35,
             "item": null,
             "moves": [
-                "MOVE_TAKE_DOWN",
-                "MOVE_AERIAL_ACE",
-                "MOVE_ENDEAVOR",
-                "MOVE_QUICK_ATTACK"
+                "MOVE_SWEET_SCENT",
+                "MOVE_GIGA_DRAIN",
+                "MOVE_TOXIC",
+                "MOVE_SYNTHESIS"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_PALPITOAD",
+            "form": 0,
+            "level": 35,
+            "item": null,
+            "moves": [
+                "MOVE_AQUA_RING",
+                "MOVE_UPROAR",
+                "MOVE_MUDDY_WATER",
+                "MOVE_RAIN_DANCE"
             ],
             "iv_scale": 50,
             "ball_seal": 0

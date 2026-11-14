@@ -39,6 +39,8 @@ void Sound_SetPokemonCryDuration(int param0, enum HeapID heapID);
 static void Sound_Impl_CryDurationTask(SysTask *param0, void *param1);
 void Sound_Impl_DestroyCryDurationTask(void);
 static BOOL Sound_Impl_IsShayminSkyForm(u16 species, u8 form);
+static u16 Sound_Impl_FormCry(u16 species, u8 form);
+static BOOL Sound_Impl_IsFormCry(u16 waveID);
 void Sound_ClearPokemonCryParams(void);
 static BOOL Sound_Impl_PlayPokemonCryEcho(u16 species, s8 pitch, u8 form);
 static BOOL Sound_PlayPokemonCryReversedEcho(u16 param0, s8 param1, int param2, int param3, enum HeapID heapID);
@@ -330,12 +332,12 @@ BOOL Sound_PlayPokemonCry(u16 species, u8 form)
     ChatotCry **chatotCry = SoundSystem_GetParam(SOUND_SYSTEM_PARAM_CHATOT_CRY);
     u8 *allow2Cries = SoundSystem_GetParam(SOUND_SYSTEM_PARAM_ALLOW_2_POKEMON_CRIES);
 
-    u16 waveID = species;
+    u16 waveID = Sound_Impl_FormCry(species, form);
     if (Sound_Impl_IsShayminSkyForm(species, form) == TRUE) {
         waveID = shaymin_forms_sky_cry_swar;
     }
 
-    if (waveID != shaymin_forms_sky_cry_swar) {
+    if (Sound_Impl_IsFormCry(waveID) == FALSE) {
         if (waveID > MAX_SPECIES || waveID == SPECIES_NONE) {
             waveID = bulbasaur_cry_swar;
         }
@@ -421,11 +423,12 @@ BOOL Sound_PlayPokemonCryEx(enum PokemonCryMod cryMod, u16 species, int pan, int
     u8 *chatotCryPlaying = SoundSystem_GetParam(SOUND_SYSTEM_PARAM_CHATOT_CRY_PLAYING);
     UNUSED(SoundSystem_GetParam(SOUND_SYSTEM_PARAM_CHATOT_CRY));
 
+    species = Sound_Impl_FormCry(species, form);
     if (Sound_Impl_IsShayminSkyForm(species, form) == TRUE) {
         species = shaymin_forms_sky_cry_swar;
     }
 
-    if (species != shaymin_forms_sky_cry_swar) {
+    if (Sound_Impl_IsFormCry(species) == FALSE) {
         if (species > MAX_SPECIES || species == SPECIES_NONE) {
             species = SPECIES_BULBASAUR;
         }
@@ -699,6 +702,7 @@ void Sound_PlayDelayedPokemonCryEx(enum PokemonCryMod cryMod, u16 species, int p
         *activeCry ^= 1;
     }
 
+    species = Sound_Impl_FormCry(species, form);
     if (Sound_Impl_IsShayminSkyForm(species, form) == TRUE) {
         species = shaymin_forms_sky_cry_swar;
     }
@@ -718,6 +722,27 @@ void Sound_PlayDelayedPokemonCryEx(enum PokemonCryMod cryMod, u16 species, int p
     *paramVolume = volume;
     *paramHeapID = heapID;
     *paramDelay = delay;
+}
+
+// Black / White Kyurem have their own cries (wave archives after every species)
+static u16 Sound_Impl_FormCry(u16 species, u8 form)
+{
+    if (species == SPECIES_KYUREM && form == 1) {
+        return kyurem_forms_black_cry_swar;
+    }
+
+    if (species == SPECIES_KYUREM && form == 2) {
+        return kyurem_forms_white_cry_swar;
+    }
+
+    return species;
+}
+
+static BOOL Sound_Impl_IsFormCry(u16 waveID)
+{
+    return waveID == shaymin_forms_sky_cry_swar
+        || waveID == kyurem_forms_black_cry_swar
+        || waveID == kyurem_forms_white_cry_swar;
 }
 
 static BOOL Sound_Impl_IsShayminSkyForm(u16 species, u8 form)

@@ -1,0 +1,242 @@
+{
+    "base_stats": {
+        "hp": 79,
+        "attack": 115,
+        "defense": 70,
+        "speed": 111,
+        "special_attack": 125,
+        "special_defense": 80
+    },
+    "types": [
+        "TYPE_FLYING",
+        "TYPE_FLYING"
+    ],
+    "catch_rate": 3,
+    "base_exp_reward": 255,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 3,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE"
+    },
+    "gender_ratio": "GENDER_RATIO_MALE_ONLY",
+    "hatch_cycles": 120,
+    "base_friendship": 90,
+    "exp_rate": "EXP_RATE_SLOW",
+    "egg_groups": [
+        "EGG_GROUP_UNDISCOVERED",
+        "EGG_GROUP_UNDISCOVERED"
+    ],
+    "abilities": [
+        "ABILITY_PRANKSTER",
+        "ABILITY_NONE"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_GREEN",
+    "flip_sprite": false,
+    "icon_palette": 0,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_ASTONISH"
+            ],
+            [
+                1,
+                "MOVE_GUST"
+            ],
+            [
+                1,
+                "MOVE_UPROAR"
+            ],
+            [
+                7,
+                "MOVE_SWAGGER"
+            ],
+            [
+                13,
+                "MOVE_BITE"
+            ],
+            [
+                19,
+                "MOVE_REVENGE"
+            ],
+            [
+                25,
+                "MOVE_AIR_CUTTER"
+            ],
+            [
+                31,
+                "MOVE_EXTRASENSORY"
+            ],
+            [
+                37,
+                "MOVE_AGILITY"
+            ],
+            [
+                43,
+                "MOVE_AIR_SLASH"
+            ],
+            [
+                49,
+                "MOVE_CRUNCH"
+            ],
+            [
+                55,
+                "MOVE_TAILWIND"
+            ],
+            [
+                61,
+                "MOVE_RAIN_DANCE"
+            ],
+            [
+                67,
+                "MOVE_HURRICANE"
+            ],
+            [
+                73,
+                "MOVE_DARK_PULSE"
+            ],
+            [
+                79,
+                "MOVE_HAMMER_ARM"
+            ],
+            [
+                85,
+                "MOVE_THRASH"
+            ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM08",
+            "TM10",
+            "TM12",
+            "TM15",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM23",
+            "TM27",
+            "TM29",
+            "TM31",
+            "TM32",
+            "TM36",
+            "TM40",
+            "TM41",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM46",
+            "TM52",
+            "TM56",
+            "TM63",
+            "TM66",
+            "TM68",
+            "TM79",
+            "TM82",
+            "TM86",
+            "TM87",
+            "TM89",
+            "TM90",
+            "HM02",
+            "HM04",
+            "HM06"
+        ],
+        "by_tutor": [
+            "MOVE_HEAT_WAVE",
+            "MOVE_ICY_WIND",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SNORE",
+            "MOVE_SUPERPOWER",
+            "MOVE_UPROAR"
+        ],
+        "egg_moves": []
+    },
+    "evolutions": [],
+    "offspring": "SPECIES_TORNADUS",
+    "footprint": {
+        "has": true,
+        "size": "FOOTPRINT_SMALL",
+        "type": "FOOTPRINT_TYPE_SILENT"
+    },
+    "pokedex_data": {
+        "height_inches": 59,
+        "weight_pounds": 138.9,
+        "body_shape": "SHAPE_HEAD_ARMS",
+        "trainer_scale_f": 272,
+        "pokemon_scale_f": 242,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 242,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 6,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 6,
+        "en": {
+            "name": "TORNADUS",
+            "category": "Cyclone Pokémon",
+            "entry_text": [
+                "It flies across the land, making\n",
+                "strong winds. It causes damage\n",
+                "wherever it goes."
+            ]
+        },
+        "fr": {
+            "name": "TORNADUS",
+            "category": "Cyclone Pokémon",
+            "entry_text": [
+                "It flies across the land, making\n",
+                "strong winds. It causes damage\n",
+                "wherever it goes."
+            ]
+        },
+        "de": {
+            "name": "TORNADUS",
+            "category": "Cyclone Pokémon",
+            "entry_text": [
+                "It flies across the land, making\n",
+                "strong winds. It causes damage\n",
+                "wherever it goes."
+            ]
+        },
+        "it": {
+            "name": "TORNADUS",
+            "category": "Cyclone Pokémon",
+            "entry_text": [
+                "It flies across the land, making\n",
+                "strong winds. It causes damage\n",
+                "wherever it goes."
+            ]
+        },
+        "es": {
+            "name": "TORNADUS",
+            "category": "Cyclone Pokémon",
+            "entry_text": [
+                "It flies across the land, making\n",
+                "strong winds. It causes damage\n",
+                "wherever it goes."
+            ]
+        },
+        "jp": {
+            "name": "TORNADUS",
+            "category": "Cyclone Pokémon",
+            "entry_text": [
+                "It flies across the land, making\n",
+                "strong winds. It causes damage\n",
+                "wherever it goes."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

@@ -9,14 +9,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_MACHOKE",
+            "species": "SPECIES_SCRAGGY",
             "form": 0,
             "level": 23,
             "item": null,
             "moves": [
-                "MOVE_KARATE_CHOP",
-                "MOVE_LEER",
-                "MOVE_FORESIGHT"
+                "MOVE_HEADBUTT",
+                "MOVE_SWAGGER",
+                "MOVE_BRICK_BREAK",
+                "MOVE_PAYBACK"
+            ],
+            "iv_scale": 40,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_MIENFOO",
+            "form": 0,
+            "level": 23,
+            "item": null,
+            "moves": [
+                "MOVE_DETECT",
+                "MOVE_FAKE_OUT",
+                "MOVE_DOUBLE_SLAP",
+                "MOVE_SWIFT"
             ],
             "iv_scale": 40,
             "ball_seal": 0

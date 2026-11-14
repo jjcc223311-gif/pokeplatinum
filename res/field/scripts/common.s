@@ -90,6 +90,10 @@
     ScriptEntry CommonScript_SetLookerBGM
     ScriptEntry CommonScript_FadeToDefaultMusic_4
     ScriptEntry CommonScript_GriseousOrbCouldNotBeRemoved
+    ScriptEntry CommonScript_ToggleExpShare
+    ScriptEntry CommonScript_MobilePC
+    ScriptEntry CommonScript_DNASplicers
+    ScriptEntry CommonScript_RevealGlass
     ScriptEntryEnd
 
 CommonScript_Dummy2010:
@@ -1703,4 +1707,143 @@ CommonScript_GriseousOrbCouldNotBeRemoved:
     ReturnCommonScript
     End
 
+CommonScript_ToggleExpShare:
+    LockAll
+    GoToIfSet FLAG_EXP_SHARE_ON, CommonScript_TurnOffExpShare
+    SetFlag FLAG_EXP_SHARE_ON
+    Message CommonStrings_Text_ExpShareTurnedOn
+    GoTo CommonScript_ToggleExpShareEnd
+    End
+
+CommonScript_TurnOffExpShare:
+    ClearFlag FLAG_EXP_SHARE_ON
+    Message CommonStrings_Text_ExpShareTurnedOff
+CommonScript_ToggleExpShareEnd:
+    WaitButton
+    CloseMessage
+    ReleaseAll
+    End
+
+@ Mobile PC (X menu PC BOX, L + R, or the Bag): the Pokemon Center PC's Storage System menu
+CommonScript_MobilePC:
+    LockAll
+    PlaySE SEQ_SE_DP_PC_LOGIN_sseq
+    BufferPlayerName 0
+    Message CommonStrings_Text_AccessedPokemonStorage
+    Call CommonScript_InitStorageSystemMenu
+    GoTo CommonScript_MobilePCMenuInput
+
+CommonScript_MobilePCMenuInput:
+    ShowListMenu
+    SetVar VAR_0x8008, VAR_RESULT
+    GoToIfEq VAR_0x8008, 0, CommonScript_MobilePCDeposit
+    GoToIfEq VAR_0x8008, 1, CommonScript_MobilePCWithdraw
+    GoToIfEq VAR_0x8008, 2, CommonScript_MobilePCMovePokemon
+    GoToIfEq VAR_0x8008, 3, CommonScript_MobilePCMoveItems
+    GoToIfEq VAR_0x8008, 4, CommonScript_MobilePCCompare
+    CloseMessage
+    PlaySE SEQ_SE_DP_PC_LOGOFF_sseq
+    ReleaseAll
+    End
+
+CommonScript_MobilePCDeposit:
+    Call CommonScript_MobilePCFadeOut
+    OpenPokemonStorage 0
+    GoTo CommonScript_MobilePCReturn
+
+CommonScript_MobilePCWithdraw:
+    Call CommonScript_MobilePCFadeOut
+    OpenPokemonStorage 1
+    GoTo CommonScript_MobilePCReturn
+
+CommonScript_MobilePCMovePokemon:
+    Call CommonScript_MobilePCFadeOut
+    OpenPokemonStorage 2
+    GoTo CommonScript_MobilePCReturn
+
+CommonScript_MobilePCMoveItems:
+    Call CommonScript_MobilePCFadeOut
+    OpenPokemonStorage 3
+    GoTo CommonScript_MobilePCReturn
+
+CommonScript_MobilePCCompare:
+    Call CommonScript_MobilePCFadeOut
+    OpenPokemonStorage 4
+    GoTo CommonScript_MobilePCReturn
+
+CommonScript_MobilePCFadeOut:
+    CloseMessage
+    FadeScreenOut
+    WaitFadeScreen
+    Return
+
+CommonScript_MobilePCReturn:
+    ReturnToField
+    SaveTVSegmentPokemonStorageBulletin
+    BufferPlayerName 0
+    MessageInstant CommonStrings_Text_AccessedPokemonStorage
+    Call CommonScript_InitStorageSystemMenu
+    FadeScreenIn
+    WaitFadeScreen
+    GoTo CommonScript_MobilePCMenuInput
+
     .balign 4, 0
+
+@ DNA Splicers (Bag): fuse Kyurem with the first Zekrom / Reshiram in the party, or separate them
+CommonScript_DNASplicers:
+    LockAll
+    UseDNASplicers VAR_RESULT, VAR_0x8004
+    BufferSpeciesNameFromVar 0, VAR_0x8004, 0, 0
+    GoToIfEq VAR_RESULT, DNA_SPLICERS_FUSED, CommonScript_DNASplicersFused
+    GoToIfEq VAR_RESULT, DNA_SPLICERS_SEPARATED, CommonScript_DNASplicersSeparated
+    GoToIfEq VAR_RESULT, DNA_SPLICERS_PARTY_FULL, CommonScript_DNASplicersPartyFull
+    GoToIfEq VAR_RESULT, DNA_SPLICERS_GTS_IN_USE, CommonScript_DNASplicersGTSInUse
+    Message CommonStrings_Text_DNASplicersNoEffect
+    GoTo CommonScript_DNASplicersEnd
+
+CommonScript_DNASplicersFused:
+    PlayFanfare SEQ_FANFA4_sseq
+    Message CommonStrings_Text_DNASplicersFused
+    WaitFanfare
+    GoTo CommonScript_DNASplicersEnd
+
+CommonScript_DNASplicersSeparated:
+    PlayFanfare SEQ_FANFA4_sseq
+    Message CommonStrings_Text_DNASplicersSeparated
+    WaitFanfare
+    GoTo CommonScript_DNASplicersEnd
+
+CommonScript_DNASplicersPartyFull:
+    Message CommonStrings_Text_DNASplicersPartyFull
+    GoTo CommonScript_DNASplicersEnd
+
+CommonScript_DNASplicersGTSInUse:
+    Message CommonStrings_Text_DNASplicersGTSInUse
+
+CommonScript_DNASplicersEnd:
+    WaitButton
+    CloseMessage
+    ReleaseAll
+    End
+
+@ Reveal Glass (Bag): switch every Tornadus / Thundurus / Landorus in the party between Incarnate and
+@ Therian Forme
+CommonScript_RevealGlass:
+    LockAll
+    UseRevealGlass VAR_RESULT, VAR_0x8004
+    BufferSpeciesNameFromVar 0, VAR_0x8004, 0, 0
+    GoToIfEq VAR_RESULT, REVEAL_GLASS_NO_EFFECT, CommonScript_RevealGlassNoEffect
+    PlayFanfare SEQ_FANFA4_sseq
+    Message CommonStrings_Text_RevealGlassChangedForme
+    WaitFanfare
+    GoTo CommonScript_RevealGlassEnd
+
+CommonScript_RevealGlassNoEffect:
+    Message CommonStrings_Text_DNASplicersNoEffect
+
+CommonScript_RevealGlassEnd:
+    WaitButton
+    CloseMessage
+    ReleaseAll
+    End
+

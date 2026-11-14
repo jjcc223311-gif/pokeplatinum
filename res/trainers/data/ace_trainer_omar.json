@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_ESCAVALIER",
+            "form": 0,
+            "level": 45,
+            "item": null,
+            "moves": [
+                "MOVE_SLASH",
+                "MOVE_IRON_HEAD",
+                "MOVE_IRON_DEFENSE",
+                "MOVE_X_SCISSOR"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MAMOSWINE",
             "form": 0,
             "level": 45,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_MOTHIM",
+            "species": "SPECIES_REUNICLUS",
             "form": 0,
             "level": 46,
             "item": null,
             "moves": [
-                "MOVE_SILVER_WIND",
-                "MOVE_AIR_SLASH",
+                "MOVE_PAIN_SPLIT",
                 "MOVE_PSYCHIC",
-                "MOVE_TOXIC"
+                "MOVE_DIZZY_PUNCH",
+                "MOVE_SKILL_SWAP"
             ],
             "iv_scale": 50,
             "ball_seal": 0

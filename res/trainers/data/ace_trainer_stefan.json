@@ -10,7 +10,16 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_PUPITAR",
+            "species": "SPECIES_BASCULIN",
+            "form": 0,
+            "level": 58,
+            "item": null,
+            "moves": null,
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_GOLURK",
             "form": 0,
             "level": 58,
             "item": null,

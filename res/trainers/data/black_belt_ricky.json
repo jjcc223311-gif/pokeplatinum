@@ -9,6 +9,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_THROH",
+            "form": 0,
+            "level": 37,
+            "item": null,
+            "moves": [
+                "MOVE_STORM_THROW",
+                "MOVE_BODY_SLAM",
+                "MOVE_BULK_UP",
+                "MOVE_CIRCLE_THROW"
+            ],
+            "iv_scale": 40,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_STEELIX",
             "form": 0,
             "level": 38,

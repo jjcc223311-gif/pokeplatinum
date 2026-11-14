@@ -205,7 +205,7 @@
     {
       "id": "Route201_Text_DawnYouLeftYourBriefcase",
       "en_US": [
-        "Dawn: Professor Rowan.\r",
+        "Juniper: Professor Rowan.\r",
         "You left your briefcase at the lake!\r"
       ]
     },
@@ -232,7 +232,7 @@
       "id": "Route201_Text_NiceWorkDawn",
       "en_US": [
         "Rowan: Ah! There it is!\n",
-        "Dawn, nice work.\r",
+        "Juniper, nice work.\r",
         "What I was about to do was to entrust\n",
         "these two with their own Pokémon.\r"
       ]
@@ -249,7 +249,7 @@
     {
       "id": "Route201_Text_DawnPokemonHardToReplace",
       "en_US": [
-        "Dawn: Pardon?!\r",
+        "Juniper: Pardon?!\r",
         "Those Pokémon are hard to replace.\n",
         "Are you sure about giving them away?\r"
       ]
@@ -346,7 +346,7 @@
     {
       "id": "Route201_Text_DawnWaitForMe",
       "en_US": [
-        "Dawn: Professor!\n",
+        "Juniper: Professor!\n",
         "Wait for me, please!\r"
       ]
     },

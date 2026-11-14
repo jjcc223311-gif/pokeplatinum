@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_MIENSHAO",
+            "form": 0,
+            "level": 60,
+            "item": null,
+            "moves": [
+                "MOVE_U_TURN",
+                "MOVE_WIDE_GUARD",
+                "MOVE_BOUNCE",
+                "MOVE_HI_JUMP_KICK"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_TAUROS",
             "form": 0,
             "level": 61,

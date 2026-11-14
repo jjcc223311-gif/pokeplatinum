@@ -4,7 +4,7 @@
     {
       "id": "Route207_Text_DawnChooseWhichHand",
       "en_US": [
-        "Dawn: Hi, {STRVAR_1 3, 0, 0}!\n",
+        "Juniper: Hi, {STRVAR_1 3, 0, 0}!\n",
         "How’s your Pokédex coming along?\r",
         "Me? I’m somewhere between fantastic\n",
         "and, uh, hopeless...\r",
@@ -17,7 +17,7 @@
     {
       "id": "Route207_Text_DawnYouWantTheVsSeeker",
       "en_US": [
-        "Dawn: I see...\n",
+        "Juniper: I see...\n",
         "You want the Vs. Seeker.\r",
         "I’m impressed, {STRVAR_1 3, 0, 0}.\n",
         "You know what’s important.\r"
@@ -26,8 +26,8 @@
     {
       "id": "Route207_Text_DawnHaveThisTooThen",
       "en_US": [
-        "Dawn: Using that Vs. Seeker, you can\n",
-        "find Trainers who want a rematch\f",
+        "Juniper: Using that Vs. Seeker, you\n",
+        "can find Trainers who want a rematch\f",
         "with you.\r",
         "Oh, {STRVAR_1 3, 0, 0}, do you also have\n",
         "a Pokétch?\r",
@@ -40,7 +40,7 @@
     {
       "id": "Route207_Text_DawnUseDowsingMachineOften",
       "en_US": [
-        "Dawn: The {STRVAR_1 24, 1, 0} is\n",
+        "Juniper: The {STRVAR_1 24, 1, 0} is\n",
         "something you should touch often.\r",
         "It will tell you if there is an item\n",
         "on the ground that you can’t see.\r",

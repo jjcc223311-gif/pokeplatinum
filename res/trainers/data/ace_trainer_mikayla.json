@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_LIEPARD",
+            "form": 0,
+            "level": 56,
+            "item": null,
+            "moves": [
+                "MOVE_NIGHT_SLASH",
+                "MOVE_SNATCH",
+                "MOVE_NASTY_PLOT",
+                "MOVE_SUCKER_PUNCH"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_SEVIPER",
             "form": 0,
             "level": 56,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_PERSIAN",
+            "species": "SPECIES_GIGALITH",
             "form": 0,
             "level": 56,
             "item": null,
             "moves": [
-                "MOVE_NIGHT_SLASH",
-                "MOVE_POWER_GEM",
-                "MOVE_FAINT_ATTACK",
-                "MOVE_FAKE_OUT"
+                "MOVE_STEALTH_ROCK",
+                "MOVE_SANDSTORM",
+                "MOVE_STONE_EDGE",
+                "MOVE_EXPLOSION"
             ],
             "iv_scale": 50,
             "ball_seal": 0

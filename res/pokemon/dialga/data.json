@@ -7,7 +7,7 @@
         "special_attack": 150,
         "special_defense": 100
     },
-    "types": [ "TYPE_STEEL", "TYPE_DRAGON" ],
+    "types": [ "TYPE_STEEL", "TYPE_LIGHT" ],
     "catch_rate": 30,
     "base_exp_reward": 220,
     "ev_yields": {

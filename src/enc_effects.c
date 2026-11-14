@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "constants/battle.h"
+#include "constants/fieldmap.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
 #include "generated/trainer_classes.h"
@@ -333,6 +334,27 @@ static u32 EncEffects_WildPokemonEffect(Party *wildParty, int mapHeaderID)
         break;
     default:
         break;
+    }
+
+    // Distorted Rift pool: the box legendaries and Mewtwo get the Dialga / Palkia theme, every
+    // other legendary / mythical the legendary theme (Heatran, Regigigas)
+    if (mapHeaderID == MAP_HEADER_DISTORTED_RIFT && result == ENCEFF_NORMAL_WILD) {
+        switch (wildSpecies) {
+        case SPECIES_MEWTWO:
+        case SPECIES_LUGIA:
+        case SPECIES_HO_OH:
+        case SPECIES_KYOGRE:
+        case SPECIES_GROUDON:
+        case SPECIES_RAYQUAZA:
+        case SPECIES_RESHIRAM:
+        case SPECIES_ZEKROM:
+        case SPECIES_KYUREM:
+            result = ENCEFF_DIALGA_PALKIA;
+            break;
+        default:
+            result = ENCEFF_MINOR_LEGENDARIES;
+            break;
+        }
     }
 
     return result;

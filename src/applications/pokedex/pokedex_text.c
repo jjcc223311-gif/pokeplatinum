@@ -129,7 +129,7 @@ String *PokedexText_DexEntry(int species, int language, int entryOffset, enum He
 
 static inline BOOL ValidLanguage(int species, int languageIndex)
 {
-    if ((species > NATIONAL_DEX_COUNT) && (languageIndex != NUM_LANGUAGES)) {
+    if ((species > POKEDEX_SPECIES_COUNT) && (languageIndex != NUM_LANGUAGES)) {
         return FALSE;
     }
 

@@ -94,11 +94,63 @@
 #define GIRATINA_FORM_ORIGIN  1
 #define GIRATINA_FORM_COUNT   2
 
+// Origin Formes (held Adamant / Lustrous Orb), like Giratina's; data and sprites from
+// res/pokemon/extra_forms.json
+#define DIALGA_FORM_BASE   0
+#define DIALGA_FORM_ORIGIN 1
+#define DIALGA_FORM_COUNT  2
+
+#define PALKIA_FORM_BASE   0
+#define PALKIA_FORM_ORIGIN 1
+#define PALKIA_FORM_COUNT  2
+
+// Form numbers used by every Mega / Legendary Mega (forms are 5 bits: 0-31; Unown uses up to 27).
+// Which species have which of them, and where each species' own data lives, is
+// res/pokemon/mega_forms.json. A species with a _2 form always has the matching _1 form.
+#define FORM_MEGA_2           28 // second Mega (e.g. Charizard, Mewtwo)
+#define FORM_MEGA_1           29 // every species' first Mega
+#define FORM_LEGENDARY_MEGA_1 30
+#define FORM_LEGENDARY_MEGA_2 31
+
+#define FORM_IS_MEGA(form) ((form) >= FORM_MEGA_2 && (form) <= FORM_LEGENDARY_MEGA_2)
+
 #define SHAYMIN_FORM_LAND  0
 #define SHAYMIN_FORM_SKY   1
 #define SHAYMIN_FORM_COUNT 2
 
-#define ARCEUS_FORM_COUNT 18
+#define ARCEUS_FORM_LIGHT 19 // = TYPE_LIGHT (Light Plate); sprite from res/pokemon/extra_forms.json
+#define ARCEUS_FORM_COUNT 20 // forms are type numbers; 18 (Fairy) is unused
+
+// Gen 5 alternate forms; data and sprites from res/pokemon/extra_forms.json
+#define BASCULIN_FORM_RED_STRIPED  0
+#define BASCULIN_FORM_BLUE_STRIPED 1
+
+#define DARMANITAN_FORM_STANDARD 0
+#define DARMANITAN_FORM_ZEN      1
+
+// Deerling / Sawsbuck: the season when they were met (spring, summer, autumn, winter)
+#define SEASON_FORM_SPRING 0
+#define SEASON_FORM_SUMMER 1
+#define SEASON_FORM_AUTUMN 2
+#define SEASON_FORM_WINTER 3
+#define SEASON_FORM_COUNT  4
+
+// Tornadus / Thundurus / Landorus (Reveal Glass)
+#define FORCES_OF_NATURE_FORM_INCARNATE 0
+#define FORCES_OF_NATURE_FORM_THERIAN   1
+
+#define KELDEO_FORM_ORDINARY 0
+#define KELDEO_FORM_RESOLUTE 1 // knows Secret Sword
+
+#define MELOETTA_FORM_ARIA      0
+#define MELOETTA_FORM_PIROUETTE 1 // in battle, after Relic Song
+
+// Genesect: held Drive (also sets Techno Blast's type)
+#define GENESECT_FORM_NONE  0
+#define GENESECT_FORM_DOUSE 1
+#define GENESECT_FORM_SHOCK 2
+#define GENESECT_FORM_BURN  3
+#define GENESECT_FORM_CHILL 4
 
 #define EGG_FORM_BASE    0
 #define EGG_FORM_MANAPHY 1

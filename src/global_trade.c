@@ -65,3 +65,24 @@ int GlobalTrade_GetUnusedInt(GlobalTrade *globalTrade)
 {
     return globalTrade->neverSet_EE;
 }
+
+// Kyurem fusion (DNA Splicers): the fused partner is kept in storedPokemon, marked by the
+// otherwise unused neverSet_EE field (the Wi-Fi GTS can't be used while it is there)
+#define KYUREM_FUSION_MARKER 0x464B
+
+BOOL GlobalTrade_HasFusedPartner(GlobalTrade *globalTrade)
+{
+    return globalTrade->neverSet_EE == KYUREM_FUSION_MARKER;
+}
+
+void GlobalTrade_SetFusedPartner(GlobalTrade *globalTrade, Pokemon *mon)
+{
+    if (mon != NULL) {
+        MI_CpuCopyFast((void *)mon, globalTrade->storedPokemon, sizeof(Pokemon));
+        globalTrade->neverSet_EE = KYUREM_FUSION_MARKER;
+    } else {
+        MI_CpuClearFast(globalTrade->storedPokemon, sizeof(Pokemon));
+        globalTrade->neverSet_EE = 0;
+    }
+}
+

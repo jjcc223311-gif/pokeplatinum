@@ -403,7 +403,7 @@ static BOOL sub_0202F794(SaveData *saveData, const BattleRecording *battleRecord
                 }
 
                 for (v5 = 0; v5 < 4; v5++) {
-                    if (v6->unk_1C[v5] > 467) {
+                    if (v6->unk_1C[v5] > MAX_MOVES - 1) { // was 467 (Shadow Force)
                         return 0;
                     }
                 }

@@ -8,7 +8,16 @@
     "double_battle": true,
     "party": [
         {
-            "species": "SPECIES_MAGNEMITE",
+            "species": "SPECIES_SAWSBUCK",
+            "form": 0,
+            "level": 35,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_JOLTIK",
             "form": 0,
             "level": 35,
             "item": null,

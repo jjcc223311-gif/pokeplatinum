@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SCRAGGY",
+            "form": 0,
+            "level": 36,
+            "item": null,
+            "moves": [
+                "MOVE_PAYBACK",
+                "MOVE_CHIP_AWAY",
+                "MOVE_HI_JUMP_KICK",
+                "MOVE_SCARY_FACE"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MAGNEMITE",
             "form": 0,
             "level": 37,

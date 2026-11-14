@@ -24,29 +24,29 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_STARAPTOR",
+            "species": "SPECIES_DARMANITAN",
             "form": 0,
             "level": 42,
             "item": null,
             "moves": [
-                "MOVE_CLOSE_COMBAT",
-                "MOVE_AERIAL_ACE",
-                "MOVE_TAKE_DOWN",
-                "MOVE_QUICK_ATTACK"
+                "MOVE_BELLY_DRUM",
+                "MOVE_FLARE_BLITZ",
+                "MOVE_HAMMER_ARM",
+                "MOVE_TAUNT"
             ],
             "iv_scale": 200,
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_FLOATZEL",
+            "species": "SPECIES_SHARPEDO",
             "form": 0,
             "level": 40,
             "item": null,
             "moves": [
+                "MOVE_CRUNCH",
+                "MOVE_SLASH",
                 "MOVE_AQUA_JET",
-                "MOVE_PURSUIT",
-                "MOVE_BRICK_BREAK",
-                "MOVE_IRON_TAIL"
+                "MOVE_TAUNT"
             ],
             "iv_scale": 200,
             "ball_seal": 0
@@ -66,15 +66,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_RAPIDASH",
+            "species": "SPECIES_SLOWBRO",
             "form": 0,
             "level": 40,
             "item": null,
             "moves": [
-                "MOVE_FIRE_BLAST",
-                "MOVE_WILL_O_WISP",
-                "MOVE_STOMP",
-                "MOVE_TAKE_DOWN"
+                "MOVE_HEADBUTT",
+                "MOVE_WATER_PULSE",
+                "MOVE_ZEN_HEADBUTT",
+                "MOVE_WITHDRAW"
             ],
             "iv_scale": 200,
             "ball_seal": 0

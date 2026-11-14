@@ -1,0 +1,342 @@
+[
+    {
+        "species": "SPECIES_LUCARIO",
+        "mega_1": "lucario/forms/mega_1",
+        "mega_2": "lucario/forms/mega_2",
+        "legendary_mega_1": "lucario/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_CHARIZARD",
+        "mega_1": "charizard/forms/mega_1",
+        "mega_2": "charizard/forms/mega_2"
+    },
+    {
+        "species": "SPECIES_ABOMASNOW",
+        "mega_1": "abomasnow/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_ABSOL",
+        "mega_1": "absol/forms/mega_1",
+        "mega_2": "absol/forms/mega_2",
+        "legendary_mega_1": "absol/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_AERODACTYL",
+        "mega_1": "aerodactyl/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_AGGRON",
+        "mega_1": "aggron/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_ALAKAZAM",
+        "mega_1": "alakazam/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_ALTARIA",
+        "mega_1": "altaria/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_AMPHAROS",
+        "mega_1": "ampharos/forms/mega_1",
+        "legendary_mega_1": "ampharos/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_BANETTE",
+        "mega_1": "banette/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_BEEDRILL",
+        "mega_1": "beedrill/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_BLASTOISE",
+        "mega_1": "blastoise/forms/mega_1",
+        "legendary_mega_1": "blastoise/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_BLAZIKEN",
+        "mega_1": "blaziken/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_BUTTERFREE",
+        "mega_1": "butterfree/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_CAMERUPT",
+        "mega_1": "camerupt/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_GALLADE",
+        "mega_1": "gallade/forms/mega_1",
+        "legendary_mega_1": "gallade/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_GARCHOMP",
+        "mega_1": "garchomp/forms/mega_1",
+        "mega_2": "garchomp/forms/mega_2",
+        "legendary_mega_1": "garchomp/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_GARDEVOIR",
+        "mega_1": "gardevoir/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_GENGAR",
+        "mega_1": "gengar/forms/mega_1",
+        "legendary_mega_1": "gengar/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_GLALIE",
+        "mega_1": "glalie/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_GYARADOS",
+        "mega_1": "gyarados/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_HERACROSS",
+        "mega_1": "heracross/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_HOUNDOOM",
+        "mega_1": "houndoom/forms/mega_1",
+        "legendary_mega_1": "houndoom/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_KANGASKHAN",
+        "mega_1": "kangaskhan/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_KINGLER",
+        "mega_1": "kingler/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_LAPRAS",
+        "mega_1": "lapras/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_LATIAS",
+        "mega_1": "latias/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_LATIOS",
+        "mega_1": "latios/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_LOPUNNY",
+        "mega_1": "lopunny/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_MACHAMP",
+        "mega_1": "machamp/forms/mega_1",
+        "mega_2": "machamp/forms/mega_2"
+    },
+    {
+        "species": "SPECIES_MANECTRIC",
+        "mega_1": "manectric/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_MAWILE",
+        "mega_1": "mawile/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_MEDICHAM",
+        "mega_1": "medicham/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_METAGROSS",
+        "mega_1": "metagross/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_MEWTWO",
+        "mega_1": "mewtwo/forms/mega_1",
+        "mega_2": "mewtwo/forms/mega_2"
+    },
+    {
+        "species": "SPECIES_PIDGEOT",
+        "mega_1": "pidgeot/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_PINSIR",
+        "mega_1": "pinsir/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_RAYQUAZA",
+        "mega_1": "rayquaza/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_SABLEYE",
+        "mega_1": "sableye/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_SALAMENCE",
+        "mega_1": "salamence/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_SCEPTILE",
+        "mega_1": "sceptile/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_SCIZOR",
+        "mega_1": "scizor/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_SHARPEDO",
+        "mega_1": "sharpedo/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_SLOWBRO",
+        "mega_1": "slowbro/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_SNORLAX",
+        "mega_1": "snorlax/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_STEELIX",
+        "mega_1": "steelix/forms/mega_1",
+        "mega_2": "steelix/forms/mega_2"
+    },
+    {
+        "species": "SPECIES_SWAMPERT",
+        "mega_1": "swampert/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_TYRANITAR",
+        "mega_1": "tyranitar/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_VENUSAUR",
+        "mega_1": "venusaur/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_UXIE",
+        "mega_1": "uxie/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_MESPRIT",
+        "mega_1": "mesprit/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_AZELF",
+        "mega_1": "azelf/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_ARCEUS",
+        "mega_1": "arceus/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_ELECTIVIRE",
+        "mega_1": "electivire/forms/mega_1",
+        "legendary_mega_1": "electivire/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_ROSERADE",
+        "mega_1": "roserade/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_LUMINEON",
+        "mega_1": "lumineon/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_CRESSELIA",
+        "mega_1": "cresselia/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_PALKIA",
+        "mega_1": "palkia/forms/mega_1",
+        "legendary_mega_1": "palkia/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_GIRATINA",
+        "mega_1": "giratina/forms/mega_1",
+        "legendary_mega_1": "giratina/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_DIALGA",
+        "mega_1": "dialga/forms/mega_1",
+        "legendary_mega_1": "dialga/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_INFERNAPE",
+        "mega_1": "infernape/forms/mega_1",
+        "legendary_mega_1": "infernape/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_EMPOLEON",
+        "mega_1": "empoleon/forms/mega_1",
+        "legendary_mega_1": "empoleon/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_TORTERRA",
+        "mega_1": "torterra/forms/mega_1",
+        "legendary_mega_1": "torterra/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_LUXRAY",
+        "mega_1": "luxray/forms/mega_1",
+        "legendary_mega_1": "luxray/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_RAICHU",
+        "mega_1": "raichu/forms/mega_1",
+        "mega_2": "raichu/forms/mega_2"
+    },
+    {
+        "species": "SPECIES_MILOTIC",
+        "mega_1": "milotic/forms/mega_1",
+        "legendary_mega_1": "milotic/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_BASTIODON",
+        "mega_1": "bastiodon/forms/mega_1",
+        "legendary_mega_1": "bastiodon/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_FLOATZEL",
+        "mega_1": "floatzel/forms/mega_1",
+        "legendary_mega_1": "floatzel/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_MISMAGIUS",
+        "mega_1": "mismagius/forms/mega_1",
+        "legendary_mega_1": "mismagius/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_PURUGLY",
+        "mega_1": "purugly/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_SKUNTANK",
+        "mega_1": "skuntank/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_DRAPION",
+        "mega_1": "drapion/forms/mega_1",
+        "legendary_mega_1": "drapion/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_TOXICROAK",
+        "mega_1": "toxicroak/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_WEAVILE",
+        "mega_1": "weavile/forms/mega_1"
+    },
+    {
+        "species": "SPECIES_RHYPERIOR",
+        "mega_1": "rhyperior/forms/mega_1",
+        "legendary_mega_1": "rhyperior/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_MAGMORTAR",
+        "mega_1": "magmortar/forms/mega_1",
+        "legendary_mega_1": "magmortar/forms/legendary_1"
+    },
+    {
+        "species": "SPECIES_FROSLASS",
+        "mega_1": "froslass/forms/mega_1",
+        "legendary_mega_1": "froslass/forms/legendary_1"
+    }
+]

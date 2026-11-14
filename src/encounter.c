@@ -562,6 +562,13 @@ void Encounter_NewVsSpeciesAtLevel(FieldTask *task, u16 species, u8 level, int *
         dto->battleStatusMask |= BATTLE_STATUS_LEGENDARY;
     }
 
+    // Distorted Rift: only its legendary battles happen there. Half catch rate, and a Distortion
+    // World battle like the original room (the player's Giratina keeps its Origin Forme).
+    if (fieldSystem->location->mapHeaderID == MAP_HEADER_DISTORTED_RIFT) {
+        dto->riftEncounter = TRUE;
+        dto->battleStatusMask |= BATTLE_STATUS_DISTORTION;
+    }
+
     GameRecords_IncrementRecordValue(SaveData_GetGameRecords(fieldSystem->saveData), RECORD_WILD_BATTLES_FOUGHT);
     StartEncounter(task, dto, EncEffects_CutInEffect(dto), EncEffects_BGM(dto), resultMaskPtr);
 }
@@ -744,8 +751,9 @@ void Encounter_NewVsTrainer(FieldTask *taskMan, int enemyTrainer1ID, int enemyTr
     dto = FieldBattleDTO_New(HEAP_ID_FIELD2, battleType);
     FieldBattleDTO_Init(dto, fieldSystem);
 
-    if (fieldSystem->location->mapHeaderID >= MAP_HEADER_DISTORTION_WORLD_1F
-        && fieldSystem->location->mapHeaderID <= MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM) {
+    if ((fieldSystem->location->mapHeaderID >= MAP_HEADER_DISTORTION_WORLD_1F
+            && fieldSystem->location->mapHeaderID <= MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM)
+        || fieldSystem->location->mapHeaderID == MAP_HEADER_DISTORTED_RIFT) {
         dto->battleStatusMask |= BATTLE_STATUS_DISTORTION;
     }
 

@@ -30,6 +30,8 @@ battle_sprites += [
       'tough.png',
       'cool.png',
       'water.png',
+      'fairy.png',
+      'light.png',
     ),
     extra_args: [ '-bitdepth', '4', '-version101', '-clobbersize' ],
     preserve_path_from: base_directory,

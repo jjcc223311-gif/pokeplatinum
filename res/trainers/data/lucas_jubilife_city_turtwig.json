@@ -12,6 +12,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SCRAGGY",
+            "form": 0,
+            "level": 12,
+            "item": null,
+            "moves": [
+                "MOVE_LOW_KICK",
+                "MOVE_SAND_ATTACK",
+                "MOVE_FAINT_ATTACK",
+                "MOVE_HEADBUTT"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_PIPLUP",
             "form": 0,
             "level": 13,

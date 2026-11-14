@@ -173,6 +173,7 @@ struct BattleContext {
 
     int gainedExp;
     int sharedExp;
+    int modernSharedExp;
     u32 sideGetExpMask[2];
 
     enum NarcID scriptNarc;
@@ -315,6 +316,69 @@ struct BattleContext {
     u8 recordedCommandFlags[MAX_BATTLERS];
 
     int waitingBattlers;
+
+    // Mega / Legendary Mega Evolution (player only)
+    u8 megaRequested[MAX_BATTLERS]; // TRUE while the Mega button is on (form chosen by the Mega Rock); set ONLY by the Mega button, consumed at the start of the turn
+    u8 legendaryRequested[MAX_BATTLERS]; // TRUE while the Legendary button is on; set ONLY by the Legendary button
+    u8 megaEvolvedMask; // player party slots that have Mega Evolved this battle (once per Pokemon)
+    u8 legendaryEvolvedMask; // player party slots that have Legendary Mega Evolved this battle
+    u8 legendaryUsed; // Legendary Mega Evolution is once per battle for the whole team
+    // Legendary Mega abilities with a charge / counter for the current stay (cleared on switch-in)
+    u8 crosswireCharged[MAX_BATTLERS]; // Crosswire: an Electric hit landed
+    u8 cannonSalvoCount[MAX_BATTLERS]; // Cannon Salvo: special hits landed (0-2)
+    u8 rubyConduitCharged[MAX_BATTLERS]; // Ruby Conduit: took a damaging hit
+    u8 royalParryUsed[MAX_BATTLERS]; // Royal Parry: already parried a contact hit
+    int abilityChargeTurn[MAX_BATTLERS]; // turn the attacker's charges were last updated (once per move)
+    u8 magicBounceReflected; // Magic Bounce already reflected the current move (cleared each action)
+    u8 rimeCallerUsedMask[MAX_BATTLERS];
+    int sideFaintedTurn[2]; // Retaliate: turn (totalTurns + 1) a Pokemon on that side last fainted
+    int echoedVoiceTurn;    // Echoed Voice: turn it was last used, and how many turns in a row
+    u8 echoedVoiceCount;
+    u8 smackedDown[MAX_BATTLERS];      // Smack Down: grounded until it switches out
+    int telekinesisUntil[MAX_BATTLERS]; // Telekinesis: last turn (totalTurns + 1) it floats
+    int wideGuardTurn[2];  // Wide Guard / Quick Guard: turn (totalTurns + 1) the side is protected
+    int quickGuardTurn[2];
+    int wonderRoomUntil;   // Wonder Room / Magic Room: last turn they are active (0 = off)
+    int magicRoomUntil;
+    int fusionFlareTurn;   // Fusion Flare / Fusion Bolt: turn each was last used
+    int fusionBoltTurn;
+    u8 defiantPending[MAX_BATTLERS]; // Defiant: Attack +2 is due after the current move
+    u8 relicSongPending[MAX_BATTLERS]; // Meloetta used Relic Song: switch Aria / Pirouette Forme
+    // Once-per-battle Legendary Mega abilities: party slots (per battler's trainer) that used them
+    u8 fossilCitadelUsedMask[MAX_BATTLERS];
+    u8 dunePursuitUsedMask[MAX_BATTLERS];
+    u8 auraConvergeUsedMask[MAX_BATTLERS];
+    u8 timeLockUsedMask[MAX_BATTLERS];
+    u8 azureWildfireUsedMask[MAX_BATTLERS];
+    u8 distortionGateUsedMask[MAX_BATTLERS];
+    u8 prismaticGraceUsedMask[MAX_BATTLERS];
+    u8 seismicBreakerUsedMask[MAX_BATTLERS];
+    u8 thirdEyeCurseUsedMask[MAX_BATTLERS];
+    u8 omenWingsUsedMask[MAX_BATTLERS];
+    u8 prismaticGracePending[MAX_BATTLERS]; // cure + heal after the current move
+    u8 venomLeveragePending[MAX_BATTLERS]; // lower the poisoned foe's Defense after the current move
+    u8 venomLeverageTarget[MAX_BATTLERS];
+    u8 seismicBreakerPending[MAX_BATTLERS]; // show the message after the current move
+    u8 omenWingsPending[MAX_BATTLERS]; // raise Attack / Speed in the next switch-in checks
+    u8 wakeRunnerUsed[MAX_BATTLERS]; // this stay
+    u8 emperorMantleState[MAX_BATTLERS]; // this stay: 0 waiting for a Fire hit, 1 next Fighting move +1 priority, 2 used
+    u8 azureWildfirePending[MAX_BATTLERS]; // Azure Wildfire: heal + Speed after the current move
+    u8 gildedClawsUsed[MAX_BATTLERS]; // Gilded Claws: first contact hit made this stay
+    u8 siegeReservoirState[MAX_BATTLERS]; // Siege Reservoir this stay: 0 waiting, 1 heal at turn end, 2 done // Rime Caller: party slots (per battler's trainer) that already called hail
+    // Trainer (enemy) Mega / Legendary Mega Evolution, from the Coal Badge on. Indexed by the
+    // trainer's first battler (BattleSystem_TrainerMegaKey); bits = party slots.
+    u8 trainerMegaRollMask[MAX_BATTLERS]; // 50% roll won: Mega 2 (form 28)
+    u8 trainerLegendaryRollMask[MAX_BATTLERS]; // 50% roll won: Legendary 2 (form 31)
+    u8 trainerMegaRockGivenMask[MAX_BATTLERS]; // had no item and was given a Mega Rock for this battle
+    u8 trainerMegaEvolvedMask[MAX_BATTLERS];
+    u8 trainerLegendaryEvolvedMask[MAX_BATTLERS];
+    u8 trainerLegendaryUsed[MAX_BATTLERS]; // once per battle per trainer
+    int trainerMegaTurn[MAX_BATTLERS]; // per battler: turn it Mega Evolved (Legendary waits a turn)
+    u8 megaSwitchInCheck; // run the switch-in checks after a Mega Evolution (new entry abilities)
+    u32 megaTrickRoomBefore; // Trick Room bits before this turn's Mega Evolutions
+    u8 formChangedMask; // player party slots whose original form/ability are saved below,
+    u8 megaRevertForm[MAX_PARTY_SIZE]; // to be restored when the battle ends
+    u16 megaRevertAbility[MAX_PARTY_SIZE];
 
     u32 battleProgressFlag : 1;
     u32 padding3154_01 : 31;

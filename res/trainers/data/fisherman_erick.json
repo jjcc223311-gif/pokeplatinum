@@ -8,15 +8,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_GOLDEEN",
+            "species": "SPECIES_DUCKLETT",
             "form": 0,
             "level": 28,
             "item": null,
             "moves": [
+                "MOVE_BUBBLE_BEAM",
+                "MOVE_FEATHER_DANCE",
+                "MOVE_AQUA_RING",
+                "MOVE_AIR_SLASH"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_FRILLISH",
+            "form": 0,
+            "level": 28,
+            "item": null,
+            "moves": [
+                "MOVE_BUBBLE_BEAM",
+                "MOVE_RECOVER",
                 "MOVE_WATER_PULSE",
-                "MOVE_PECK",
-                "MOVE_FLAIL",
-                "MOVE_SUPERSONIC"
+                "MOVE_OMINOUS_WIND"
             ],
             "iv_scale": 10,
             "ball_seal": 0

@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SAWK",
+            "form": 0,
+            "level": 43,
+            "item": null,
+            "moves": [
+                "MOVE_BRICK_BREAK",
+                "MOVE_BULK_UP",
+                "MOVE_RETALIATE",
+                "MOVE_ENDURE"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_PILOSWINE",
             "form": 0,
             "level": 44,

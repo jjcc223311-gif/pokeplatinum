@@ -27,29 +27,29 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_DRIFBLIM",
+            "species": "SPECIES_WATCHOG",
             "form": 0,
             "level": 61,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_TOXIC",
-                "MOVE_OMINOUS_WIND",
-                "MOVE_FLY",
-                "MOVE_PROTECT"
+                "MOVE_HYPER_FANG",
+                "MOVE_MEAN_LOOK",
+                "MOVE_BATON_PASS",
+                "MOVE_SLAM"
             ],
             "iv_scale": 200,
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_HARIYAMA",
+            "species": "SPECIES_SWELLOW",
             "form": 0,
             "level": 62,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_CLOSE_COMBAT",
-                "MOVE_EARTHQUAKE",
-                "MOVE_BULLET_PUNCH",
-                "MOVE_STONE_EDGE"
+                "MOVE_ENDEAVOR",
+                "MOVE_AERIAL_ACE",
+                "MOVE_AGILITY",
+                "MOVE_AIR_SLASH"
             ],
             "iv_scale": 200,
             "ball_seal": 0

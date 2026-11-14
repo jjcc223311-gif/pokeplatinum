@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_STOUTLAND",
+            "form": 0,
+            "level": 41,
+            "item": null,
+            "moves": [
+                "MOVE_WORK_UP",
+                "MOVE_CRUNCH",
+                "MOVE_ROAR",
+                "MOVE_RETALIATE"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_TROPIUS",
             "form": 0,
             "level": 42,

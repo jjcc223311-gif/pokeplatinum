@@ -3705,7 +3705,7 @@ static BOOL ov65_02231978(UnkStruct_0207E060 *param0)
             return 0;
         }
 
-        if (467 < param0->unk_0C[v0]) {
+        if (MAX_MOVES - 1 < param0->unk_0C[v0]) { // was 467 (Shadow Force)
             return 0;
         }
     }

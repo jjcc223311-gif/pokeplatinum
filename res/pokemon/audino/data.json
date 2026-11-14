@@ -1,0 +1,254 @@
+{
+    "base_stats": {
+        "hp": 103,
+        "attack": 60,
+        "defense": 86,
+        "speed": 50,
+        "special_attack": 60,
+        "special_defense": 86
+    },
+    "types": [
+        "TYPE_NORMAL",
+        "TYPE_NORMAL"
+    ],
+    "catch_rate": 255,
+    "base_exp_reward": 255,
+    "ev_yields": {
+        "hp": 2,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_ORAN_BERRY",
+        "rare": "ITEM_SITRUS_BERRY"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_50",
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_FAST",
+    "egg_groups": [
+        "EGG_GROUP_FAIRY",
+        "EGG_GROUP_FAIRY"
+    ],
+    "abilities": [
+        "ABILITY_HEALER",
+        "ABILITY_REGENERATOR"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_PINK",
+    "flip_sprite": false,
+    "icon_palette": 1,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_GROWL"
+            ],
+            [
+                1,
+                "MOVE_HELPING_HAND"
+            ],
+            [
+                1,
+                "MOVE_POUND"
+            ],
+            [
+                5,
+                "MOVE_REFRESH"
+            ],
+            [
+                10,
+                "MOVE_DOUBLE_SLAP"
+            ],
+            [
+                15,
+                "MOVE_ATTRACT"
+            ],
+            [
+                20,
+                "MOVE_SECRET_POWER"
+            ],
+            [
+                25,
+                "MOVE_ENTRAINMENT"
+            ],
+            [
+                30,
+                "MOVE_TAKE_DOWN"
+            ],
+            [
+                35,
+                "MOVE_HEAL_PULSE"
+            ],
+            [
+                40,
+                "MOVE_AFTER_YOU"
+            ],
+            [
+                45,
+                "MOVE_SIMPLE_BEAM"
+            ],
+            [
+                50,
+                "MOVE_DOUBLE_EDGE"
+            ],
+            [
+                55,
+                "MOVE_LAST_RESORT"
+            ]
+        ],
+        "by_tm": [
+            "TM04",
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM13",
+            "TM14",
+            "TM15",
+            "TM16",
+            "TM17",
+            "TM18",
+            "TM20",
+            "TM21",
+            "TM22",
+            "TM23",
+            "TM24",
+            "TM25",
+            "TM27",
+            "TM28",
+            "TM29",
+            "TM30",
+            "TM32",
+            "TM33",
+            "TM35",
+            "TM38",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM48",
+            "TM49",
+            "TM56",
+            "TM57",
+            "TM60",
+            "TM70",
+            "TM73",
+            "TM77",
+            "TM82",
+            "TM85",
+            "TM86",
+            "TM87",
+            "TM90",
+            "TM92",
+            "HM03"
+        ],
+        "by_tutor": [
+            "MOVE_FIRE_PUNCH",
+            "MOVE_HELPING_HAND",
+            "MOVE_ICE_PUNCH",
+            "MOVE_ICY_WIND",
+            "MOVE_KNOCK_OFF",
+            "MOVE_LAST_RESORT",
+            "MOVE_SIGNAL_BEAM",
+            "MOVE_SNORE",
+            "MOVE_THUNDER_PUNCH",
+            "MOVE_UPROAR",
+            "MOVE_ZEN_HEADBUTT"
+        ],
+        "egg_moves": [
+            "MOVE_AMNESIA",
+            "MOVE_BESTOW",
+            "MOVE_ENCORE",
+            "MOVE_HEAL_BELL",
+            "MOVE_HEALING_WISH",
+            "MOVE_LUCKY_CHANT",
+            "MOVE_SLEEP_TALK",
+            "MOVE_SWEET_KISS",
+            "MOVE_WISH",
+            "MOVE_YAWN"
+        ]
+    },
+    "evolutions": [],
+    "offspring": "SPECIES_AUDINO",
+    "footprint": {
+        "has": true,
+        "size": "FOOTPRINT_MEDIUM",
+        "type": "FOOTPRINT_TYPE_CUTE"
+    },
+    "pokedex_data": {
+        "height_inches": 43,
+        "weight_pounds": 68.3,
+        "body_shape": "SHAPE_BIPEDAL_TAILLESS",
+        "trainer_scale_f": 272,
+        "pokemon_scale_f": 293,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 293,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 15,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 15,
+        "en": {
+            "name": "AUDINO",
+            "category": "Hearing Pokémon",
+            "entry_text": [
+                "Its ear feelers can hear the\n",
+                "heartbeat of others and tell how\n",
+                "they are feeling."
+            ]
+        },
+        "fr": {
+            "name": "AUDINO",
+            "category": "Hearing Pokémon",
+            "entry_text": [
+                "Its ear feelers can hear the\n",
+                "heartbeat of others and tell how\n",
+                "they are feeling."
+            ]
+        },
+        "de": {
+            "name": "AUDINO",
+            "category": "Hearing Pokémon",
+            "entry_text": [
+                "Its ear feelers can hear the\n",
+                "heartbeat of others and tell how\n",
+                "they are feeling."
+            ]
+        },
+        "it": {
+            "name": "AUDINO",
+            "category": "Hearing Pokémon",
+            "entry_text": [
+                "Its ear feelers can hear the\n",
+                "heartbeat of others and tell how\n",
+                "they are feeling."
+            ]
+        },
+        "es": {
+            "name": "AUDINO",
+            "category": "Hearing Pokémon",
+            "entry_text": [
+                "Its ear feelers can hear the\n",
+                "heartbeat of others and tell how\n",
+                "they are feeling."
+            ]
+        },
+        "jp": {
+            "name": "AUDINO",
+            "category": "Hearing Pokémon",
+            "entry_text": [
+                "Its ear feelers can hear the\n",
+                "heartbeat of others and tell how\n",
+                "they are feeling."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

@@ -25,6 +25,8 @@ static const char *enumFile   = NULL;
 static const char *baseDir    = NULL;
 static const char *tutorsFile = "move_tutors.json";
 static const char *sinnohFile = "sinnoh_pokedex.json";
+static const char *megaFile   = "mega_forms.json";
+static const char *extraFile  = "extra_forms.json";
 
 enum {
     A_PERSONAL,
@@ -46,6 +48,7 @@ enum {
     F_FOOTPRINT_SIZES,
     F_FOOTPRINT_TYPES,
     F_ICON_PALETTES,
+    F_MEGA_FORMS,
 };
 
 enum {
@@ -100,6 +103,8 @@ static Driver driver = {
     .options = (Option[]) {
         OPTION_VALUE('t', "TUTORABLES_JSON", &tutorsFile, "Moves available from tutors. Defaults to 'move_tutors.json'."),
         OPTION_VALUE('s', "SINNOH_DEX_JSON", &sinnohFile, "The Sinnoh Pokédex. Defaults to 'sinnoh_pokedex.json'."),
+        OPTION_VALUE('m', "MEGA_FORMS_JSON", &megaFile, "Mega / Legendary Mega form table, relative to BASEDIR. Defaults to 'mega_forms.json'."),
+        OPTION_VALUE('x', "EXTRA_FORMS_JSON", &extraFile, "Extra (non-Mega) form table, relative to BASEDIR. Defaults to 'extra_forms.json'."),
         POSITIONAL("ENUMFILE", &enumFile, "Header defining enum Species."),
         POSITIONAL("BASEDIR",  &baseDir,  "Directory of per-species data."),
         { 0 },
@@ -151,6 +156,7 @@ static Driver driver = {
             [F_FOOTPRINT_SIZES]    = { .filename = "species_footprint_sizes.h",    .wrap = TEXT_FILE_WRAP_TEMPLATE },
             [F_FOOTPRINT_TYPES]    = { .filename = "species_footprint_types.h",    .wrap = TEXT_FILE_WRAP_TEMPLATE },
             [F_ICON_PALETTES]      = { .filename = "species_icon_palettes.h",      .wrap = TEXT_FILE_WRAP_TEMPLATE },
+            [F_MEGA_FORMS]         = { .filename = "mega_forms.h",                 .wrap = TEXT_FILE_WRAP_TEMPLATE },
             { 0 },
         },
 
@@ -221,7 +227,13 @@ static const struct {
     { "rotom/forms/mow",       "ICON_ROTOM_MOW",       .isGiratinaOrigin = false },
 };
 
+#define MEGA_SPRITE_MEMBERS 4 // back, front, normal palette, shiny palette
+
 #define NATIONAL_DEX_MAX SPECIES_EGG // NOTE: This is distinct from NATIONAL_DEX_COUNT
+
+// The original Pokedex's listings (National order, sorts, types, shapes) only cover #1-493;
+// Gen 5 species still get per-species entries (height, weight, ...) but aren't listed.
+#define POKEDEX_LISTED_SPECIES 493
 
 // Per-species Pokédex data. The Pokédex archives are built from this after
 // every species is read: zukan_data.narc swaps Giratina's entry for its Origin
@@ -483,12 +495,12 @@ static void ProcLevelLearnset(dp_node root)
         if (i == MAX_LEARNSET_ENTRIES) break;
 
         data.entries[count++] = (SpeciesLearnsetEntry){
-            .move  = dp_bits(dp_lookup(dp_arr_at(entry, 1), L_MOVE), 9),
+            .move  = dp_u16(dp_lookup(dp_arr_at(entry, 1), L_MOVE)),
             .level = dp_bits(dp_arr_at(entry, 0), 7),
         };
     }
 
-    data.entries[count++] = (SpeciesLearnsetEntry){ .move = 0x1FF, .level = 0x7F }; // terminator
+    data.entries[count++] = (SpeciesLearnsetEntry){ .move = LEARNSET_TERMINATOR_MOVE, .level = 0xFFFF }; // terminator
 
     size_t size = count * sizeof(*data.entries);
     Archive_Pack(A_LEVEL_LEARNSETS, &data, size + (-size & 3));
@@ -951,13 +963,65 @@ static int ByHeightAsc(const void *l, const void *r)
     return Compare(a, b, sorting[a].height, sorting[b].height, 1);
 }
 
-// Sorts every National Pokédex species (without SPECIES_NONE) into `list`.
-static void SortSpecies(const DexData *data, int (*compare)(const void *, const void *), u16 *list)
+// Sorts species 1..count into `list`.
+static void SortSpecies(const DexData *data, int (*compare)(const void *, const void *), u16 *list, size_t count)
 {
-    for (size_t i = 0; i < NATIONAL_DEX_MAX - 1; i++) list[i] = (u16)(i + 1);
+    for (size_t i = 0; i < count; i++) list[i] = (u16)(i + 1);
 
     sorting = data;
-    qsort(list, NATIONAL_DEX_MAX - 1, sizeof(*list), compare);
+    qsort(list, count, sizeof(*list), compare);
+}
+
+// Every species the Legendary Pokédex lists (#1-649)
+#define LEGDEX_LISTED_SPECIES (NATIONAL_DEX_MAX - 1)
+
+// The 47 listing files of one Pokédex (National, Sinnoh, sorts, name groups, types, body shapes),
+// covering species 1..count. Only the original 17 types are listed: the search screen has no
+// Fairy / Light entry, and an extra list would shift every body-shape list after it.
+static void PackDexLists(int archive, const DexData *data, size_t count)
+{
+    u16 list[LEGDEX_LISTED_SPECIES];
+
+    // National and Sinnoh Pokédexes
+    for (size_t i = 0; i < count; i++) list[i] = (u16)(i + 1);
+    Archive_Pack(archive, list, count * sizeof(*list));
+    Archive_Pack(archive, sinnohDex, sinnohDexLen * sizeof(*sinnohDex));
+
+    // Species sorted by name, weight, and height
+    int (*sorts[])(const void *, const void *) = { ByName, ByWeightDesc, ByWeightAsc, ByHeightDesc, ByHeightAsc };
+    for (size_t i = 0; i < NELEMS(sorts); i++) {
+        SortSpecies(data, sorts[i], list, count);
+        Archive_Pack(archive, list, count * sizeof(*list));
+    }
+
+    // Species whose names begin with one of 3 letters (ABC, DEF, ...)
+    SortSpecies(data, ByName, list, count);
+    size_t i = 0;
+    for (const char *last = "CFILORUXZ"; *last != '\0'; last++) {
+        size_t start = i;
+        while (i < count && data[list[i]].name[0] <= *last) i++;
+        Archive_Pack(archive, list + start, (i - start) * sizeof(*list));
+    }
+
+    // Species by type (Normal through Dark, without the Mystery type)
+    for (u8 type = 0; type <= TYPE_DARK; type++) {
+        if (type == TYPE_MYSTERY) continue;
+
+        size_t n = 0;
+        for (u16 s = 1; s <= count; s++) {
+            if (data[s].types[0] == type || data[s].types[1] == type) list[n++] = s;
+        }
+        Archive_Pack(archive, list, n * sizeof(*list));
+    }
+
+    // Species by body shape
+    for (u8 shape = 0; shape < NUM_BODY_SHAPES; shape++) {
+        size_t n = 0;
+        for (u16 s = 1; s <= count; s++) {
+            if (data[s].bodyShape == shape) list[n++] = s;
+        }
+        Archive_Pack(archive, list, n * sizeof(*list));
+    }
 }
 
 static void PackDexData(int archive, const DexData *data)
@@ -975,47 +1039,122 @@ static void PackDexData(int archive, const DexData *data)
     PACK_FIELD(archive, data, trainerPosM);
     PACK_FIELD(archive, data, pokemonPosM);
 
-    // Files 11 and 12: listings of the National and Sinnoh Pokédexes
-    u16 list[NATIONAL_DEX_MAX - 1];
-    for (size_t i = 0; i < NELEMS(list); i++) list[i] = (u16)(i + 1);
-    Archive_Pack(archive, list, sizeof(list));
-    Archive_Pack(archive, sinnohDex, sinnohDexLen * sizeof(*sinnohDex));
+    // Files 11 through 57: the original Pokédex's listings (#1-493)
+    PackDexLists(archive, data, POKEDEX_LISTED_SPECIES);
 
-    // Files 13 through 17: species sorted by name, weight, and height
-    int (*sorts[])(const void *, const void *) = { ByName, ByWeightDesc, ByWeightAsc, ByHeightDesc, ByHeightAsc };
-    for (size_t i = 0; i < NELEMS(sorts); i++) {
-        SortSpecies(data, sorts[i], list);
-        Archive_Pack(archive, list, sizeof(list));
+    // Files 58 through 104: the same listings for the Legendary Pokédex (#1-649)
+    PackDexLists(archive, data, LEGDEX_LISTED_SPECIES);
+}
+
+// Mega / Legendary Mega forms (res/pokemon/mega_forms.json). Each listed form directory holds
+// a data.json (base stats, types, abilities, learnset) that is packed into pl_personal, evo and
+// wotbl after every other form, and back.png / front.png / normal.pal / shiny.pal that
+// make_pl_otherpoke.py appends to pl_otherpoke in the same order (4 members per form).
+// Emits sMegaSpeciesTable (mega_forms.h), the table src/pokemon.c reads for forms 29 and 30.
+static void EmitMegaForm(const char *dir, size_t *nextIndex, size_t *nextSprite)
+{
+    if (dir == NULL) {
+        TextFile_Printf(F_MEGA_FORMS, "{ 0, 0 }");
+        return;
     }
 
-    // Files 18 through 26: species whose names begin with one of 3 letters (ABC, DEF, ...)
-    SortSpecies(data, ByName, list);
-    size_t i = 0;
-    for (const char *last = "CFILORUXZ"; *last != '\0'; last++) {
-        size_t start = i;
-        while (i < NELEMS(list) && data[list[i]].name[0] <= *last) i++;
-        Archive_Pack(archive, list + start, (i - start) * sizeof(*list));
-    }
+    dp_file *file = Driver_Load("%s/%s/data.json", baseDir, dir);
+    dp_node  root = dp_root(file);
+    ProcPersonal(root);
+    ProcEvolutions(root);
+    ProcLevelLearnset(root);
+    Driver_Close(file);
 
-    // Files 27 through 44: species by type, without the Mystery type
-    for (u8 type = 0; type < NUM_POKEMON_TYPES; type++) {
-        if (type == TYPE_MYSTERY) continue;
+    TextFile_Printf(F_MEGA_FORMS, "{ %zu, %zu }", *nextIndex, *nextSprite);
+    (*nextIndex)++;
+    *nextSprite += MEGA_SPRITE_MEMBERS;
+}
 
-        size_t count = 0;
-        for (u16 s = 1; IsNationalDex(s); s++) {
-            if (data[s].types[0] == type || data[s].types[1] == type) list[count++] = s;
+static const char *MegaFormDir(dp_node entry, const char *path)
+{
+    const dp_node dir = dp_try(entry, path);
+    if (dp_missing(dir) || dp_type_of(dir) == DP_NULL) return NULL;
+    return dp_string(dir);
+}
+
+// In enum MegaSlot order: forms 29, 28, 30, 31. make_pl_otherpoke.py uses the same order.
+static const char *megaSlotKeys[] = { ".mega_1", ".mega_2", ".legendary_mega_1", ".legendary_mega_2" };
+
+// Extra forms (res/pokemon/extra_forms.json) and Megas share these: extra forms are numbered
+// first, then Megas. make_pl_otherpoke.py appends the sprites in the same order.
+static size_t nextFormIndex  = SPECIES_BAD_EGG + 1 + NELEMS(altFormsWithData);
+static size_t nextFormSprite = 0;
+
+// Forms that are not Megas but need their own sprites (and optionally their own data) without
+// moving any vanilla pl_otherpoke member, e.g. Light Arceus. Emits sExtraFormTable.
+static void ProcExtraForms(void)
+{
+    dp_file *file = Driver_Load("%s/%s", baseDir, extraFile);
+
+    TextFile_Printf(F_MEGA_FORMS, "// Generated from res/pokemon/extra_forms.json: species, form, has its own data,\n");
+    TextFile_Printf(F_MEGA_FORMS, "// pl_personal/wotbl index, first pl_otherpoke sprite member - MEGA_SPRITE_BASE\n");
+    TextFile_Printf(F_MEGA_FORMS, "static const ExtraFormEntry sExtraFormTable[] = {\n");
+
+    for (dp_each(entry, i, dp_root(file))) {
+        const dp_node species = dp_lookup_at(entry, ".species", L_SPECIES);
+        const char   *dir     = dp_string_at(entry, ".dir");
+        const bool    hasData = dp_bool_at(entry, ".has_data");
+        const u8      form    = dp_u8_at(entry, ".form");
+        if (dp_type_of(species) != DP_SYMBOL || dir == NULL) continue; // error is already staged
+
+        size_t personalIndex = 0;
+        if (hasData) {
+            dp_file *data = Driver_Load("%s/%s/data.json", baseDir, dir);
+            ProcPersonal(dp_root(data));
+            ProcEvolutions(dp_root(data));
+            ProcLevelLearnset(dp_root(data));
+            Driver_Close(data);
+            personalIndex = nextFormIndex++;
         }
-        Archive_Pack(archive, list, count * sizeof(*list));
+
+        TextFile_Printf(F_MEGA_FORMS, "    { %s, %u, %s, %zu, %zu },\n", Symbol_Name(species), form,
+                        hasData ? "TRUE" : "FALSE", personalIndex, nextFormSprite);
+        nextFormSprite += MEGA_SPRITE_MEMBERS;
     }
 
-    // Files 45 through 58: species by body shape
-    for (u8 shape = 0; shape < NUM_BODY_SHAPES; shape++) {
-        size_t count = 0;
-        for (u16 s = 1; IsNationalDex(s); s++) {
-            if (data[s].bodyShape == shape) list[count++] = s;
+    TextFile_Printf(F_MEGA_FORMS, "    { SPECIES_NONE }, // terminator\n};\n\n");
+    Driver_Close(file);
+}
+
+static void ProcMegaForms(void)
+{
+    dp_file *file = Driver_Load("%s/%s", baseDir, megaFile);
+
+    TextFile_Printf(F_MEGA_FORMS, "// Generated from res/pokemon/mega_forms.json: species, which forms it has\n");
+    TextFile_Printf(F_MEGA_FORMS, "// { Mega 1, Mega 2, Legendary Mega 1, Legendary Mega 2 }, and for each\n");
+    TextFile_Printf(F_MEGA_FORMS, "// { pl_personal/wotbl index, first pl_otherpoke sprite member - MEGA_SPRITE_BASE }\n");
+    TextFile_Printf(F_MEGA_FORMS, "static const MegaSpeciesEntry sMegaSpeciesTable[] = {\n");
+
+    for (dp_each(entry, i, dp_root(file))) {
+        const dp_node species = dp_lookup_at(entry, ".species", L_SPECIES);
+        const char   *dirs[NELEMS(megaSlotKeys)];
+        if (dp_type_of(species) != DP_SYMBOL) continue; // error is already staged
+
+        for (size_t slot = 0; slot < NELEMS(megaSlotKeys); slot++) {
+            dirs[slot] = MegaFormDir(entry, megaSlotKeys[slot]);
         }
-        Archive_Pack(archive, list, count * sizeof(*list));
+
+        // A second Mega / Legendary Mega needs the first: the buttons cycle 1 -> 2 -> off
+        if ((dirs[1] && !dirs[0]) || (dirs[3] && !dirs[2])) {
+            Driver_Fail("%s: %s has a _2 Mega form without the matching _1 form", megaFile, Symbol_Name(species));
+        }
+
+        TextFile_Printf(F_MEGA_FORMS, "    { %s, { %d, %d, %d, %d }, { ", Symbol_Name(species),
+                        dirs[0] != NULL, dirs[1] != NULL, dirs[2] != NULL, dirs[3] != NULL);
+        for (size_t slot = 0; slot < NELEMS(megaSlotKeys); slot++) {
+            if (slot) TextFile_Printf(F_MEGA_FORMS, ", ");
+            EmitMegaForm(dirs[slot], &nextFormIndex, &nextFormSprite);
+        }
+        TextFile_Printf(F_MEGA_FORMS, " } },\n");
     }
+
+    TextFile_Printf(F_MEGA_FORMS, "    { SPECIES_NONE }, // terminator: keeps the table valid when no Megas are listed\n};\n");
+    Driver_Close(file);
 }
 
 int main(int argc, char **argv)
@@ -1039,6 +1178,9 @@ int main(int argc, char **argv)
             giratinaOrigin.types[1] = personal.types[1];
         }
     }
+
+    ProcExtraForms();
+    ProcMegaForms();
 
     PackDexData(A_POKEDEX_GIRA_ALTERED, dexData);
 

@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_DARMANITAN",
+            "form": 0,
+            "level": 58,
+            "item": null,
+            "moves": [
+                "MOVE_HAMMER_ARM",
+                "MOVE_TAUNT",
+                "MOVE_SUPERPOWER",
+                "MOVE_OVERHEAT"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_ARCANINE",
             "form": 0,
             "level": 59,

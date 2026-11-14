@@ -92,7 +92,7 @@
 #define DISTORTION_WORLD_MIN_Y                          65
 #define DISTORTION_WORLD_MAX_Y                          289
 
-#define DISTORTION_WORLD_MAP_COUNT 10
+#define DISTORTION_WORLD_MAP_COUNT 11
 
 #define GIRATINA_ROOM_TELEPORT_TILE_X            15
 #define GIRATINA_ROOM_TELEPORT_TILE_Y            1
@@ -3020,6 +3020,59 @@ static BOOL TickJumpOnFloatingPlatformMovementAnimation(DistWorldFloatingPlatfor
     return FALSE;
 }
 
+// Distorted Rift: moves blue / cyan colours (hue 150-265 degrees) into the purple band (265-285),
+// the same mapping tools/scripts/recolor_rift.py applies to the Rift's textures and lights.
+static u16 RiftShiftColor(u16 color)
+{
+    int r = color & 0x1F;
+    int g = (color >> 5) & 0x1F;
+    int b = (color >> 10) & 0x1F;
+    int max = r > g ? (r > b ? r : b) : (g > b ? g : b);
+    int min = r < g ? (r < b ? r : b) : (g < b ? g : b);
+    int chroma = max - min;
+
+    if (max == 0 || chroma * 100 < max * 15) {
+        return color;
+    }
+
+    int hue;
+
+    if (max == r) {
+        hue = 60 * (g - b) / chroma;
+    } else if (max == g) {
+        hue = 120 + 60 * (b - r) / chroma;
+    } else {
+        hue = 240 + 60 * (r - g) / chroma;
+    }
+
+    if (hue < 0) {
+        hue += 360;
+    }
+
+    if (hue < 150 || hue > 265) {
+        return color;
+    }
+
+    int newHue = 265 + (hue - 150) * 20 / 115;
+
+    r = min + chroma * (newHue - 240) / 60;
+    g = min;
+    b = max;
+
+    return (color & 0x8000) | r | (g << 5) | (b << 10);
+}
+
+static void RiftShiftPalette(DistWorldSystem *system, u16 *palette, int count)
+{
+    if (DistWorldSystem_GetMapHeaderID(system) != MAP_HEADER_DISTORTED_RIFT) {
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        palette[i] = RiftShiftColor(palette[i]);
+    }
+}
+
 static void InitSkyBackground(DistWorldSystem *system)
 {
     GXLayers_EngineAToggleLayers(GX_PLANEMASK_BG1, FALSE);
@@ -3027,6 +3080,7 @@ static void InitSkyBackground(DistWorldSystem *system)
     NNSG2dPaletteData *plttData;
     char *nclrFile = NARC_AllocAndReadWholeMember(system->etcNARC, 1, HEAP_ID_FIELD1);
     NNS_G2dGetUnpackedPaletteData(nclrFile, &plttData);
+    RiftShiftPalette(system, plttData->pRawData, PALETTE_SIZE);
     Bg_LoadPalette(BG_LAYER_MAIN_2, plttData->pRawData, PALETTE_SIZE_BYTES, 0);
 
     DistWorldSkyBackground *skyBg = &system->skyBg;
@@ -3089,6 +3143,7 @@ static void InitSkyClouds(DistWorldSystem *system, DistWorldSkyClouds *clouds, N
     clouds->plttRes = SpriteResourceCollection_AddPaletteFrom(clouds->plttResColl, etcNARC, sSkyCloudsPlttNARCIndexes[0], FALSE, SKY_CLOUD_RESOURCE_BASE_ID, NNS_G2D_VRAM_TYPE_2DMAIN, 5, HEAP_ID_FIELD1);
 
     NNSG2dPaletteData *plttData = SpriteResource_GetPaletteFade(clouds->plttRes);
+    RiftShiftPalette(system, plttData->pRawData, PALETTE_SIZE * SKY_CLOUD_PALETTE_COUNT);
     int j = 0;
     DistWorldSkyBackground *skyBg = &system->skyBg;
     u16 *basePlttIter = skyBg->baseCloudPalettes;
@@ -4020,6 +4075,12 @@ static const DistWorldMapInfo *DistWorldMapInfoFile_FindForMap(const DistWorldMa
 {
     int i = 0;
     const DistWorldMapInfo *iter = mapInfoFile->infos;
+
+    // The Distorted Rift is a copy of the Turnback Cave room: it uses that room's prebuilt
+    // floor offsets, camera angles, floating platforms and terrain attributes.
+    if (mapHeaderID == MAP_HEADER_DISTORTED_RIFT) {
+        mapHeaderID = MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM;
+    }
 
     while (i < mapInfoFile->count) {
         if (mapHeaderID == iter->mapHeaderID) {
@@ -10248,6 +10309,11 @@ static const DistWorldMapConnections sDistWorldMapConnectionList[DISTORTION_WORL
         .prevID = MAP_HEADER_INVALID,
         .currID = MAP_HEADER_DISTORTION_WORLD_GIRATINA_ROOM,
         .nextID = MAP_HEADER_INVALID
+     },
+    {
+        .prevID = MAP_HEADER_INVALID,
+        .currID = MAP_HEADER_DISTORTED_RIFT,
+        .nextID = MAP_HEADER_INVALID
      }
 };
 // clang-format on
@@ -12830,11 +12896,24 @@ static const DistWorldSimplePropTemplate sSimplePropsTurnbackCaveRoom[] = {
     { 0, PROP_KIND_INVALID, 0, 0, 0, FLAG_COND_NONE, 0 }
 };
 
+static const DistWorldSimplePropTemplate sSimplePropsDistortedRift[] = {
+    {
+        .propKind = PROP_KIND_PORTAL,
+        .tileX = 116,
+        .tileY = 65,
+        .tileZ = 74,
+        .flagCond = FLAG_COND_NONE,
+        .flagCondVal = 0,
+    },
+    { 0, PROP_KIND_INVALID, 0, 0, 0, FLAG_COND_NONE, 0 }
+};
+
 static const DistWorldSimplePropMapTemplates sSimplePropsMapTemplates[] = {
     { MAP_HEADER_DISTORTION_WORLD_1F, sSimpleProps1F },
     { MAP_HEADER_DISTORTION_WORLD_B5F, sSimplePropsB5F },
     { MAP_HEADER_DISTORTION_WORLD_GIRATINA_ROOM, sSimplePropsGiratinaRoom },
     { MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM, sSimplePropsTurnbackCaveRoom },
+    { MAP_HEADER_DISTORTED_RIFT, sSimplePropsDistortedRift },
     { MAP_HEADER_INVALID, NULL }
 };
 
@@ -13913,6 +13992,59 @@ static const DistWorldObjectEvent *sMapObjectEventsTurnbackCaveRoom[] = {
     NULL
 };
 
+// Distorted Rift: the Turnback Cave room's portal, without the Griseous Orb
+static const DistWorldObjectEvent sMapObjectEventDistortedRift_Portal = {
+    .flagCond = FLAG_COND_NONE,
+    .flagCondVal = 0x0,
+    .rotated = FALSE,
+    .rotationAngle = 0x0,
+    .objEvent = {
+        .localID = DIST_WORLD_MAP_OBJECT_RIFT_PORTAL,
+        .graphicsID = OBJ_EVENT_GFX_INVISIBLE,
+        .movementType = MOVEMENT_TYPE_NONE,
+        .trainerType = TRAINER_TYPE_NONE,
+        .hiddenFlag = 0x0,
+        .script = 0x2,
+        .dir = FACE_UP,
+        .data = { 0x0, 0x0, 0x0 },
+        .movementRangeX = 0x0,
+        .movementRangeZ = 0x0,
+        .x = 0x74,
+        .z = 0x4A,
+        .y = (65 << 4) * FX32_ONE,
+    },
+};
+
+// This visit's legendary, on the Griseous Orb's spot. Its sprite is VAR_OBJ_GFX_ID_0 (set by the
+// Rift's transition script from VAR_RIFT_SPECIES); FLAG_RIFT_LEGENDARY_GONE hides it after the battle.
+static const DistWorldObjectEvent sMapObjectEventDistortedRift_Legendary = {
+    .flagCond = FLAG_COND_NONE,
+    .flagCondVal = 0x0,
+    .rotated = FALSE,
+    .rotationAngle = 0x0,
+    .objEvent = {
+        .localID = DIST_WORLD_MAP_OBJECT_RIFT_LEGENDARY,
+        .graphicsID = OBJ_EVENT_GFX_VAR_0,
+        .movementType = MOVEMENT_TYPE_NONE,
+        .trainerType = TRAINER_TYPE_NONE,
+        .hiddenFlag = FLAG_RIFT_LEGENDARY_GONE,
+        .script = 0x3,
+        .dir = FACE_DOWN,
+        .data = { 0x0, 0x0, 0x0 },
+        .movementRangeX = 0x0,
+        .movementRangeZ = 0x0,
+        .x = 0x59,
+        .z = 0x37,
+        .y = (65 << 4) * FX32_ONE,
+    },
+};
+
+static const DistWorldObjectEvent *sMapObjectEventsDistortedRift[] = {
+    &sMapObjectEventDistortedRift_Portal,
+    &sMapObjectEventDistortedRift_Legendary,
+    NULL
+};
+
 static const DistWorldMapObjectEvents sMapObjectEvents[] = {
     { MAP_HEADER_DISTORTION_WORLD_1F, sMapObjectEvents1F },
     { MAP_HEADER_DISTORTION_WORLD_B1F, sMapObjectEventsB1F },
@@ -13924,5 +14056,6 @@ static const DistWorldMapObjectEvents sMapObjectEvents[] = {
     { MAP_HEADER_DISTORTION_WORLD_B7F, sMapObjectEventsB7F },
     { MAP_HEADER_DISTORTION_WORLD_GIRATINA_ROOM, sMapObjectEventsGiratinaRoom },
     { MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM, sMapObjectEventsTurnbackCaveRoom },
+    { MAP_HEADER_DISTORTED_RIFT, sMapObjectEventsDistortedRift },
     { MAP_HEADER_INVALID, NULL }
 };

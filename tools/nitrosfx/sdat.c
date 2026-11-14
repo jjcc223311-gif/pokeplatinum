@@ -786,7 +786,8 @@ void ConvertPathToSdat(int argc, char **argv)
     fwrite(fatHeader, 1, 0x0C, outFile);
 
     fileOffset += 0x0C;
-    offset = fileOffset;
+    // file data is padded to 0x20 after the FILE header (see below)
+    offset = fileOffset + PADDINGSIZE(fileOffset, 0x20);
     uint8_t *fileEntry = calloc(1, 0x10);
     if (fileEntry == NULL) FATAL_ERROR("Failed to allocate memory for fileEntry\n");
     for (struct FileStream *fileStream = filePackage->head; fileStream != NULL; fileStream = fileStream->next)

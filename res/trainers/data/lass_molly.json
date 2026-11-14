@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_DEERLING",
+            "form": 0,
+            "level": 22,
+            "item": null,
+            "moves": [
+                "MOVE_DOUBLE_KICK",
+                "MOVE_LEECH_SEED",
+                "MOVE_FAINT_ATTACK",
+                "MOVE_TAKE_DOWN"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MISDREAVUS",
             "form": 0,
             "level": 23,

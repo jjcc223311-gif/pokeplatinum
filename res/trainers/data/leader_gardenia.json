@@ -13,6 +13,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SWADLOON",
+            "form": 0,
+            "level": 20,
+            "item": "ITEM_NONE",
+            "moves": [
+                "MOVE_RAZOR_LEAF",
+                "MOVE_STRING_SHOT",
+                "MOVE_TACKLE",
+                "MOVE_PROTECT"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_TURTWIG",
             "form": 0,
             "level": 20,
@@ -27,15 +41,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_CHERRIM",
+            "species": "SPECIES_DEERLING",
             "form": 0,
             "level": 20,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_GRASS_KNOT",
+                "MOVE_DOUBLE_KICK",
                 "MOVE_LEECH_SEED",
-                "MOVE_MAGICAL_LEAF",
-                "MOVE_SAFEGUARD"
+                "MOVE_FAINT_ATTACK",
+                "MOVE_TAKE_DOWN"
             ],
             "iv_scale": 50,
             "ball_seal": 0

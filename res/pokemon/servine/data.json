@@ -1,0 +1,247 @@
+{
+    "base_stats": {
+        "hp": 60,
+        "attack": 60,
+        "defense": 75,
+        "speed": 83,
+        "special_attack": 60,
+        "special_defense": 75
+    },
+    "types": [
+        "TYPE_GRASS",
+        "TYPE_GRASS"
+    ],
+    "catch_rate": 45,
+    "base_exp_reward": 145,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 2,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_12_5",
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_MEDIUM_SLOW",
+    "egg_groups": [
+        "EGG_GROUP_FIELD",
+        "EGG_GROUP_GRASS"
+    ],
+    "abilities": [
+        "ABILITY_OVERGROW",
+        "ABILITY_NONE"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_GREEN",
+    "flip_sprite": false,
+    "icon_palette": 1,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_LEER"
+            ],
+            [
+                1,
+                "MOVE_TACKLE"
+            ],
+            [
+                1,
+                "MOVE_VINE_WHIP"
+            ],
+            [
+                1,
+                "MOVE_WRAP"
+            ],
+            [
+                4,
+                "MOVE_LEER"
+            ],
+            [
+                7,
+                "MOVE_VINE_WHIP"
+            ],
+            [
+                10,
+                "MOVE_WRAP"
+            ],
+            [
+                13,
+                "MOVE_GROWTH"
+            ],
+            [
+                16,
+                "MOVE_LEAF_TORNADO"
+            ],
+            [
+                20,
+                "MOVE_LEECH_SEED"
+            ],
+            [
+                24,
+                "MOVE_MEGA_DRAIN"
+            ],
+            [
+                28,
+                "MOVE_SLAM"
+            ],
+            [
+                32,
+                "MOVE_LEAF_BLADE"
+            ],
+            [
+                36,
+                "MOVE_COIL"
+            ],
+            [
+                40,
+                "MOVE_GIGA_DRAIN"
+            ],
+            [
+                44,
+                "MOVE_WRING_OUT"
+            ],
+            [
+                48,
+                "MOVE_GASTRO_ACID"
+            ],
+            [
+                52,
+                "MOVE_LEAF_STORM"
+            ]
+        ],
+        "by_tm": [
+            "TM04",
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM12",
+            "TM16",
+            "TM17",
+            "TM19",
+            "TM20",
+            "TM21",
+            "TM22",
+            "TM23",
+            "TM27",
+            "TM32",
+            "TM33",
+            "TM40",
+            "TM41",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM49",
+            "TM53",
+            "TM70",
+            "TM75",
+            "TM82",
+            "TM86",
+            "TM87",
+            "TM90",
+            "HM01"
+        ],
+        "by_tutor": [
+            "MOVE_AQUA_TAIL",
+            "MOVE_GASTRO_ACID",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SEED_BOMB",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS"
+        ],
+        "egg_moves": []
+    },
+    "evolutions": [
+        [
+            "EVO_LEVEL",
+            36,
+            "SPECIES_SERPERIOR"
+        ]
+    ],
+    "offspring": "SPECIES_SNIVY",
+    "footprint": {
+        "has": true,
+        "size": "FOOTPRINT_MEDIUM",
+        "type": "FOOTPRINT_TYPE_CUTE"
+    },
+    "pokedex_data": {
+        "height_inches": 31,
+        "weight_pounds": 35.3,
+        "body_shape": "SHAPE_BIPEDAL_TAILED",
+        "trainer_scale_f": 272,
+        "pokemon_scale_f": 395,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 395,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 21,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 21,
+        "en": {
+            "name": "SERVINE",
+            "category": "Grass Snake Pokémon",
+            "entry_text": [
+                "It slips through thick grass\n",
+                "without a sound and strikes from\n",
+                "shadows with whiplike vines."
+            ]
+        },
+        "fr": {
+            "name": "SERVINE",
+            "category": "Grass Snake Pokémon",
+            "entry_text": [
+                "It slips through thick grass\n",
+                "without a sound and strikes from\n",
+                "shadows with whiplike vines."
+            ]
+        },
+        "de": {
+            "name": "SERVINE",
+            "category": "Grass Snake Pokémon",
+            "entry_text": [
+                "It slips through thick grass\n",
+                "without a sound and strikes from\n",
+                "shadows with whiplike vines."
+            ]
+        },
+        "it": {
+            "name": "SERVINE",
+            "category": "Grass Snake Pokémon",
+            "entry_text": [
+                "It slips through thick grass\n",
+                "without a sound and strikes from\n",
+                "shadows with whiplike vines."
+            ]
+        },
+        "es": {
+            "name": "SERVINE",
+            "category": "Grass Snake Pokémon",
+            "entry_text": [
+                "It slips through thick grass\n",
+                "without a sound and strikes from\n",
+                "shadows with whiplike vines."
+            ]
+        },
+        "jp": {
+            "name": "SERVINE",
+            "category": "Grass Snake Pokémon",
+            "entry_text": [
+                "It slips through thick grass\n",
+                "without a sound and strikes from\n",
+                "shadows with whiplike vines."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

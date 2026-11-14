@@ -9,6 +9,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_WOOBAT",
+            "form": 0,
+            "level": 16,
+            "item": null,
+            "moves": [
+                "MOVE_ODOR_SLEUTH",
+                "MOVE_GUST",
+                "MOVE_ASSURANCE",
+                "MOVE_HEART_STAMP"
+            ],
+            "iv_scale": 20,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_ABRA",
             "form": 0,
             "level": 17,

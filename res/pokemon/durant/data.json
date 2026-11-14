@@ -1,0 +1,234 @@
+{
+    "base_stats": {
+        "hp": 58,
+        "attack": 109,
+        "defense": 112,
+        "speed": 109,
+        "special_attack": 48,
+        "special_defense": 48
+    },
+    "types": [
+        "TYPE_BUG",
+        "TYPE_STEEL"
+    ],
+    "catch_rate": 90,
+    "base_exp_reward": 169,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 2,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_50",
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_MEDIUM_FAST",
+    "egg_groups": [
+        "EGG_GROUP_BUG",
+        "EGG_GROUP_BUG"
+    ],
+    "abilities": [
+        "ABILITY_SWARM",
+        "ABILITY_HUSTLE"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_GRAY",
+    "flip_sprite": false,
+    "icon_palette": 2,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_SAND_ATTACK"
+            ],
+            [
+                1,
+                "MOVE_VICE_GRIP"
+            ],
+            [
+                6,
+                "MOVE_FURY_CUTTER"
+            ],
+            [
+                11,
+                "MOVE_BITE"
+            ],
+            [
+                16,
+                "MOVE_AGILITY"
+            ],
+            [
+                21,
+                "MOVE_METAL_CLAW"
+            ],
+            [
+                26,
+                "MOVE_BUG_BITE"
+            ],
+            [
+                31,
+                "MOVE_CRUNCH"
+            ],
+            [
+                36,
+                "MOVE_IRON_HEAD"
+            ],
+            [
+                41,
+                "MOVE_DIG"
+            ],
+            [
+                46,
+                "MOVE_ENTRAINMENT"
+            ],
+            [
+                51,
+                "MOVE_X_SCISSOR"
+            ],
+            [
+                56,
+                "MOVE_IRON_DEFENSE"
+            ],
+            [
+                61,
+                "MOVE_GUILLOTINE"
+            ],
+            [
+                66,
+                "MOVE_METAL_SOUND"
+            ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM17",
+            "TM21",
+            "TM27",
+            "TM28",
+            "TM32",
+            "TM37",
+            "TM39",
+            "TM40",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM53",
+            "TM65",
+            "TM68",
+            "TM69",
+            "TM71",
+            "TM73",
+            "TM80",
+            "TM81",
+            "TM82",
+            "TM87",
+            "TM90",
+            "TM91",
+            "HM01",
+            "HM04",
+            "HM06"
+        ],
+        "by_tutor": [
+            "MOVE_ENDEAVOR",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_IRON_HEAD",
+            "MOVE_SNORE",
+            "MOVE_SUPERPOWER"
+        ],
+        "egg_moves": [
+            "MOVE_BATON_PASS",
+            "MOVE_ENDURE",
+            "MOVE_FAINT_ATTACK",
+            "MOVE_ROCK_CLIMB",
+            "MOVE_SCREECH",
+            "MOVE_THUNDER_FANG"
+        ]
+    },
+    "evolutions": [],
+    "offspring": "SPECIES_DURANT",
+    "footprint": {
+        "has": true,
+        "size": "FOOTPRINT_SMALL",
+        "type": "FOOTPRINT_TYPE_SILENT"
+    },
+    "pokedex_data": {
+        "height_inches": 12,
+        "weight_pounds": 72.8,
+        "body_shape": "SHAPE_INSECTOID",
+        "trainer_scale_f": 272,
+        "pokemon_scale_f": 502,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 502,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 28,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 28,
+        "en": {
+            "name": "DURANT",
+            "category": "Iron Ant Pokémon",
+            "entry_text": [
+                "It digs tunnels in the shape of a\n",
+                "maze. It works with its group to\n",
+                "protect its nest."
+            ]
+        },
+        "fr": {
+            "name": "DURANT",
+            "category": "Iron Ant Pokémon",
+            "entry_text": [
+                "It digs tunnels in the shape of a\n",
+                "maze. It works with its group to\n",
+                "protect its nest."
+            ]
+        },
+        "de": {
+            "name": "DURANT",
+            "category": "Iron Ant Pokémon",
+            "entry_text": [
+                "It digs tunnels in the shape of a\n",
+                "maze. It works with its group to\n",
+                "protect its nest."
+            ]
+        },
+        "it": {
+            "name": "DURANT",
+            "category": "Iron Ant Pokémon",
+            "entry_text": [
+                "It digs tunnels in the shape of a\n",
+                "maze. It works with its group to\n",
+                "protect its nest."
+            ]
+        },
+        "es": {
+            "name": "DURANT",
+            "category": "Iron Ant Pokémon",
+            "entry_text": [
+                "It digs tunnels in the shape of a\n",
+                "maze. It works with its group to\n",
+                "protect its nest."
+            ]
+        },
+        "jp": {
+            "name": "DURANT",
+            "category": "Iron Ant Pokémon",
+            "entry_text": [
+                "It digs tunnels in the shape of a\n",
+                "maze. It works with its group to\n",
+                "protect its nest."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

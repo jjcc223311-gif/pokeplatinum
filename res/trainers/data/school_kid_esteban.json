@@ -11,6 +11,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_PETILIL",
+            "form": 0,
+            "level": 25,
+            "item": null,
+            "moves": [
+                "MOVE_MEGA_DRAIN",
+                "MOVE_SYNTHESIS",
+                "MOVE_MAGICAL_LEAF",
+                "MOVE_STUN_SPORE"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_QUAGSIRE",
             "form": 0,
             "level": 26,

@@ -1,0 +1,17 @@
+#ifndef POKEPLATINUM_LEGDEX_OV21_021DC9BC_H
+#define POKEPLATINUM_LEGDEX_OV21_021DC9BC_H
+
+#include "applications/legendary_dex/pokedex_app.h"
+#include "applications/legendary_dex/struct_ov21_021E68F4.h"
+
+#include "heap.h"
+
+void LegDex_ov21_021DC9BC(PokedexScreenManager *param0, PokedexApp *param1, enum HeapID heapID);
+void LegDex_ov21_021DCA14(PokedexScreenManager *param0);
+int LegDex_ov21_021DCA28(const PokedexScreenManager *param0);
+void LegDex_ov21_021DCA30(PokedexScreenManager *param0, int param1);
+void LegDex_ov21_021DCA44(PokedexScreenManager *param0, int param1, int param2);
+void LegDex_ov21_021DCA4C(PokedexScreenManager *param0, int param1);
+void LegDex_ov21_021DCA54(PokedexScreenManager *param0, int param1);
+
+#endif // POKEPLATINUM_LEGDEX_OV21_021DC9BC_H

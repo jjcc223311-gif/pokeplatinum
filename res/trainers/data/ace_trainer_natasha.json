@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_WIGGLYTUFF",
+            "species": "SPECIES_BISHARP",
             "form": 0,
             "level": 58,
             "item": null,
             "moves": [
-                "MOVE_HYPER_VOICE",
-                "MOVE_REFLECT",
-                "MOVE_LIGHT_SCREEN",
-                "MOVE_SHADOW_BALL"
+                "MOVE_EMBARGO",
+                "MOVE_IRON_DEFENSE",
+                "MOVE_NIGHT_SLASH",
+                "MOVE_IRON_HEAD"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_CARRACOSTA",
+            "form": 0,
+            "level": 58,
+            "item": null,
+            "moves": [
+                "MOVE_SHELL_SMASH",
+                "MOVE_AQUA_TAIL",
+                "MOVE_ROCK_SLIDE",
+                "MOVE_RAIN_DANCE"
             ],
             "iv_scale": 50,
             "ball_seal": 0

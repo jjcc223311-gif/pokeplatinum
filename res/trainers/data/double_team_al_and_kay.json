@@ -8,15 +8,29 @@
     "double_battle": true,
     "party": [
         {
-            "species": "SPECIES_STARAPTOR",
+            "species": "SPECIES_CRYOGONAL",
             "form": 0,
             "level": 50,
             "item": null,
             "moves": [
-                "MOVE_CLOSE_COMBAT",
-                "MOVE_BRAVE_BIRD",
-                "MOVE_GROWL",
-                "MOVE_QUICK_ATTACK"
+                "MOVE_REFLECT",
+                "MOVE_SLASH",
+                "MOVE_CONFUSE_RAY",
+                "MOVE_RECOVER"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_EMOLGA",
+            "form": 0,
+            "level": 50,
+            "item": null,
+            "moves": [
+                "MOVE_ENCORE",
+                "MOVE_VOLT_SWITCH",
+                "MOVE_AGILITY",
+                "MOVE_DISCHARGE"
             ],
             "iv_scale": 0,
             "ball_seal": 0

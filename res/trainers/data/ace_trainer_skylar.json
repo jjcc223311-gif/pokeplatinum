@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_LOUDRED",
+            "species": "SPECIES_KROOKODILE",
             "form": 0,
             "level": 58,
             "item": null,
             "moves": [
-                "MOVE_HYPER_VOICE",
-                "MOVE_BITE",
-                "MOVE_SUPERSONIC",
-                "MOVE_SCREECH"
+                "MOVE_SCARY_FACE",
+                "MOVE_FOUL_PLAY",
+                "MOVE_SANDSTORM",
+                "MOVE_EARTHQUAKE"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_STOUTLAND",
+            "form": 0,
+            "level": 58,
+            "item": null,
+            "moves": [
+                "MOVE_ROAR",
+                "MOVE_RETALIATE",
+                "MOVE_REVERSAL",
+                "MOVE_LAST_RESORT"
             ],
             "iv_scale": 50,
             "ball_seal": 0

@@ -8,6 +8,18 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_LILLIPUP",
+            "form": 0,
+            "level": 4,
+            "item": null,
+            "moves": [
+                "MOVE_LEER",
+                "MOVE_TACKLE"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_BURMY",
             "form": 0,
             "level": 5,

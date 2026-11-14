@@ -1,0 +1,30 @@
+{
+  "name": "Mobile PC",
+  "plural": "Mobile PCs",
+  "article": "a",
+  "description": [
+    "A portable device that connects\n",
+    "to the Pokémon Storage System\n",
+    "from anywhere."
+  ],
+  "icon": {
+    "sprite": "mobile_pc_NCGR",
+    "palette": "mobile_pc_NCLR"
+  },
+  "gbaID": "GBA_ITEM_NONE",
+  "price": 0,
+  "effectParam": 0,
+  "holdEffect": "HOLD_EFFECT_NONE",
+  "pluckEffect": "PLUCK_EFFECT_NONE",
+  "flingEffect": "FLING_EFFECT_NONE",
+  "flingPower": 0,
+  "naturalGiftPower": 0,
+  "naturalGiftType": null,
+  "preventToss": true,
+  "canRegister": true,
+  "fieldPocket": "POCKET_KEY_ITEMS",
+  "battlePocket": "BATTLE_POCKET_MASK_NONE",
+  "fieldUseFunc": "ITEM_USE_FUNC_MOBILE_PC",
+  "battleUseCategory": "BATTLE_USE_CATEGORY_NONE",
+  "itemUseParams": null
+}

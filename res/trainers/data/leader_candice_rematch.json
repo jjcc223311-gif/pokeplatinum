@@ -1,5 +1,5 @@
 {
-    "name": "Candice",
+    "name": "Dawn",
     "class": "TRAINER_CLASS_LEADER_CANDICE",
     "items": [
         "ITEM_FULL_RESTORE",
@@ -13,15 +13,15 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_WEAVILE",
+            "species": "SPECIES_BEARTIC",
             "form": 0,
             "level": 62,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_AVALANCHE",
-                "MOVE_SLASH",
-                "MOVE_FAINT_ATTACK",
-                "MOVE_TAUNT"
+                "MOVE_REST",
+                "MOVE_BLIZZARD",
+                "MOVE_HAIL",
+                "MOVE_THRASH"
             ],
             "iv_scale": 200,
             "ball_seal": 0
@@ -41,29 +41,29 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_ABOMASNOW",
+            "species": "SPECIES_LAPRAS",
             "form": 0,
             "level": 61,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_AVALANCHE",
-                "MOVE_WOOD_HAMMER",
-                "MOVE_GRASS_WHISTLE",
-                "MOVE_INGRAIN"
+                "MOVE_BRINE",
+                "MOVE_SAFEGUARD",
+                "MOVE_HYDRO_PUMP",
+                "MOVE_SHEER_COLD"
             ],
             "iv_scale": 200,
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_FROSLASS",
+            "species": "SPECIES_CLOYSTER",
             "form": 0,
             "level": 63,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_BLIZZARD",
-                "MOVE_CONFUSE_RAY",
-                "MOVE_OMINOUS_WIND",
-                "MOVE_HAIL"
+                "MOVE_AURORA_BEAM",
+                "MOVE_PROTECT",
+                "MOVE_SPIKES",
+                "MOVE_SPIKE_CANNON"
             ],
             "iv_scale": 200,
             "ball_seal": 0

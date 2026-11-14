@@ -1,0 +1,9 @@
+#ifndef POKEPLATINUM_GENERATED_MEGA_FORMS_H
+#define POKEPLATINUM_GENERATED_MEGA_FORMS_H
+
+#include "constants/species.h"
+
+// Generated from res/pokemon/extra_forms.json and res/pokemon/mega_forms.json. Do not edit by hand.
+/* =========== MAGIC CONTENT MARKER =========== */
+
+#endif // POKEPLATINUM_GENERATED_MEGA_FORMS_H

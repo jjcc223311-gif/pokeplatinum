@@ -115,11 +115,20 @@ Route210South_AcceptOldCharm:
     SetVar VAR_0x8005, 1
     CallCommonScript CommonScript_AddItemQuantity
     Message Route210South_Text_ImCountingOnYou
+    CheckItem ITEM_LEGENDARY_MEGA_NECKLACE, 1, VAR_RESULT
+    CallIfEq VAR_RESULT, FALSE, Route210South_GiveLegendaryMegaNecklace
     CloseMessage
     GetPlayerMapPos VAR_0x8004, VAR_0x8005
     GoToIfEq VAR_0x8004, 560, Route210South_CynthiaLeaveX560
     GoToIfEq VAR_0x8004, 561, Route210South_CynthiaLeaveX561
     End
+
+Route210South_GiveLegendaryMegaNecklace:
+    Message Route210South_Text_FoundThisInSomeRuins
+    SetVar VAR_0x8004, ITEM_LEGENDARY_MEGA_NECKLACE
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
+    Return
 
 Route210South_CynthiaLeaveX560:
     ApplyMovement LOCALID_CYNTHIA, Route210South_Movement_CynthiaLeaveX560

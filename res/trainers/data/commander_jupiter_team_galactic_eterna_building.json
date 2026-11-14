@@ -10,14 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_ZUBAT",
+            "species": "SPECIES_VULLABY",
             "form": 0,
             "level": 21,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_GIGA_DRAIN",
-                "MOVE_WING_ATTACK",
-                "MOVE_BITE"
+                "MOVE_FURY_ATTACK",
+                "MOVE_PLUCK",
+                "MOVE_NASTY_PLOT",
+                "MOVE_FLATTER"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_VENIPEDE",
+            "form": 0,
+            "level": 21,
+            "item": "ITEM_NONE",
+            "moves": [
+                "MOVE_SCREECH",
+                "MOVE_PURSUIT",
+                "MOVE_PROTECT",
+                "MOVE_POISON_TAIL"
             ],
             "iv_scale": 100,
             "ball_seal": 0

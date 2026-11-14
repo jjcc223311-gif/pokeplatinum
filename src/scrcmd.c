@@ -8,8 +8,10 @@
 #include "constants/battle.h"
 #include "constants/battle_frontier.h"
 #include "constants/daycare.h"
+#include "constants/distorted_rift.h"
 #include "constants/field/dynamic_map_features.h"
 #include "constants/field/window.h"
+#include "constants/forms.h"
 #include "constants/heap.h"
 #include "constants/items.h"
 #include "constants/overworld_weather.h"
@@ -136,6 +138,7 @@
 #include "network_icon.h"
 #include "npc_trade_task.h"
 #include "party.h"
+#include "global_trade.h"
 #include "pc_boxes.h"
 #include "persisted_map_features_init.h"
 #include "platform_lift.h"
@@ -392,6 +395,9 @@ static BOOL ScrCmd_ClearGame(ScriptContext *ctx);
 static BOOL ScrCmd_OpenPCHallOfFameScreen(ScriptContext *ctx);
 static BOOL ScrCmd_CheckIsHallOfFameCorrupted(ScriptContext *ctx);
 static BOOL ScrCmd_TryStartGTSApp(ScriptContext *ctx);
+static BOOL ScrCmd_UseDNASplicers(ScriptContext *ctx);
+static BOOL ScrCmd_UseRevealGlass(ScriptContext *ctx);
+static BOOL ScrCmd_DistortedRift(ScriptContext *ctx);
 static BOOL ScrCmd_0B3(ScriptContext *ctx);
 static BOOL ScrCmd_StartChooseStarterScene(ScriptContext *ctx);
 static BOOL ScrCmd_SaveChosenStarter(ScriptContext *ctx);
@@ -3370,7 +3376,9 @@ static BOOL ScrCmd_TryStartGTSApp(ScriptContext *ctx)
     u16 connectToWiFi = ScriptContext_GetVar(ctx);
     u16 *destVar = ScriptContext_GetVarPointer(ctx);
 
-    if (WiFiList_HasValidLogin(ctx->fieldSystem->saveData)) {
+    if (GlobalTrade_HasFusedPartner(SaveData_GetGlobalTrade(ctx->fieldSystem->saveData))) {
+        *destVar = FALSE; // the GTS slot holds a fused Kyurem's partner (DNA Splicers)
+    } else if (WiFiList_HasValidLogin(ctx->fieldSystem->saveData)) {
         *destVar = TRUE;
         FieldSystem_LaunchGTSApp(ctx->fieldSystem, connectToWiFi);
         ScriptContext_Pause(ctx, ScriptContext_WaitForApplicationExit);
@@ -5371,7 +5379,7 @@ static BOOL ScrCmd_GetRandomSeenSpecies(ScriptContext *ctx)
     u16 random = LCRNG_Next() % seenSpeciesCount;
     *destVar = SPECIES_PIKACHU;
 
-    for (u16 species = 1, i = 0; species <= NATIONAL_DEX_COUNT; species++) {
+    for (u16 species = 1, i = 0; species <= POKEDEX_SPECIES_COUNT; species++) {
         if (Pokedex_HasSeenSpecies(pokedex, species) == TRUE && Pokemon_SinnohDexNumber(species) != FALSE) {
             if (i == random) {
                 *destVar = species;
@@ -6419,7 +6427,8 @@ static BOOL ScrCmd_CheckItemIsPlate(ScriptContext *ctx)
 
     *destItemIsPlate = FALSE;
 
-    if ((item >= ITEM_FLAME_PLATE) && (item <= ITEM_IRON_PLATE)) {
+    // The Light Plate is at the end of the item list, outside the original plate range
+    if (((item >= ITEM_FLAME_PLATE) && (item <= ITEM_IRON_PLATE)) || item == ITEM_LIGHT_PLATE) {
         *destItemIsPlate = TRUE;
     }
 
@@ -7128,6 +7137,283 @@ static BOOL ScrCmd_CheckPartyHasFatefulEncounterRegigigas(ScriptContext *ctx)
                 }
             }
         }
+    }
+
+    return FALSE;
+}
+
+// ----- DNA Splicers (Kyurem fusion) -----
+
+static void KyuremFusion_SwapMove(Pokemon *mon, u16 from, u16 to)
+{
+    for (int i = 0; i < LEARNED_MOVES_MAX; i++) {
+        if (Pokemon_GetValue(mon, MON_DATA_MOVE1 + i, NULL) == from) {
+            Pokemon_ResetMoveSlot(mon, to, i);
+        }
+    }
+}
+
+static void KyuremFusion_SetForm(Pokemon *mon, int form, u16 partnerSpecies)
+{
+    u8 newForm = form;
+
+    if (form == 1) { // Black Kyurem (Zekrom)
+        KyuremFusion_SwapMove(mon, MOVE_GLACIATE, MOVE_FREEZE_SHOCK);
+        KyuremFusion_SwapMove(mon, MOVE_SCARY_FACE, MOVE_FUSION_BOLT);
+    } else if (form == 2) { // White Kyurem (Reshiram)
+        KyuremFusion_SwapMove(mon, MOVE_GLACIATE, MOVE_ICE_BURN);
+        KyuremFusion_SwapMove(mon, MOVE_SCARY_FACE, MOVE_FUSION_FLARE);
+    } else {
+        KyuremFusion_SwapMove(mon, MOVE_FREEZE_SHOCK, MOVE_GLACIATE);
+        KyuremFusion_SwapMove(mon, MOVE_ICE_BURN, MOVE_GLACIATE);
+        KyuremFusion_SwapMove(mon, MOVE_FUSION_BOLT, MOVE_SCARY_FACE);
+        KyuremFusion_SwapMove(mon, MOVE_FUSION_FLARE, MOVE_SCARY_FACE);
+    }
+
+    Pokemon_SetValue(mon, MON_DATA_FORM, &newForm);
+    Pokemon_CalcLevelAndStats(mon);
+}
+
+static BOOL ScrCmd_UseDNASplicers(ScriptContext *ctx)
+{
+    u16 *result = ScriptContext_GetVarPointer(ctx);
+    u16 *partnerSpecies = ScriptContext_GetVarPointer(ctx);
+    Party *party = SaveData_GetParty(ctx->fieldSystem->saveData);
+    GlobalTrade *gts = SaveData_GetGlobalTrade(ctx->fieldSystem->saveData);
+    int count = Party_GetCurrentCount(party);
+    int kyurem = -1, fusedKyurem = -1, partner = -1;
+
+    *result = DNA_SPLICERS_NO_EFFECT;
+    *partnerSpecies = SPECIES_KYUREM;
+
+    for (int i = 0; i < count; i++) {
+        Pokemon *mon = Party_GetPokemonBySlotIndex(party, i);
+        u16 species = Pokemon_GetValue(mon, MON_DATA_SPECIES, NULL);
+
+        if (Pokemon_GetValue(mon, MON_DATA_IS_EGG, NULL)) {
+            continue;
+        }
+
+        if (species == SPECIES_KYUREM) {
+            if (Pokemon_GetValue(mon, MON_DATA_FORM, NULL) != 0) {
+                if (fusedKyurem < 0) {
+                    fusedKyurem = i;
+                }
+            } else if (kyurem < 0) {
+                kyurem = i;
+            }
+        } else if ((species == SPECIES_ZEKROM || species == SPECIES_RESHIRAM) && partner < 0) {
+            partner = i;
+        }
+    }
+
+    // Separate: a fused Kyurem in the party, or (safety net) a stored partner whose Kyurem is gone
+    if (fusedKyurem >= 0 || (GlobalTrade_HasFusedPartner(gts) && kyurem < 0)) {
+        if (GlobalTrade_HasFusedPartner(gts)) {
+            if (count >= MAX_PARTY_SIZE) {
+                *result = DNA_SPLICERS_PARTY_FULL;
+                return FALSE;
+            }
+
+            Pokemon *stored = Pokemon_New(HEAP_ID_FIELD2);
+            GlobalTrade_CopyFromStoredPokemon(gts, stored);
+            Party_AddPokemon(party, stored);
+            *partnerSpecies = Pokemon_GetValue(stored, MON_DATA_SPECIES, NULL);
+            Heap_Free(stored);
+            GlobalTrade_SetFusedPartner(gts, NULL);
+        }
+
+        if (fusedKyurem >= 0) {
+            KyuremFusion_SetForm(Party_GetPokemonBySlotIndex(party, fusedKyurem), 0, SPECIES_NONE);
+        }
+
+        *result = DNA_SPLICERS_SEPARATED;
+        return FALSE;
+    }
+
+    // Fuse: Kyurem + the first Zekrom / Reshiram in the party
+    if (kyurem < 0 || partner < 0) {
+        return FALSE;
+    }
+
+    if (GlobalTrade_IsPokemonListed(gts) || GlobalTrade_HasFusedPartner(gts)) {
+        *result = DNA_SPLICERS_GTS_IN_USE;
+        return FALSE;
+    }
+
+    Pokemon *partnerMon = Party_GetPokemonBySlotIndex(party, partner);
+    *partnerSpecies = Pokemon_GetValue(partnerMon, MON_DATA_SPECIES, NULL);
+    GlobalTrade_SetFusedPartner(gts, partnerMon);
+    KyuremFusion_SetForm(Party_GetPokemonBySlotIndex(party, kyurem), *partnerSpecies == SPECIES_ZEKROM ? 1 : 2, *partnerSpecies);
+    Party_RemovePokemonBySlotIndex(party, partner);
+
+    *result = DNA_SPLICERS_FUSED;
+    return FALSE;
+}
+
+static BOOL ScrCmd_UseRevealGlass(ScriptContext *ctx)
+{
+    u16 *result = ScriptContext_GetVarPointer(ctx);
+    u16 *changedSpecies = ScriptContext_GetVarPointer(ctx);
+    Party *party = SaveData_GetParty(ctx->fieldSystem->saveData);
+    int count = Party_GetCurrentCount(party);
+
+    *result = REVEAL_GLASS_NO_EFFECT;
+    *changedSpecies = SPECIES_TORNADUS;
+
+    for (int i = 0; i < count; i++) {
+        Pokemon *mon = Party_GetPokemonBySlotIndex(party, i);
+        u16 species = Pokemon_GetValue(mon, MON_DATA_SPECIES, NULL);
+
+        if (Pokemon_GetValue(mon, MON_DATA_IS_EGG, NULL)
+            || (species != SPECIES_TORNADUS && species != SPECIES_THUNDURUS && species != SPECIES_LANDORUS)) {
+            continue;
+        }
+
+        int form = Pokemon_GetValue(mon, MON_DATA_FORM, NULL) == FORCES_OF_NATURE_FORM_THERIAN
+            ? FORCES_OF_NATURE_FORM_INCARNATE
+            : FORCES_OF_NATURE_FORM_THERIAN;
+
+        Pokemon_SetValue(mon, MON_DATA_FORM, &form);
+        Pokemon_CalcAbility(mon);
+        Pokemon_CalcLevelAndStats(mon);
+
+        if (*result == REVEAL_GLASS_NO_EFFECT) {
+            *changedSpecies = species;
+            *result = form == FORCES_OF_NATURE_FORM_THERIAN ? REVEAL_GLASS_THERIAN : REVEAL_GLASS_INCARNATE;
+        }
+    }
+
+    return FALSE;
+}
+
+// ----- Distorted Rift legendary pool -----
+
+typedef struct RiftPoolEntry {
+    u16 species;
+    u16 caughtFlag;
+    u16 graphicsID;
+} RiftPoolEntry;
+
+// Every Gen 1-5 legendary / mythical without another static encounter in the game, except
+// Giratina and Arceus (Arceus is the finale once every one of these is caught)
+static const RiftPoolEntry sRiftPool[] = {
+    { SPECIES_MEWTWO, FLAG_RIFT_CAUGHT_MEWTWO, OBJ_EVENT_GFX_RIFT_MEWTWO },
+    { SPECIES_MEW, FLAG_RIFT_CAUGHT_MEW, OBJ_EVENT_GFX_RIFT_MEW },
+    { SPECIES_RAIKOU, FLAG_RIFT_CAUGHT_RAIKOU, OBJ_EVENT_GFX_RIFT_RAIKOU },
+    { SPECIES_ENTEI, FLAG_RIFT_CAUGHT_ENTEI, OBJ_EVENT_GFX_RIFT_ENTEI },
+    { SPECIES_SUICUNE, FLAG_RIFT_CAUGHT_SUICUNE, OBJ_EVENT_GFX_RIFT_SUICUNE },
+    { SPECIES_LUGIA, FLAG_RIFT_CAUGHT_LUGIA, OBJ_EVENT_GFX_RIFT_LUGIA },
+    { SPECIES_HO_OH, FLAG_RIFT_CAUGHT_HO_OH, OBJ_EVENT_GFX_RIFT_HO_OH },
+    { SPECIES_CELEBI, FLAG_RIFT_CAUGHT_CELEBI, OBJ_EVENT_GFX_RIFT_CELEBI },
+    { SPECIES_LATIAS, FLAG_RIFT_CAUGHT_LATIAS, OBJ_EVENT_GFX_RIFT_LATIAS },
+    { SPECIES_LATIOS, FLAG_RIFT_CAUGHT_LATIOS, OBJ_EVENT_GFX_RIFT_LATIOS },
+    { SPECIES_KYOGRE, FLAG_RIFT_CAUGHT_KYOGRE, OBJ_EVENT_GFX_RIFT_KYOGRE },
+    { SPECIES_GROUDON, FLAG_RIFT_CAUGHT_GROUDON, OBJ_EVENT_GFX_RIFT_GROUDON },
+    { SPECIES_RAYQUAZA, FLAG_RIFT_CAUGHT_RAYQUAZA, OBJ_EVENT_GFX_RIFT_RAYQUAZA },
+    { SPECIES_JIRACHI, FLAG_RIFT_CAUGHT_JIRACHI, OBJ_EVENT_GFX_RIFT_JIRACHI },
+    { SPECIES_DEOXYS, FLAG_RIFT_CAUGHT_DEOXYS, OBJ_EVENT_GFX_RIFT_DEOXYS },
+    { SPECIES_MANAPHY, FLAG_RIFT_CAUGHT_MANAPHY, OBJ_EVENT_GFX_RIFT_MANAPHY },
+    { SPECIES_PHIONE, FLAG_RIFT_CAUGHT_PHIONE, OBJ_EVENT_GFX_RIFT_PHIONE },
+    { SPECIES_DARKRAI, FLAG_RIFT_CAUGHT_DARKRAI, OBJ_EVENT_GFX_DARKRAI },
+    { SPECIES_SHAYMIN, FLAG_RIFT_CAUGHT_SHAYMIN, OBJ_EVENT_GFX_SHAYMIN },
+    { SPECIES_VICTINI, FLAG_RIFT_CAUGHT_VICTINI, OBJ_EVENT_GFX_RIFT_VICTINI },
+    { SPECIES_COBALION, FLAG_RIFT_CAUGHT_COBALION, OBJ_EVENT_GFX_RIFT_COBALION },
+    { SPECIES_TERRAKION, FLAG_RIFT_CAUGHT_TERRAKION, OBJ_EVENT_GFX_RIFT_TERRAKION },
+    { SPECIES_VIRIZION, FLAG_RIFT_CAUGHT_VIRIZION, OBJ_EVENT_GFX_RIFT_VIRIZION },
+    { SPECIES_TORNADUS, FLAG_RIFT_CAUGHT_TORNADUS, OBJ_EVENT_GFX_RIFT_TORNADUS },
+    { SPECIES_THUNDURUS, FLAG_RIFT_CAUGHT_THUNDURUS, OBJ_EVENT_GFX_RIFT_THUNDURUS },
+    { SPECIES_RESHIRAM, FLAG_RIFT_CAUGHT_RESHIRAM, OBJ_EVENT_GFX_RIFT_RESHIRAM },
+    { SPECIES_ZEKROM, FLAG_RIFT_CAUGHT_ZEKROM, OBJ_EVENT_GFX_RIFT_ZEKROM },
+    { SPECIES_LANDORUS, FLAG_RIFT_CAUGHT_LANDORUS, OBJ_EVENT_GFX_RIFT_LANDORUS },
+    { SPECIES_KYUREM, FLAG_RIFT_CAUGHT_KYUREM, OBJ_EVENT_GFX_RIFT_KYUREM },
+    { SPECIES_KELDEO, FLAG_RIFT_CAUGHT_KELDEO, OBJ_EVENT_GFX_RIFT_KELDEO },
+    { SPECIES_MELOETTA, FLAG_RIFT_CAUGHT_MELOETTA, OBJ_EVENT_GFX_RIFT_MELOETTA },
+    { SPECIES_GENESECT, FLAG_RIFT_CAUGHT_GENESECT, OBJ_EVENT_GFX_RIFT_GENESECT },
+};
+
+static int RiftPool_CountLeft(FieldSystem *fieldSystem)
+{
+    int count = 0;
+
+    for (int i = 0; i < (int)NELEMS(sRiftPool); i++) {
+        if (FieldSystem_CheckFlag(fieldSystem, sRiftPool[i].caughtFlag) == FALSE) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+static const RiftPoolEntry *RiftPool_Find(u16 species)
+{
+    for (int i = 0; i < (int)NELEMS(sRiftPool); i++) {
+        if (sRiftPool[i].species == species) {
+            return &sRiftPool[i];
+        }
+    }
+
+    return NULL;
+}
+
+static BOOL ScrCmd_DistortedRift(ScriptContext *ctx)
+{
+    u16 mode = ScriptContext_GetVar(ctx);
+    u16 *destVar = ScriptContext_GetVarPointer(ctx);
+    FieldSystem *fieldSystem = ctx->fieldSystem;
+    u16 *riftSpecies = FieldSystem_GetVarPointer(fieldSystem, VAR_RIFT_SPECIES);
+    const RiftPoolEntry *entry;
+    int left;
+
+    switch (mode) {
+    case RIFT_CMD_PICK:
+        left = RiftPool_CountLeft(fieldSystem);
+
+        if (left == 0) {
+            // Every pool Pokemon caught: Arceus until it's caught too, then the rift is silent
+            *riftSpecies = FieldSystem_CheckFlag(fieldSystem, FLAG_RIFT_CAUGHT_ARCEUS) ? SPECIES_NONE : SPECIES_ARCEUS;
+        } else {
+            // Equal chance for every Pokemon not caught yet
+            int pick = LCRNG_Next() % left;
+
+            for (int i = 0; i < (int)NELEMS(sRiftPool); i++) {
+                if (FieldSystem_CheckFlag(fieldSystem, sRiftPool[i].caughtFlag) == FALSE && pick-- == 0) {
+                    *riftSpecies = sRiftPool[i].species;
+                    break;
+                }
+            }
+        }
+
+        *destVar = *riftSpecies;
+        break;
+
+    case RIFT_CMD_SET_GFX:
+        entry = RiftPool_Find(*riftSpecies);
+        *FieldSystem_GetVarPointer(fieldSystem, VAR_OBJ_GFX_ID_0) = entry != NULL ? entry->graphicsID : OBJ_EVENT_GFX_ARCEUS;
+        *destVar = *riftSpecies;
+        break;
+
+    case RIFT_CMD_MARK_CAUGHT:
+        if (*riftSpecies == SPECIES_ARCEUS) {
+            FieldSystem_SetFlag(fieldSystem, FLAG_RIFT_CAUGHT_ARCEUS);
+        } else if ((entry = RiftPool_Find(*riftSpecies)) != NULL) {
+            FieldSystem_SetFlag(fieldSystem, entry->caughtFlag);
+        }
+
+        *destVar = RiftPool_CountLeft(fieldSystem);
+        break;
+
+    case RIFT_CMD_DEBUG_CATCH_ALL: // TEMPORARY TEST
+        for (int i = 0; i < (int)NELEMS(sRiftPool); i++) {
+            FieldSystem_SetFlag(fieldSystem, sRiftPool[i].caughtFlag);
+        }
+
+        *destVar = 0;
+        break;
+
+    case RIFT_CMD_COUNT_LEFT:
+        *destVar = RiftPool_CountLeft(fieldSystem);
+        break;
     }
 
     return FALSE;

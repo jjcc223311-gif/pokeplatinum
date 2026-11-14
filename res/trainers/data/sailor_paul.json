@@ -8,6 +8,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_ALOMOMOLA",
+            "form": 0,
+            "level": 31,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_TENTACOOL",
             "form": 0,
             "level": 31,
@@ -17,7 +26,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_PELIPPER",
+            "species": "SPECIES_SAWK",
             "form": 0,
             "level": 31,
             "item": null,

@@ -9,14 +9,27 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_WURMPLE",
+            "species": "SPECIES_DWEBBLE",
             "form": 0,
             "level": 10,
             "item": null,
             "moves": [
-                "MOVE_TACKLE",
+                "MOVE_FURY_CUTTER",
+                "MOVE_ROCK_BLAST",
+                "MOVE_WITHDRAW"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_SEWADDLE",
+            "form": 0,
+            "level": 10,
+            "item": null,
+            "moves": [
                 "MOVE_STRING_SHOT",
-                "MOVE_POISON_STING"
+                "MOVE_TACKLE",
+                "MOVE_BUG_BITE"
             ],
             "iv_scale": 0,
             "ball_seal": 0

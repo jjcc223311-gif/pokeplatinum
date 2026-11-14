@@ -1959,6 +1959,13 @@ static BOOL BoxAppMan_CheckReleaseMonValid(BoxApplicationManager *boxAppMan, int
         return FALSE;
     }
 
+    // A fused Kyurem holds Zekrom / Reshiram: separate them with the DNA Splicers first
+    if (BoxApp_GetPreviewedMonValue(&boxAppMan->boxApp, MON_DATA_SPECIES, NULL) == SPECIES_KYUREM
+        && BoxApp_GetPreviewedMonValue(&boxAppMan->boxApp, MON_DATA_FORM, NULL) != 0) {
+        *destBoxMessageID = BoxText_CantReleaseFusedKyurem;
+        return FALSE;
+    }
+
     UNUSED(BoxApp_GetPreviewedMonHeldItem(&boxAppMan->boxApp));
 
     if (Item_IsMail(BoxApp_GetPreviewedMonHeldItem(&boxAppMan->boxApp))) {
@@ -3983,7 +3990,7 @@ static void BoxApp_GiveItemToSelectedMon(BoxApplication *boxApp, u16 item, BoxAp
         BoxPokemon_SetArceusForm(preview->mon);
         preview->type1 = BoxPokemon_GetValue(preview->mon, MON_DATA_TYPE_1, NULL);
         preview->type2 = BoxPokemon_GetValue(preview->mon, MON_DATA_TYPE_2, NULL);
-    } else if (species == SPECIES_GIRATINA) {
+    } else if (Species_GetOriginFormItem(species) != ITEM_NONE) {
         BoxPokemon_SetGiratinaForm(preview->mon);
         int ability = BoxPokemon_GetValue(preview->mon, MON_DATA_ABILITY, NULL);
         MessageLoader_GetString(boxAppMan->abilityNameLoader, ability, preview->ability);

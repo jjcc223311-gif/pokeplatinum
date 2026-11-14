@@ -12,6 +12,7 @@
 #include "struct_defs/battler_data.h"
 #include "struct_defs/struct_020127E8.h"
 
+#include "battle/battle_controller_player.h"
 #include "battle/battle_display.h"
 #include "battle/battle_system.h"
 #include "battle/cursor_renderer.h"
@@ -38,6 +39,7 @@
 #include "render_window.h"
 #include "sound_playback.h"
 #include "sprite.h"
+#include "pltt_transfer.h"
 #include "sprite_system.h"
 #include "string_gf.h"
 #include "string_template.h"
@@ -51,6 +53,8 @@
 #include "unk_0208C098.h"
 
 #include "res/text/bank/battle_strings.h"
+
+#include "legendary_button_gfx.h"
 
 static void *BattleSubscreen_Alloc(void);
 static void BattleSubscreen_OpenActionMenu(BattleSubscreen *btlSubscreen, int unused1, int unused2);
@@ -78,6 +82,18 @@ static void BattleSubscreen_DrawUseNextMonMenu(BattleSubscreen *btlSubscreen, in
 static void BattleSubscreen_DrawSwitchMonMenu(BattleSubscreen *btlSubscreen, int unused1, int unused2);
 static void BattleSubscreen_DrawTargetSelectMenu(BattleSubscreen *btlSubscreen, int unused1, int unused2);
 static void LoadMoveSelectPlttSlot(BattleSubscreen *btlSubscreen, enum PokemonType moveType, int moveSlot);
+static void SplitCancelBarForTransformButton(u16 *tilemap);
+static void LoadTransformButtonPalettes(BattleSubscreen *btlSubscreen);
+static void HideMoveMenuButton(BgConfig *bgConfig, int leftCol, int rightCol);
+static void LoadLegendaryButtonTiles(BattleSubscreen *btlSubscreen);
+static void LoadLegendaryButtonPalette(BattleSubscreen *btlSubscreen, int legendaryState);
+static void StartMegaButtonGlow(BattleSubscreen *btlSubscreen);
+static void StopMegaButtonGlow(BattleSubscreen *btlSubscreen);
+static void SysTask_MegaButtonGlow(SysTask *task, void *subscreen);
+static void ButtonFx_Start(BattleSubscreen *btlSubscreen, int theme);
+static void ButtonFx_Stop(BattleSubscreen *btlSubscreen);
+static void ButtonFx_Update(BattleSubscreen *btlSubscreen, int glowAmount);
+static u16 ButtonFx_BlendColor(u16 from, u16 to, int amount256);
 static void LoadEmptyMoveSlotBg(BattleSubscreen *btlSubscreen, int startSlot);
 static void ClearMenuSlotBg(BattleSubscreen *btlSubscreen, int slotIndex);
 static int GetBallStatusAnimID(u8 ballStatus);
@@ -145,6 +161,60 @@ __attribute__((aligned(4))) static const u16 sBgScreenNarcIndices[] = {
     0x30,
     0x2D
 };
+
+// The Mega and Legendary buttons are made by splitting the move menu's Cancel bar (tilemap rows
+// 0x12-0x17, columns 1-30) into three equal-width bars:
+//   [ Mega: cols 1-9 ] gap [ Legendary: cols 11-19 ] gap [ Cancel: cols 21-30 ]
+#define TRANSFORM_BUTTON_RIGHT_COL     9
+#define LEGENDARY_BUTTON_LEFT_COL      11
+#define LEGENDARY_BUTTON_RIGHT_COL     19
+#define CANCEL_BUTTON_LEFT_COL         21
+#define TRANSFORM_BUTTON_FONT_OAM_IDX  13
+#define LEGENDARY_BUTTON_FONT_OAM_IDX  14
+#define BOTTOM_ROW_TEXT_Y              178
+// The Legendary button's own art is uploaded into an unused 10x6 block of the sub-BG tile sheet
+// (tiles 0x24B-0x2F4; no menu screen references them at any press/slot offset). Rows are 32
+// tiles apart in the sheet.
+#define LEGENDARY_BUTTON_TILE_BASE     0x24B
+#define LEGENDARY_BUTTON_PLTT_SLOT     14 // unused by every tilemap shown with the move menu
+#define MOVE_MENU_TILEMAP_BUF      3
+#define MOVE_MENU_BLANK_TILE       0x02FF
+
+// One palette per rainbow band, made by hue-shifting the Cancel bar's palette.
+// These sub-BG palette slots are unused while the move menu is shown.
+static const u8 sTransformButtonRainbowPlttSlots[] = { 1, 2, 5, 6, 12, 13, 15 };
+
+static const u16 sTransformButtonRainbowPalettes[][16] = {
+    { 0x75CD, 0x7FFF, 0x631F, 0x211F, 0x14BE, 0x14B9, 0x18D5, 0x1CF1, 0x210E, 0x5ADF, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x637F, 0x227F, 0x163E, 0x15D9, 0x19B5, 0x1D91, 0x216E, 0x5B5F, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x63DF, 0x23BF, 0x179E, 0x16F9, 0x1A95, 0x1E11, 0x21CE, 0x5BDF, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x63F8, 0x23E8, 0x17C5, 0x1725, 0x1AA6, 0x1E27, 0x21C8, 0x5BF6, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x7FB8, 0x7F28, 0x7B05, 0x6685, 0x5626, 0x45C7, 0x39A8, 0x7FB6, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x7F38, 0x7D48, 0x78E5, 0x64E5, 0x54E6, 0x4507, 0x3908, 0x7EF6, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x7F1D, 0x7D19, 0x78B8, 0x64B4, 0x54D1, 0x44EE, 0x390D, 0x7EDD, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+};
+
+// Neon versions of sTransformButtonRainbowPalettes: same hue per band, fully saturated and
+// brightened (shading order kept). The Mega button pulses between the two while Mega is set.
+static const u16 sMegaButtonNeonPalettes[][16] = {
+    { 0x75CD, 0x7FFF, 0x4E7F, 0x001F, 0x001F, 0x001C, 0x001A, 0x0019, 0x0017, 0x4E7F, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x4F1F, 0x01FF, 0x01FF, 0x01BC, 0x019A, 0x0199, 0x0197, 0x4F1F, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x4FBF, 0x039F, 0x039F, 0x033C, 0x033A, 0x02D9, 0x02F7, 0x4FDF, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x4FF3, 0x03E0, 0x03E0, 0x0380, 0x0340, 0x0320, 0x02E0, 0x4FF3, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x7F73, 0x7EE0, 0x7EE0, 0x72A0, 0x6A60, 0x6620, 0x5E60, 0x7F93, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x7E93, 0x7C60, 0x7C40, 0x7060, 0x6840, 0x6440, 0x5C00, 0x7E93, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+    { 0x75CD, 0x7FFF, 0x7E7B, 0x7C17, 0x7C17, 0x7015, 0x6813, 0x6411, 0x5C13, 0x7E7C, 0x18C6, 0x7C2B, 0x318C, 0x4631, 0x5AD6, 0x0000 },
+};
+
+#define MOVE_SELECT_MENU_CONFIG 11 // index of the move select menu in sBattleMenuConfigs
+#define MEGA_GLOW_PERIOD        48 // frames for one dim -> bright -> dim pulse
+
+// Which button the live effects (ButtonFx_*) surround
+enum ButtonFxTheme {
+    BUTTON_FX_THEME_MEGA = 0, // rainbow sparks, red/orange flames
+    BUTTON_FX_THEME_LEGENDARY, // golden sparks and flames
+};
+
 
 __attribute__((aligned(4))) static const u16 sMoveTypeIconPositions[][2] = {
     { 0x20, 0x3E },
@@ -295,11 +365,13 @@ __attribute__((aligned(4))) static const u8 palParkMenuButtonLayout[2][1] = {
 };
 
 static const TouchScreenRect sMoveSelectMenuTouchRects[] = {
-    { 0x98, 0xC0, 0x8, 0xF8 },
+    { 0x98, 0xC0, 0xA8, 0xF8 }, // Cancel (right third of the bottom row)
     { 0x18, 0x50, 0x0, 0x80 },
     { 0x18, 0x50, 0x80, 0xFF },
     { 0x58, 0x90, 0x0, 0x80 },
     { 0x58, 0x90, 0x80, 0xFF },
+    { 0x98, 0xC0, 0x8, 0x50 }, // Mega (left third)
+    { 0x98, 0xC0, 0x58, 0xA0 }, // Legendary (middle third)
     { 0xFF, 0x0, 0x0, 0x0 }
 };
 
@@ -308,7 +380,9 @@ static const int sMoveSelectButtonResults[NELEMS(sMoveSelectMenuTouchRects) - 1]
     0x1,
     0x2,
     0x3,
-    0x4
+    0x4,
+    PLAYER_INPUT_MEGA,
+    PLAYER_INPUT_LEGENDARY
 };
 
 __attribute__((aligned(4))) static const u8 sMoveSelectButtonSlots[NELEMS(sMoveSelectMenuTouchRects) - 1] = {
@@ -316,13 +390,24 @@ __attribute__((aligned(4))) static const u8 sMoveSelectButtonSlots[NELEMS(sMoveS
     0x8,
     0x9,
     0xA,
-    0xB
+    0xB,
+    0xC,
+    0xD
 };
 
-__attribute__((aligned(4))) static const u8 sMoveMenuButtonLayout[3][2] = {
-    { 0x1, 0x2 },
-    { 0x3, 0x4 },
-    { 0x0, 0x0 }
+// Three columns so the bottom row can hold Mega, Legendary and Cancel
+#define MOVE_MENU_LAYOUT_W 3
+#define MOVE_MENU_LAYOUT_H 3
+
+// Indices into sMoveSelectMenuTouchRects
+#define MOVE_MENU_CANCEL_BUTTON    0
+#define MOVE_MENU_MEGA_BUTTON      5
+#define MOVE_MENU_LEGENDARY_BUTTON 6
+
+__attribute__((aligned(4))) static const u8 sMoveMenuButtonLayout[MOVE_MENU_LAYOUT_H][MOVE_MENU_LAYOUT_W] = {
+    { 0x1, 0x2, 0x2 },
+    { 0x3, 0x4, 0x4 },
+    { 0x5, 0x6, 0x0 }
 };
 
 static const TouchScreenRect sYesNoMenuTouchRects[] = {
@@ -720,8 +805,14 @@ __attribute__((aligned(4))) static const SubscreenTilemapRect sMoveButtonPressTi
     { 0x2, 0x9, 0x10, 0x1F },
     { 0xA, 0x11, 0x0, 0xF },
     { 0xA, 0x11, 0x10, 0x1F },
-    { 0x12, 0x17, 0x1, 0x1E },
+    { 0x12, 0x17, CANCEL_BUTTON_LEFT_COL, 0x1E },
 };
+
+__attribute__((aligned(4))) static const SubscreenTilemapRect sTransformButtonPressTilemapRect = { 0x12, 0x17, 0x1, TRANSFORM_BUTTON_RIGHT_COL };
+__attribute__((aligned(4))) static const SubscreenTilemapRect sLegendaryButtonPressTilemapRect = { 0x12, 0x17, LEGENDARY_BUTTON_LEFT_COL, LEGENDARY_BUTTON_RIGHT_COL };
+
+// The Legendary button has no separate pressed tiles; the press is shown by moving its label
+__attribute__((aligned(4))) static const s16 sLegendaryButtonPressKeyframes[3] = { 0x0, 0x0, 0x0 };
 
 __attribute__((aligned(4))) static const s16 sEmptyMoveSlotTileOffsets[] = {
     0x22F,
@@ -884,7 +975,8 @@ void *BattleSubscreen_New(NARC *unused1, NARC *unused2, BattleSystem *battleSys,
         GF_ASSERT(FALSE);
     }
 
-    btlSubscreen->fontOAMManager = sub_02012744(13, HEAP_ID_BATTLE);
+    btlSubscreen->fontOAMManager = sub_02012744(NELEMS(btlSubscreen->fontOAMEntry) + BUTTON_FX_MAX_PARTICLES, HEAP_ID_BATTLE);
+    btlSubscreen->buttonFxPlttSlot = -1;
     btlSubscreen->pulseCursorTask = SysTask_Start(SysTask_PulseCursorHighlight, btlSubscreen, 1310);
 
     NNSG2dScreenData *screenData;
@@ -904,6 +996,8 @@ void *BattleSubscreen_New(NARC *unused1, NARC *unused2, BattleSystem *battleSys,
         MI_CpuCopy32(screenData->rawData, btlSubscreen->tilemapBuffers[i], 0x800);
         Heap_Free(scrnAlloc);
     }
+
+    SplitCancelBarForTransformButton(btlSubscreen->tilemapBuffers[MOVE_MENU_TILEMAP_BUF]);
 
     int narcMemberIdx = BattleSystem_GetBattleType(battleSys) & BATTLE_TYPE_FRONTIER ? 340 : 242;
     btlSubscreen->subscreenPaletteBuf = Heap_Alloc(HEAP_ID_BATTLE, 0x200);
@@ -965,6 +1059,8 @@ void *BattleSubscreen_New(NARC *unused1, NARC *unused2, BattleSystem *battleSys,
 
 void BattleSubscreen_Free(BattleSubscreen *btlSubscreen)
 {
+    StopMegaButtonGlow(btlSubscreen);
+
     if (btlSubscreen->suppressActivationSfxPtr) {
         *btlSubscreen->suppressActivationSfxPtr = btlSubscreen->suppressActivationSfx;
     }
@@ -1034,6 +1130,8 @@ void BattleSubscreen_FreeGraphics(BattleSubscreen *btlSubscreen)
 void BattleSubscreen_SetupBackground(NARC *unused, NARC *spriteNarc, BattleSubscreen *btlSubscreen, int menuConfigIndex, int forceRedraw, void *battleDisplayData)
 {
     const BattleMenuConfig *newBattleMenuConfig, *activeBattleMenuConfig;
+
+    StopMegaButtonGlow(btlSubscreen);
 
     if (battleDisplayData) {
         MI_CpuCopy8(battleDisplayData, &btlSubscreen->activeMenuData, sizeof(ActiveMenuData));
@@ -1558,6 +1656,12 @@ static void BattleSubscreen_DrawPalParkMenu(BattleSubscreen *btlSubscreen, int u
     sub_020129D0(btlSubscreen->fontOAMEntry[2].fontOAM, 0);
 }
 
+// "MEGA" / "LEGENDARY", or with "1" / "2" while a species with two such forms has one chosen
+static u32 MegaButtonLabel(int state, u32 label, u32 label1, u32 label2)
+{
+    return state == MEGA_BUTTON_ON_1 ? label1 : state == MEGA_BUTTON_ON_2 ? label2 : label;
+}
+
 static void BattleSubscreen_DrawMoveSelectMenu(BattleSubscreen *btlSubscreen, int unused1, int unused2)
 {
     int i;
@@ -1567,6 +1671,12 @@ static void BattleSubscreen_DrawMoveSelectMenu(BattleSubscreen *btlSubscreen, in
     GF_ASSERT(moveData);
 
     btlSubscreen->battlerType = moveData->battlerType;
+
+    // Always start from the unpressed menu tilemap. When the Mega button is toggled, this same
+    // menu is re-opened, and the menu setup skips reloading an unchanged menu's tilemap.
+    BgConfig *menuBgConfig = BattleSystem_GetBgConfig(btlSubscreen->battleSys);
+    Bg_LoadTilemapBuffer(menuBgConfig, 4, btlSubscreen->tilemapBuffers[MOVE_MENU_TILEMAP_BUF], 0x800);
+    Bg_ScheduleTilemapTransfer(menuBgConfig, 4);
 
     MessageLoader *msgLoader = BattleSystem_GetMessageLoader(btlSubscreen->battleSys);
     MoveDisplayData *moveDisplayData = GetMoveDisplayData(btlSubscreen, moveData->battlerType);
@@ -1585,8 +1695,46 @@ static void BattleSubscreen_DrawMoveSelectMenu(BattleSubscreen *btlSubscreen, in
     }
 
     String *cancelMsg = MessageLoader_GetNewString(msgLoader, BattleStrings_Text_Cancel2);
-    BattleSubscreen_NewFontOAM(btlSubscreen, &btlSubscreen->fontOAMEntry[4], cancelMsg, FONT_SUBSCREEN, TEXT_COLOR(10, 11, 12), 2, 20023, 128, 178, 1, NULL);
+    BattleSubscreen_NewFontOAM(btlSubscreen, &btlSubscreen->fontOAMEntry[4], cancelMsg, FONT_SUBSCREEN, TEXT_COLOR(10, 11, 12), 2, 20023, (CANCEL_BUTTON_LEFT_COL + 31) * 8 / 2, BOTTOM_ROW_TEXT_Y, 1, NULL);
     String_Free(cancelMsg);
+
+    if (moveData->megaState == MEGA_BUTTON_HIDDEN) {
+        // Not drawn at all: blank its tiles (it gets no label, taps on it are ignored and the
+        // cursor skips it)
+        HideMoveMenuButton(menuBgConfig, 1, TRANSFORM_BUTTON_RIGHT_COL);
+    } else {
+        String *megaMsg = MessageLoader_GetNewString(msgLoader, MegaButtonLabel(moveData->megaState, BattleStrings_Text_MegaButton, BattleStrings_Text_MegaButton1, BattleStrings_Text_MegaButton2));
+        int megaTextY = MEGA_BUTTON_IS_ON(moveData->megaState) ? BOTTOM_ROW_TEXT_Y - 2 : BOTTOM_ROW_TEXT_Y;
+        BattleSubscreen_NewFontOAM(btlSubscreen, &btlSubscreen->fontOAMEntry[TRANSFORM_BUTTON_FONT_OAM_IDX], megaMsg, FONT_SUBSCREEN, TEXT_COLOR(10, 11, 12), 2, 20023, (1 + TRANSFORM_BUTTON_RIGHT_COL + 1) * 8 / 2, megaTextY, 1, NULL);
+        String_Free(megaMsg);
+
+        LoadTransformButtonPalettes(btlSubscreen);
+
+        if (MEGA_BUTTON_IS_ON(moveData->megaState)) {
+            // Show the button held down and glowing while Mega Evolution is set for this turn
+            ApplyMoveSlotTilemap(btlSubscreen, sMoveButtonPressKeyframes[NELEMS(sMoveButtonPressKeyframes) - 1], &sTransformButtonPressTilemapRect, MOVE_MENU_TILEMAP_BUF, 2);
+            StartMegaButtonGlow(btlSubscreen);
+        }
+    }
+
+    // Legendary button: gold when available, brighter gold while set, not drawn at all otherwise
+    if (moveData->legendaryState == MEGA_BUTTON_HIDDEN) {
+        HideMoveMenuButton(menuBgConfig, LEGENDARY_BUTTON_LEFT_COL, LEGENDARY_BUTTON_RIGHT_COL);
+    } else {
+        LoadLegendaryButtonTiles(btlSubscreen);
+        LoadLegendaryButtonPalette(btlSubscreen, moveData->legendaryState);
+    }
+
+    if (MEGA_BUTTON_IS_ON(moveData->legendaryState)) {
+        StartMegaButtonGlow(btlSubscreen); // gold pulse + golden sparks and flames
+    }
+
+    if (moveData->legendaryState != MEGA_BUTTON_HIDDEN) {
+        String *legendaryMsg = MessageLoader_GetNewString(msgLoader, MegaButtonLabel(moveData->legendaryState, BattleStrings_Text_LegendaryButton, BattleStrings_Text_LegendaryButton1, BattleStrings_Text_LegendaryButton2));
+        int legendaryTextY = MEGA_BUTTON_IS_ON(moveData->legendaryState) ? BOTTOM_ROW_TEXT_Y - 2 : BOTTOM_ROW_TEXT_Y;
+        BattleSubscreen_NewFontOAM(btlSubscreen, &btlSubscreen->fontOAMEntry[LEGENDARY_BUTTON_FONT_OAM_IDX], legendaryMsg, FONT_SUBSCREEN, TEXT_COLOR(10, 11, 12), 2, 20023, (LEGENDARY_BUTTON_LEFT_COL + LEGENDARY_BUTTON_RIGHT_COL + 1) * 8 / 2, legendaryTextY, 1, NULL);
+        String_Free(legendaryMsg);
+    }
 
     for (i = 0; i < LEARNED_MOVES_MAX; i++) {
         if (moveData->moveIDs[i] != 0) {
@@ -1887,6 +2035,14 @@ static int BattleSubscreen_ProcessMoveInput(BattleSubscreen *btlSubscreen, int s
         }
     }
 
+    if (selectedMove == PLAYER_INPUT_MEGA && moveData->megaState == MEGA_BUTTON_HIDDEN) {
+        return 0xffffffff;
+    }
+
+    if (selectedMove == PLAYER_INPUT_LEGENDARY && moveData->legendaryState == MEGA_BUTTON_HIDDEN) {
+        return 0xffffffff;
+    }
+
     u32 unusedVar = selectedMove - 1;
 
     switch (selectedMove) {
@@ -1903,6 +2059,14 @@ static int BattleSubscreen_ProcessMoveInput(BattleSubscreen *btlSubscreen, int s
     case 0xff:
         keyFrames = sMoveButtonPressKeyframes[NELEMS(sMoveButtonPressKeyframes) - 1];
         tilemapRect = &sMoveButtonPressTilemapRects[NELEMS(sMoveButtonPressKeyframes) - 1];
+        break;
+    case PLAYER_INPUT_MEGA:
+        keyFrames = sMoveButtonPressKeyframes[NELEMS(sMoveButtonPressKeyframes) - 1];
+        tilemapRect = &sTransformButtonPressTilemapRect;
+        break;
+    case PLAYER_INPUT_LEGENDARY:
+        keyFrames = sLegendaryButtonPressKeyframes;
+        tilemapRect = &sLegendaryButtonPressTilemapRect;
         break;
     }
 
@@ -2509,6 +2673,568 @@ static void LoadMoveSelectPlttSlot(BattleSubscreen *btlSubscreen, enum PokemonTy
     LoadMoveSelectPltt(BattleSystem_GetPaletteData(btlSubscreen->battleSys), moveType, 5, PLTTBUF_SUB_BG, 8 + moveSlot);
 }
 
+static void SplitCancelBarForTransformButton(u16 *tilemap)
+{
+    for (int row = 0x12; row <= 0x17; row++) {
+        u16 *line = &tilemap[row * 32];
+        u16 leftCap0 = line[1], leftCap1 = line[2], middle = line[3];
+        u16 rightCap0 = line[29], rightCap1 = line[30];
+        int col;
+
+        // Mega bar: columns 1 to TRANSFORM_BUTTON_RIGHT_COL, one rainbow band per palette
+        line[TRANSFORM_BUTTON_RIGHT_COL - 1] = rightCap0;
+        line[TRANSFORM_BUTTON_RIGHT_COL] = rightCap1;
+
+        for (col = 1; col <= TRANSFORM_BUTTON_RIGHT_COL; col++) {
+            int band = (col - 1) * NELEMS(sTransformButtonRainbowPlttSlots) / TRANSFORM_BUTTON_RIGHT_COL;
+            line[col] = (line[col] & 0x0FFF) | (sTransformButtonRainbowPlttSlots[band] << 12);
+        }
+
+        line[TRANSFORM_BUTTON_RIGHT_COL + 1] = MOVE_MENU_BLANK_TILE;
+
+        // Legendary button: its own gold/stone art (uploaded by LoadLegendaryButtonTiles)
+        for (col = LEGENDARY_BUTTON_LEFT_COL; col <= LEGENDARY_BUTTON_RIGHT_COL; col++) {
+            int tile = LEGENDARY_BUTTON_TILE_BASE + (row - 0x12) * 32 + (col - LEGENDARY_BUTTON_LEFT_COL);
+            line[col] = tile | (LEGENDARY_BUTTON_PLTT_SLOT << 12);
+        }
+
+        line[LEGENDARY_BUTTON_RIGHT_COL + 1] = MOVE_MENU_BLANK_TILE;
+
+        // Cancel bar: the rest of the row, keeping its original palette
+        line[CANCEL_BUTTON_LEFT_COL] = leftCap0;
+        line[CANCEL_BUTTON_LEFT_COL + 1] = leftCap1;
+
+        for (col = CANCEL_BUTTON_LEFT_COL + 2; col <= 28; col++) {
+            line[col] = middle;
+        }
+
+        line[29] = rightCap0;
+        line[30] = rightCap1;
+    }
+}
+
+static void LoadLegendaryButtonTiles(BattleSubscreen *btlSubscreen)
+{
+    // Re-uploaded every time the move menu is drawn, because other battle screens (bag, party)
+    // reload the whole sub-BG tile sheet.
+    BgConfig *bgConfig = BattleSystem_GetBgConfig(btlSubscreen->battleSys);
+
+    for (int row = 0; row < LEGENDARY_BUTTON_TILES_H; row++) {
+        Bg_LoadTiles(bgConfig, BG_LAYER_SUB_0, (void *)sLegendaryButtonTiles[row * LEGENDARY_BUTTON_TILES_W], LEGENDARY_BUTTON_TILES_W * 32, LEGENDARY_BUTTON_TILE_BASE + row * 32);
+    }
+}
+
+static void LoadLegendaryButtonPalette(BattleSubscreen *btlSubscreen, int legendaryState)
+{
+    int variant = MEGA_BUTTON_IS_ON(legendaryState) ? 1 : (legendaryState == MEGA_BUTTON_HIDDEN ? 2 : 0);
+    PaletteData_LoadBuffer(BattleSystem_GetPaletteData(btlSubscreen->battleSys), sLegendaryButtonPalettes[variant], PLTTBUF_SUB_BG, PLTT_DEST(LEGENDARY_BUTTON_PLTT_SLOT), PALETTE_SIZE_BYTES);
+}
+
+// Blank one bottom-row button's tiles (rows 0x12-0x17) so it is not drawn at all
+static void HideMoveMenuButton(BgConfig *bgConfig, int leftCol, int rightCol)
+{
+    Bg_FillTilemapRect(bgConfig, BG_LAYER_SUB_0, MOVE_MENU_BLANK_TILE, leftCol, 0x12, rightCol - leftCol + 1, 6, TILEMAP_FILL_VAL_INCLUDES_PALETTE);
+    Bg_ScheduleTilemapTransfer(bgConfig, BG_LAYER_SUB_0);
+}
+
+// The move menu's cursor layout with hidden Mega / Legendary buttons replaced by the button
+// beside them, so the cursor can never land on a button that isn't there.
+static void GetMoveMenuButtonLayout(const MoveSelectData *moveData, u8 layout[MOVE_MENU_LAYOUT_H][MOVE_MENU_LAYOUT_W])
+{
+    MI_CpuCopy8(sMoveMenuButtonLayout, layout, MOVE_MENU_LAYOUT_W * MOVE_MENU_LAYOUT_H);
+
+    for (int col = 0; col < MOVE_MENU_LAYOUT_W; col++) {
+        u8 *button = &layout[MOVE_MENU_LAYOUT_H - 1][col];
+
+        if (*button == MOVE_MENU_LEGENDARY_BUTTON && moveData->legendaryState == MEGA_BUTTON_HIDDEN) {
+            *button = MOVE_MENU_CANCEL_BUTTON;
+        }
+
+        if (*button == MOVE_MENU_MEGA_BUTTON && moveData->megaState == MEGA_BUTTON_HIDDEN) {
+            *button = moveData->legendaryState == MEGA_BUTTON_HIDDEN ? MOVE_MENU_CANCEL_BUTTON : MOVE_MENU_LEGENDARY_BUTTON;
+        }
+    }
+}
+
+static void StartMegaButtonGlow(BattleSubscreen *btlSubscreen)
+{
+    StopMegaButtonGlow(btlSubscreen);
+    btlSubscreen->megaGlowFrame = 0;
+    btlSubscreen->megaGlowTask = SysTask_Start(SysTask_MegaButtonGlow, btlSubscreen, 1311);
+    ButtonFx_Start(btlSubscreen, MEGA_BUTTON_IS_ON(btlSubscreen->activeMenuData.moveData.megaState) ? BUTTON_FX_THEME_MEGA : BUTTON_FX_THEME_LEGENDARY);
+}
+
+static void StopMegaButtonGlow(BattleSubscreen *btlSubscreen)
+{
+    // The palette slots themselves are restored by the next menu setup, which reloads every
+    // sub-BG palette; the glow only ever writes the Mega button's own (otherwise unused) slots.
+    if (btlSubscreen->megaGlowTask) {
+        SysTask_Done(btlSubscreen->megaGlowTask);
+        btlSubscreen->megaGlowTask = NULL;
+    }
+
+    ButtonFx_Stop(btlSubscreen);
+}
+
+// Gold pulse for the Legendary button: the gold shades (palette indices 6-12) of its "active"
+// palette swing toward a bright white-gold and back; the stone border is left as it is.
+#define LEGENDARY_GLOW_GOLD_FIRST 6
+#define LEGENDARY_GLOW_GOLD_LAST  12
+#define LEGENDARY_GLOW_TARGET     0x5FFF // R31 G31 B23
+
+static void LegendaryButtonGlow(BattleSubscreen *btlSubscreen, int amount256)
+{
+    u16 colors[16];
+
+    for (int c = 0; c < 16; c++) {
+        colors[c] = sLegendaryButtonPalettes[1][c];
+
+        if (c >= LEGENDARY_GLOW_GOLD_FIRST && c <= LEGENDARY_GLOW_GOLD_LAST) {
+            colors[c] = ButtonFx_BlendColor(colors[c], LEGENDARY_GLOW_TARGET, amount256 * 3 / 4);
+        }
+    }
+
+    PaletteData_LoadBuffer(BattleSystem_GetPaletteData(btlSubscreen->battleSys), colors, PLTTBUF_SUB_BG, PLTT_DEST(LEGENDARY_BUTTON_PLTT_SLOT), PALETTE_SIZE_BYTES);
+}
+
+static void SysTask_MegaButtonGlow(SysTask *task, void *subscreen)
+{
+    BattleSubscreen *btlSubscreen = subscreen;
+    PaletteData *plttData = BattleSystem_GetPaletteData(btlSubscreen->battleSys);
+
+    MoveSelectData *moveData = &btlSubscreen->activeMenuData.moveData;
+
+    // Safety net: stop as soon as the move menu (with Mega or Legendary set) is no longer the
+    // active menu
+    if (btlSubscreen->activeMenuConfigIndex != MOVE_SELECT_MENU_CONFIG
+        || (!MEGA_BUTTON_IS_ON(moveData->megaState) && !MEGA_BUTTON_IS_ON(moveData->legendaryState))) {
+        StopMegaButtonGlow(btlSubscreen);
+        return;
+    }
+
+    if (PaletteData_GetSelectedBuffersMask(plttData)) {
+        return; // a screen fade is in progress
+    }
+
+    btlSubscreen->megaGlowFrame = (btlSubscreen->megaGlowFrame + 1) % MEGA_GLOW_PERIOD;
+
+    // Smoothstep over a triangle wave: 0 (normal colors) -> 256 (full neon) -> 0
+    int half = MEGA_GLOW_PERIOD / 2;
+    int tri = btlSubscreen->megaGlowFrame < half ? btlSubscreen->megaGlowFrame : MEGA_GLOW_PERIOD - btlSubscreen->megaGlowFrame;
+    int amount = tri * tri * (3 * half - 2 * tri) * 256 / (half * half * half);
+
+    if (!MEGA_BUTTON_IS_ON(moveData->megaState)) {
+        LegendaryButtonGlow(btlSubscreen, amount);
+        ButtonFx_Update(btlSubscreen, amount);
+        return;
+    }
+
+    for (int band = 0; band < NELEMS(sTransformButtonRainbowPlttSlots); band++) {
+        u16 blended[16];
+
+        for (int c = 0; c < 16; c++) {
+            u16 from = sTransformButtonRainbowPalettes[band][c];
+            u16 to = sMegaButtonNeonPalettes[band][c];
+            u16 out = 0;
+
+            for (int shift = 0; shift <= 10; shift += 5) {
+                int a = (from >> shift) & 31;
+                int b = (to >> shift) & 31;
+                out |= (a + (b - a) * amount / 256) << shift;
+            }
+
+            blended[c] = out;
+        }
+
+        PaletteData_LoadBuffer(plttData, blended, PLTTBUF_SUB_BG, PLTT_DEST(sTransformButtonRainbowPlttSlots[band]), PALETTE_SIZE_BYTES);
+    }
+
+    ButtonFx_Update(btlSubscreen, amount);
+}
+
+// ---------------------------------------------------------------------------------------------
+// Button live effects: small sprites (sparkles and flickering flames) around an active button.
+//
+// The sprites are built at runtime from the pixel art below, through the same FontOAM path the
+// menu text uses (a 4bpp window turned into OAM), so they need no new graphics archive. They
+// use ONE extra sub-OBJ palette, allocated only while the effect runs and freed by
+// ButtonFx_Stop. Every effect color lives in that palette, and the effect is animated by
+// rewriting it (color cycling) plus moving / toggling the sprites. ButtonFx_Stop runs from
+// StopMegaButtonGlow, i.e. on every menu change, cleanup and when the battle subscreen is freed.
+// ---------------------------------------------------------------------------------------------
+
+#define BUTTON_FX_PLTT_RES_ID     20050 // unused by every other battle sprite resource
+#define BUTTON_FX_PLTT_SRC_MEMBER 80 // any 1-palette NCLR in pl_batt_obj; its colors are replaced
+#define BUTTON_FX_NUM_SPARKLES    8
+#define BUTTON_FX_NUM_FLAMES      4 // each flame is two sprites (two frames)
+#define SUBSCREEN_OAM_Y_OFFSET    (192 + 80) // sub-screen sprites live 272px below the main ones
+
+enum ButtonFxParticleKind {
+    BUTTON_FX_SPARKLE = 0,
+    BUTTON_FX_FLAME_FRAME_A,
+    BUTTON_FX_FLAME_FRAME_B,
+};
+
+// Effect palette indices
+#define FX_COLOR_HUE_FIRST  1 // 1-6: the six cycling sparkle hues
+#define FX_COLOR_HUE_COUNT  6
+#define FX_COLOR_WHITE      7
+#define FX_COLOR_FLAME_OUT  8
+#define FX_COLOR_FLAME_MID  9
+#define FX_COLOR_FLAME_CORE 10
+
+// Pixel art: '.' is transparent, a hex digit is an effect palette index, 'h' is the sparkle's hue
+static const char *const sFxSparkleBig[8] = {
+    "...h....",
+    "...h....",
+    "..h7h...",
+    "hh777hh.",
+    "..h7h...",
+    "...h....",
+    "...h....",
+    "........",
+};
+
+static const char *const sFxSparkleSmall[8] = {
+    "........",
+    "........",
+    "...h....",
+    "..h7h...",
+    "...h....",
+    "........",
+    "........",
+    "........",
+};
+
+static const char *const sFxFlame[16] = {
+    "...8....",
+    "...8....",
+    "..88....",
+    "..898...",
+    ".8898...",
+    ".89988..",
+    ".89998..",
+    "899A98..",
+    "89AA998.",
+    "89AAA98.",
+    "89AAA98.",
+    "89AAA98.",
+    ".89A998.",
+    ".89998..",
+    "..888...",
+    "........",
+};
+
+// Sparkle hues (BGR555), cycled through palette indices 1-6, and flame colors (outer, mid, core)
+static const u16 sFxSparkleHues[][FX_COLOR_HUE_COUNT] = {
+    [BUTTON_FX_THEME_MEGA] = { 0x001F, 0x021F, 0x03FF, 0x03E0, 0x7E00, 0x7C18 }, // neon rainbow
+    [BUTTON_FX_THEME_LEGENDARY] = { 0x63FF, 0x2B9F, 0x131F, 0x029F, 0x021C, 0x43DF }, // golds
+};
+
+static const u16 sFxFlameColors[][3] = {
+    [BUTTON_FX_THEME_MEGA] = { 0x009A, 0x021F, 0x2B9F }, // red, orange, yellow
+    [BUTTON_FX_THEME_LEGENDARY] = { 0x01DC, 0x0B1F, 0x5BFF }, // amber, gold, white-gold
+};
+
+// Flame anchor points (top-left, screen pixels) relative to the button's left edge. Both
+// buttons span y 144-191 and are 72px wide (Mega x 8-79, Legendary x 88-159).
+static const s16 sFxFlamePos[BUTTON_FX_NUM_FLAMES][2] = {
+    { -4, 130 },
+    { 66, 130 },
+    { -8, 164 },
+    { 72, 164 },
+};
+
+static u32 ButtonFx_Rand(BattleSubscreen *btlSubscreen)
+{
+    btlSubscreen->buttonFxRng = btlSubscreen->buttonFxRng * 1103515245 + 12345;
+    return (btlSubscreen->buttonFxRng >> 16) & 0x7FFF;
+}
+
+static u16 ButtonFx_ScaleColor(u16 color, int num, int den)
+{
+    u16 out = 0;
+
+    for (int shift = 0; shift <= 10; shift += 5) {
+        int c = ((color >> shift) & 31) * num / den;
+        out |= (c > 31 ? 31 : c) << shift;
+    }
+
+    return out;
+}
+
+static u16 ButtonFx_BlendColor(u16 from, u16 to, int amount256)
+{
+    u16 out = 0;
+
+    for (int shift = 0; shift <= 10; shift += 5) {
+        int a = (from >> shift) & 31;
+        int b = (to >> shift) & 31;
+        out |= (a + (b - a) * amount256 / 256) << shift;
+    }
+
+    return out;
+}
+
+static void ButtonFx_SetPos(ButtonFxParticle *particle)
+{
+    FontOAM_SetXY(particle->oam.fontOAM, particle->x, particle->y + SUBSCREEN_OAM_Y_OFFSET);
+}
+
+static BOOL ButtonFx_NewParticle(BattleSubscreen *btlSubscreen, const NNSG2dImagePaletteProxy *plttProxy, enum ButtonFxParticleKind kind, const char *const *art, int heightTiles, BOOL mirror, int hue, int x, int y)
+{
+    ButtonFxParticle *particle = &btlSubscreen->buttonFx[btlSubscreen->buttonFxCount];
+    BgConfig *bgConfig = BattleSystem_GetBgConfig(btlSubscreen->battleSys);
+    SpriteManager *spriteMan = BattleSystem_GetSpriteManager(btlSubscreen->battleSys);
+    Window window;
+
+    Window_Init(&window);
+    Window_AddToTopLeftCorner(bgConfig, &window, 1, heightTiles, 0, 0);
+
+    if (window.pixels == NULL) {
+        return FALSE;
+    }
+
+    // Write the art straight into the window's 4bpp tile buffer (one tile column wide)
+    u8 *pixels = window.pixels;
+
+    for (int py = 0; py < heightTiles * 8; py++) {
+        for (int px = 0; px < 8; px++) {
+            char ch = art[py][mirror ? 7 - px : px];
+            int color = 0;
+
+            if (ch == 'h') {
+                color = hue;
+            } else if (ch >= '0' && ch <= '9') {
+                color = ch - '0';
+            } else if (ch >= 'A' && ch <= 'F') {
+                color = ch - 'A' + 10;
+            }
+
+            u8 *byte = &pixels[(py / 8) * 32 + (py % 8) * 4 + px / 2];
+            *byte = (px & 1) ? ((*byte & 0x0F) | (color << 4)) : ((*byte & 0xF0) | color);
+        }
+    }
+
+    int charTileCount = sub_02012898(&window, NNS_G2D_VRAM_TYPE_2DSUB, HEAP_ID_BATTLE);
+
+    if (CharTransfer_AllocRange(charTileCount, 1, NNS_G2D_VRAM_TYPE_2DSUB, &particle->oam.allocation) == FALSE) {
+        Window_Remove(&window);
+        return FALSE;
+    }
+
+    UnkStruct_020127E8 params;
+    params.unk_00 = btlSubscreen->fontOAMManager;
+    params.unk_04 = &window;
+    params.unk_08 = SpriteManager_GetSpriteList(spriteMan);
+    params.unk_0C = plttProxy;
+    params.unk_10 = NULL;
+    params.unk_14 = particle->oam.allocation.offset;
+    params.unk_18 = x;
+    params.unk_1C = y + SUBSCREEN_OAM_Y_OFFSET;
+    params.unk_20 = 0;
+    params.unk_24 = 100;
+    params.unk_28 = NNS_G2D_VRAM_TYPE_2DSUB;
+    params.heapID = HEAP_ID_BATTLE;
+
+    particle->oam.fontOAM = sub_020127E8(&params);
+    Window_Remove(&window);
+
+    sub_02012AC0(particle->oam.fontOAM, 0);
+    particle->kind = kind;
+    particle->x = x;
+    particle->y = y;
+    particle->vx = 0;
+    particle->life = 0;
+    particle->timer = 0;
+    ButtonFx_SetPos(particle);
+
+    btlSubscreen->buttonFxCount++;
+    return TRUE;
+}
+
+static void ButtonFx_Stop(BattleSubscreen *btlSubscreen)
+{
+    for (int i = 0; i < btlSubscreen->buttonFxCount; i++) {
+        ButtonFxParticle *particle = &btlSubscreen->buttonFx[i];
+
+        if (particle->oam.fontOAM) {
+            sub_02012870(particle->oam.fontOAM);
+            CharTransfer_ClearRange(&particle->oam.allocation);
+            particle->oam.fontOAM = NULL;
+        }
+    }
+
+    btlSubscreen->buttonFxCount = 0;
+
+    if (btlSubscreen->buttonFxPlttSlot >= 0) {
+        SpriteManager_UnloadPlttObjById(BattleSystem_GetSpriteManager(btlSubscreen->battleSys), BUTTON_FX_PLTT_RES_ID);
+        btlSubscreen->buttonFxPlttSlot = -1;
+    }
+}
+
+static void ButtonFx_RespawnSparkle(BattleSubscreen *btlSubscreen, ButtonFxParticle *particle)
+{
+    // Somewhere just outside the button's top, left or right edge
+    int baseX = btlSubscreen->buttonFxBaseX;
+
+    switch (ButtonFx_Rand(btlSubscreen) % 4) {
+    case 0:
+    case 1:
+        particle->x = baseX - 2 + ButtonFx_Rand(btlSubscreen) % 68;
+        particle->y = 134 + ButtonFx_Rand(btlSubscreen) % 8;
+        break;
+    case 2:
+        particle->x = baseX - 8 + ButtonFx_Rand(btlSubscreen) % 3;
+        particle->y = 146 + ButtonFx_Rand(btlSubscreen) % 38;
+        break;
+    default:
+        particle->x = baseX + 69 + ButtonFx_Rand(btlSubscreen) % 4;
+        particle->y = 146 + ButtonFx_Rand(btlSubscreen) % 38;
+        break;
+    }
+
+    particle->vx = (s8)(ButtonFx_Rand(btlSubscreen) % 3) - 1;
+    particle->life = 16 + ButtonFx_Rand(btlSubscreen) % 20;
+    sub_020129D0(particle->oam.fontOAM, TRUE);
+}
+
+static void ButtonFx_Start(BattleSubscreen *btlSubscreen, int theme)
+{
+    ButtonFx_Stop(btlSubscreen);
+
+    btlSubscreen->buttonFxTheme = theme;
+    btlSubscreen->buttonFxBaseX = (theme == BUTTON_FX_THEME_MEGA ? 1 : LEGENDARY_BUTTON_LEFT_COL) * 8;
+
+    SpriteSystem *spriteSys = BattleSystem_GetSpriteSystem(btlSubscreen->battleSys);
+    SpriteManager *spriteMan = BattleSystem_GetSpriteManager(btlSubscreen->battleSys);
+
+    // Asserts are enabled in this build, so check for room first: with no free sub-OBJ palette
+    // the button simply runs without live effects.
+    if (PlttTransfer_CanRequestFreeSpace(1, NNS_G2D_VRAM_TYPE_2DSUB) == FALSE) {
+        return;
+    }
+
+    s8 slot = SpriteSystem_LoadPlttResObj(spriteSys, spriteMan, NARC_INDEX_BATTLE__GRAPHIC__PL_BATT_OBJ, BUTTON_FX_PLTT_SRC_MEMBER, FALSE, 1, NNS_G2D_VRAM_TYPE_2DSUB, BUTTON_FX_PLTT_RES_ID);
+
+    if (slot < 0 || slot > 15) {
+        return; // no free sub-OBJ palette: run without live effects rather than corrupt others
+    }
+
+    btlSubscreen->buttonFxPlttSlot = slot;
+    btlSubscreen->buttonFxRng = 0x4D454741 + theme; // fixed seed; this RNG is cosmetic only
+
+    const NNSG2dImagePaletteProxy *plttProxy = SpriteManager_FindPlttResourceProxy(spriteMan, BUTTON_FX_PLTT_RES_ID);
+    int i;
+
+    for (i = 0; i < BUTTON_FX_NUM_SPARKLES; i++) {
+        const char *const *art = (i & 1) ? sFxSparkleSmall : sFxSparkleBig;
+
+        if (ButtonFx_NewParticle(btlSubscreen, plttProxy, BUTTON_FX_SPARKLE, art, 1, FALSE, FX_COLOR_HUE_FIRST + i % FX_COLOR_HUE_COUNT, 0, 0) == FALSE) {
+            break;
+        }
+
+        // Stagger the first appearances so the sparkles don't all pop in together
+        ButtonFxParticle *particle = &btlSubscreen->buttonFx[btlSubscreen->buttonFxCount - 1];
+        particle->life = 1 + i * 4;
+        sub_020129D0(particle->oam.fontOAM, FALSE);
+    }
+
+    for (i = 0; i < BUTTON_FX_NUM_FLAMES; i++) {
+        int x = btlSubscreen->buttonFxBaseX + sFxFlamePos[i][0];
+        int y = sFxFlamePos[i][1];
+
+        if (ButtonFx_NewParticle(btlSubscreen, plttProxy, BUTTON_FX_FLAME_FRAME_A, sFxFlame, 2, FALSE, 0, x, y) == FALSE
+            || ButtonFx_NewParticle(btlSubscreen, plttProxy, BUTTON_FX_FLAME_FRAME_B, sFxFlame, 2, TRUE, 0, x, y) == FALSE) {
+            break;
+        }
+
+        // Frame B starts hidden; ButtonFx_Update flips between the two
+        sub_020129D0(btlSubscreen->buttonFx[btlSubscreen->buttonFxCount - 1].oam.fontOAM, FALSE);
+        btlSubscreen->buttonFx[btlSubscreen->buttonFxCount - 2].timer = 1 + i;
+    }
+
+    ButtonFx_Update(btlSubscreen, 0);
+}
+
+static void ButtonFx_Update(BattleSubscreen *btlSubscreen, int glowAmount)
+{
+    if (btlSubscreen->buttonFxPlttSlot < 0) {
+        return;
+    }
+
+    int i;
+
+    for (i = 0; i < btlSubscreen->buttonFxCount; i++) {
+        ButtonFxParticle *particle = &btlSubscreen->buttonFx[i];
+
+        switch (particle->kind) {
+        case BUTTON_FX_SPARKLE:
+            if (--particle->life == 0) {
+                ButtonFx_RespawnSparkle(btlSubscreen, particle);
+            } else if ((btlSubscreen->megaGlowFrame & 1) == 0) {
+                particle->x += particle->vx;
+                particle->y--; // drift upward like a rising spark
+            }
+
+            ButtonFx_SetPos(particle);
+            break;
+
+        case BUTTON_FX_FLAME_FRAME_A:
+            // Each flame flickers by flipping between its two frames at random intervals, with a
+            // 1px vertical jitter. Frame B is always the next particle.
+            if (i + 1 >= btlSubscreen->buttonFxCount || particle[1].kind != BUTTON_FX_FLAME_FRAME_B) {
+                break; // frame B failed to allocate; leave this flame static
+            }
+
+            if (--particle->timer == 0) {
+                ButtonFxParticle *frameB = particle + 1;
+                BOOL showA = ButtonFx_Rand(btlSubscreen) & 1;
+                s16 jitter = ButtonFx_Rand(btlSubscreen) % 2;
+
+                particle->timer = 2 + ButtonFx_Rand(btlSubscreen) % 4;
+                sub_020129D0(particle->oam.fontOAM, showA);
+                sub_020129D0(frameB->oam.fontOAM, !showA);
+                FontOAM_SetXY(particle->oam.fontOAM, particle->x, particle->y - jitter + SUBSCREEN_OAM_Y_OFFSET);
+                FontOAM_SetXY(frameB->oam.fontOAM, frameB->x, frameB->y - jitter + SUBSCREEN_OAM_Y_OFFSET);
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    // Palette: the sparkle hues rotate (rainbow for Mega, golds for Legendary) and brighten with
+    // the button's pulse; the flames flicker in brightness.
+    int theme = btlSubscreen->buttonFxTheme;
+    u16 colors[16] = { 0 };
+    int rotation = btlSubscreen->megaGlowFrame / 4;
+
+    for (i = 0; i < FX_COLOR_HUE_COUNT; i++) {
+        colors[FX_COLOR_HUE_FIRST + i] = ButtonFx_BlendColor(sFxSparkleHues[theme][(i + rotation) % FX_COLOR_HUE_COUNT], 0x7FFF, glowAmount / 3);
+    }
+
+    colors[FX_COLOR_WHITE] = 0x7FFF;
+
+    int flicker = 22 + ButtonFx_Rand(btlSubscreen) % 10;
+
+    for (i = 0; i < 3; i++) {
+        colors[FX_COLOR_FLAME_OUT + i] = ButtonFx_ScaleColor(sFxFlameColors[theme][i], flicker, 31);
+    }
+
+    PaletteData_LoadBuffer(BattleSystem_GetPaletteData(btlSubscreen->battleSys), colors, PLTTBUF_SUB_OBJ, PLTT_DEST(btlSubscreen->buttonFxPlttSlot), PALETTE_SIZE_BYTES);
+}
+
+static void LoadTransformButtonPalettes(BattleSubscreen *btlSubscreen)
+{
+    PaletteData *paletteSys = BattleSystem_GetPaletteData(btlSubscreen->battleSys);
+
+    for (int i = 0; i < NELEMS(sTransformButtonRainbowPlttSlots); i++) {
+        PaletteData_LoadBuffer(paletteSys, sTransformButtonRainbowPalettes[i], PLTTBUF_SUB_BG, PLTT_DEST(sTransformButtonRainbowPlttSlots[i]), PALETTE_SIZE_BYTES);
+    }
+}
+
 static void LoadEmptyMoveSlotBg(BattleSubscreen *btlSubscreen, int startSlot)
 {
     PaletteData *paletteSys = BattleSystem_GetPaletteData(btlSubscreen->battleSys);
@@ -2546,6 +3272,8 @@ static void ResetSubscreenBgLayers(void)
 
 static void BattleSubscreen_Cleanup(BattleSubscreen *btlSubscreen, BOOL freeSprites, BOOL resetBg)
 {
+    StopMegaButtonGlow(btlSubscreen);
+
     if (freeSprites == TRUE) {
         BattleSubscreen_FreeAllSprites(btlSubscreen);
     }
@@ -2703,10 +3431,15 @@ static void SysTask_AnimateMoveButtonPress(SysTask *unused, void *subscreen)
     BattleSubscreen *btlSubscreen = subscreen;
     BgConfig *unusedBgConfig = BattleSystem_GetBgConfig(btlSubscreen->battleSys);
     int x, y, moveNameFontOAMIdx, ppCountFontOAMIdx, ppLabelFontOAMIdx, moveSlotIndex, moveID;
+    int selectedButton = btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.selectedButton;
+    BOOL isMoveButton = selectedButton >= 1 && selectedButton <= LEARNED_MOVES_MAX;
+    int labelFontOAMIdx = selectedButton == PLAYER_INPUT_MEGA ? TRANSFORM_BUTTON_FONT_OAM_IDX
+        : selectedButton == PLAYER_INPUT_LEGENDARY            ? LEGENDARY_BUTTON_FONT_OAM_IDX
+                                                              : 4;
 
     MoveSelectData *moveData = &btlSubscreen->activeMenuData.moveData;
 
-    switch (btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.selectedButton) {
+    switch (selectedButton) {
     case 1:
         moveNameFontOAMIdx = 0;
         ppCountFontOAMIdx = 9;
@@ -2749,7 +3482,7 @@ static void SysTask_AnimateMoveButtonPress(SysTask *unused, void *subscreen)
     case 0:
         ApplyMoveSlotTilemap(btlSubscreen, btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.keyframes, btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.subscreenTilemapRect, btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.srcBufIndex, 2);
 
-        if (btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.selectedButton != 0xff) {
+        if (isMoveButton) {
             FontOAM_GetXY(btlSubscreen->fontOAMEntry[moveNameFontOAMIdx].fontOAM, &x, &y);
             FontOAM_SetXY(btlSubscreen->fontOAMEntry[moveNameFontOAMIdx].fontOAM, x, y + -2);
             FontOAM_GetXY(btlSubscreen->fontOAMEntry[ppCountFontOAMIdx].fontOAM, &x, &y);
@@ -2765,8 +3498,8 @@ static void SysTask_AnimateMoveButtonPress(SysTask *unused, void *subscreen)
                 }
             }
         } else {
-            FontOAM_GetXY(btlSubscreen->fontOAMEntry[4].fontOAM, &x, &y);
-            FontOAM_SetXY(btlSubscreen->fontOAMEntry[4].fontOAM, x, y + -2);
+            FontOAM_GetXY(btlSubscreen->fontOAMEntry[labelFontOAMIdx].fontOAM, &x, &y);
+            FontOAM_SetXY(btlSubscreen->fontOAMEntry[labelFontOAMIdx].fontOAM, x, y + -2);
         }
 
         btlSubscreen->menuButtonPressAnimState.phase++;
@@ -2783,7 +3516,7 @@ static void SysTask_AnimateMoveButtonPress(SysTask *unused, void *subscreen)
     case 2:
         ApplyMoveSlotTilemap(btlSubscreen, btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.keyframes, btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.subscreenTilemapRect, btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.srcBufIndex, 1);
 
-        if (btlSubscreen->menuButtonPressAnimState.ButtonPressAnimationState.selectedButton != 0xff) {
+        if (isMoveButton) {
             FontOAM_GetXY(btlSubscreen->fontOAMEntry[moveNameFontOAMIdx].fontOAM, &x, &y);
             FontOAM_SetXY(btlSubscreen->fontOAMEntry[moveNameFontOAMIdx].fontOAM, x, y + 1);
             FontOAM_GetXY(btlSubscreen->fontOAMEntry[ppCountFontOAMIdx].fontOAM, &x, &y);
@@ -2799,8 +3532,8 @@ static void SysTask_AnimateMoveButtonPress(SysTask *unused, void *subscreen)
                 }
             }
         } else {
-            FontOAM_GetXY(btlSubscreen->fontOAMEntry[4].fontOAM, &x, &y);
-            FontOAM_SetXY(btlSubscreen->fontOAMEntry[4].fontOAM, x, y + 1);
+            FontOAM_GetXY(btlSubscreen->fontOAMEntry[labelFontOAMIdx].fontOAM, &x, &y);
+            FontOAM_SetXY(btlSubscreen->fontOAMEntry[labelFontOAMIdx].fontOAM, x, y + 1);
         }
 
         btlSubscreen->menuButtonPressAnimState.phase++;
@@ -3313,42 +4046,50 @@ static int BattleSystem_Cursor_Moves(BattleSubscreen *btlSubscreen, BOOL cursorH
 {
     u32 button;
     int buttonIndex, i;
-    u8 buttonLayout[3][2];
+    u8 buttonLayout[MOVE_MENU_LAYOUT_H][MOVE_MENU_LAYOUT_W];
     SavedCursorPosition *savedCursorPos = BattlerData_GetSavedCursorPosition(BattleSystem_GetBattlerData(btlSubscreen->battleSys, BattleSystem_GetBattlerOfType(btlSubscreen->battleSys, btlSubscreen->battlerType)));
     MenuCursor *cursor = &btlSubscreen->cursor;
     const BattleMenuConfig *battleMenuConfig = &sBattleMenuConfigs[btlSubscreen->activeMenuConfigIndex];
     MoveSelectData *moveData = &btlSubscreen->activeMenuData.moveData;
 
+    GetMoveMenuButtonLayout(moveData, buttonLayout);
+
     if (cursorHidden == TRUE) {
         cursor->x = savedCursorPos->moveMenuX;
         cursor->y = savedCursorPos->moveMenuY;
-        buttonIndex = sMoveMenuButtonLayout[cursor->y][cursor->x];
+        buttonIndex = buttonLayout[cursor->y][cursor->x];
 
-        if (buttonIndex && !moveData->moveIDs[buttonIndex - 1]) {
+        if (buttonIndex >= 1 && buttonIndex <= LEARNED_MOVES_MAX && !moveData->moveIDs[buttonIndex - 1]) {
             savedCursorPos->moveMenuX = 0;
             savedCursorPos->moveMenuY = 0;
             cursor->x = 0;
             cursor->y = 0;
-            buttonIndex = sMoveMenuButtonLayout[cursor->y][cursor->x];
+            buttonIndex = buttonLayout[cursor->y][cursor->x];
         }
 
         BattleSystem_DrawCursor(btlSubscreen->cursorRenderer, battleMenuConfig->touchScreenRects[buttonIndex].rect.left + 8, battleMenuConfig->touchScreenRects[buttonIndex].rect.right - 8, battleMenuConfig->touchScreenRects[buttonIndex].rect.top + 8, battleMenuConfig->touchScreenRects[buttonIndex].rect.bottom - 8, (192 + 80) << FX32_SHIFT);
         return 0xffffffff;
     }
 
-    MI_CpuCopy8(sMoveMenuButtonLayout, buttonLayout, 3 * 2);
-    button = BattleSystem_MoveCursor(cursor, 2, 3, buttonLayout[0]);
+    button = BattleSystem_MoveCursor(cursor, MOVE_MENU_LAYOUT_W, MOVE_MENU_LAYOUT_H, buttonLayout[0]);
+
+    // Moves 2 and 4 cover the 2nd and 3rd layout columns. Keep the cursor in the 2nd column on
+    // those rows so Down from Move 4 always reaches Legendary (Cancel is one step Right of it),
+    // instead of depending on an invisible column.
+    if (cursor->y < MOVE_MENU_LAYOUT_H - 1 && cursor->x == MOVE_MENU_LAYOUT_W - 1) {
+        cursor->x = MOVE_MENU_LAYOUT_W - 2;
+    }
 
     switch (button) {
     case PAD_KEY_UP:
     case PAD_KEY_DOWN:
     case PAD_KEY_LEFT:
     case PAD_KEY_RIGHT:
-        buttonIndex = sMoveMenuButtonLayout[cursor->y][cursor->x];
+        buttonIndex = buttonLayout[cursor->y][cursor->x];
         BattleSystem_DrawCursor(btlSubscreen->cursorRenderer, battleMenuConfig->touchScreenRects[buttonIndex].rect.left + 8, battleMenuConfig->touchScreenRects[buttonIndex].rect.right - 8, battleMenuConfig->touchScreenRects[buttonIndex].rect.top + 8, battleMenuConfig->touchScreenRects[buttonIndex].rect.bottom - 8, (192 + 80) << FX32_SHIFT);
         break;
     case PAD_BUTTON_A:
-        return sMoveMenuButtonLayout[cursor->y][cursor->x];
+        return buttonLayout[cursor->y][cursor->x];
     case PAD_BUTTON_B:
         for (i = 0; i < battleMenuConfig->touchScreenRects[i].rect.top != 0xff; i++) {
             if (0xff == battleMenuConfig->buttonResults[i]) {

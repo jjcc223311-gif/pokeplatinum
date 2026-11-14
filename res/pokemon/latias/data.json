@@ -7,7 +7,7 @@
         "special_attack": 110,
         "special_defense": 130
     },
-    "types": [ "TYPE_DRAGON", "TYPE_PSYCHIC" ],
+    "types": [ "TYPE_DRAGON", "TYPE_LIGHT" ],
     "catch_rate": 3,
     "base_exp_reward": 211,
     "ev_yields": {

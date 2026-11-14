@@ -466,6 +466,72 @@ void BuildPokemonSpriteTemplate(PokemonSpriteTemplate *spriteTemplate, u16 speci
  */
 u8 Pokemon_SanitizeFormId(u16 monSpecies, u8 monForm);
 
+// First pl_otherpoke member used by Mega / Legendary Mega sprites: after the 154 sprites, the
+// 94 palettes and the 3 Substitute members (see make_pl_otherpoke.py).
+#define MEGA_SPRITE_BASE (154 + 94 + 3)
+
+// Where one Mega or Legendary Mega form's data lives. Generated from res/pokemon/mega_forms.json.
+typedef struct MegaFormData {
+    u16 personalIndex; // pl_personal / wotbl member: base stats, types, abilities, learnset
+    u16 spriteOffset; // members MEGA_SPRITE_BASE + spriteOffset + 0..3 of pl_otherpoke:
+                      // back sprite, front sprite, normal palette, shiny palette
+} MegaFormData;
+
+// A non-Mega form whose sprites (and optionally data) are appended after every vanilla
+// pl_otherpoke / pl_personal member, so no vanilla index moves. Generated from
+// res/pokemon/extra_forms.json, e.g. Light Arceus.
+typedef struct ExtraFormEntry {
+    u16 species;
+    u8 form;
+    u8 hasData; // FALSE: stats, types and abilities come from the normal lookup
+    u16 personalIndex; // pl_personal / wotbl member when hasData
+    u16 spriteOffset; // members MEGA_SPRITE_BASE + spriteOffset + 0..3 of pl_otherpoke
+} ExtraFormEntry;
+
+/**
+ * @brief Look up a (species, form) pair in the extra form table.
+ *
+ * @return Its entry, or NULL if the form is not listed in res/pokemon/extra_forms.json
+ */
+const ExtraFormEntry *Pokemon_GetExtraForm(u16 species, u8 monForm);
+
+// The four Mega forms a species can have, in mega_forms.json / sMegaSpeciesTable order
+enum MegaSlot {
+    MEGA_SLOT_MEGA_1 = 0, // FORM_MEGA_1 (29)
+    MEGA_SLOT_MEGA_2, // FORM_MEGA_2 (28)
+    MEGA_SLOT_LEGENDARY_1, // FORM_LEGENDARY_MEGA_1 (30)
+    MEGA_SLOT_LEGENDARY_2, // FORM_LEGENDARY_MEGA_2 (31)
+    MEGA_SLOT_COUNT,
+};
+
+// One row of the per-species Mega table: which Mega forms `species` has, and where each one's
+// own data lives. Lucario + form 29 loads Mega Lucario 1, never another species' Mega.
+typedef struct MegaSpeciesEntry {
+    u16 species;
+    u8 hasForm[MEGA_SLOT_COUNT]; // indexed by enum MegaSlot
+    MegaFormData forms[MEGA_SLOT_COUNT];
+} MegaSpeciesEntry;
+
+/**
+ * @brief Look up a species in the Mega table (res/pokemon/mega_forms.json).
+ *
+ * @return The species' entry, or NULL if it has no Mega or Legendary Mega forms
+ */
+const MegaSpeciesEntry *Pokemon_GetMegaSpeciesEntry(u16 species);
+
+/**
+ * @brief Get the form number (FORM_MEGA_1 etc.) of a Mega slot, or the slot of a form number.
+ */
+u8 Pokemon_MegaSlotForm(enum MegaSlot slot);
+int Pokemon_MegaFormSlot(u8 monForm); // -1 if monForm is not one of forms 28-31
+
+/**
+ * @brief Get the data of one of a species' Mega or Legendary Mega forms (forms 28-31).
+ *
+ * @return The form's data, or NULL if the species does not have that form
+ */
+const MegaFormData *Pokemon_GetMegaFormData(u16 species, u8 monForm);
+
 /**
  * @brief Load the Y-offset applied to a Pokemon's sprite-face on display.
  *
@@ -719,6 +785,25 @@ int Pokemon_SetGiratinaFormByHeldItem(Pokemon *mon);
  */
 int BoxPokemon_SetGiratinaForm(BoxPokemon *boxMon);
 
+// Genesect's form for a held item (GENESECT_FORM_*; GENESECT_FORM_NONE if it isn't a Drive)
+int Item_GenesectDriveForm(u16 item);
+
+// Keldeo: Resolute Form while it knows Secret Sword. Returns the form, or -1 if not a Keldeo.
+int BoxPokemon_UpdateKeldeoForm(BoxPokemon *boxMon);
+
+/**
+ * @brief The held item that puts a species into its Origin Forme: Griseous Orb (Giratina),
+ *        Adamant Orb (Dialga), Lustrous Orb (Palkia). The *SetGiratinaForm* functions handle all three.
+ *
+ * @return The item, or ITEM_NONE if the species has no Origin Forme
+ */
+u16 Species_GetOriginFormItem(u16 species);
+
+/**
+ * @brief Whether item is the one that puts this Pokemon into its Origin Forme
+ */
+BOOL Pokemon_IsOriginFormItem(Pokemon *mon, u16 item);
+
 /**
  * @brief Set Giratina to its Origin form. Has no effect if the given Pokemon is not a Giratina
  *
@@ -796,7 +881,7 @@ BOOL Pokemon_SetRotomForm(Pokemon *mon, int form, int moveSlot);
  * @param monForm
  * @param[out] monLevelUpMoves Pointer to a u16 array to store the move table
  */
-void Pokemon_LoadLevelUpMovesOf(int monSpecies, int monForm, u16 *monLevelUpMoves);
+void Pokemon_LoadLevelUpMovesOf(int monSpecies, int monForm, SpeciesLearnsetEntry *monLevelUpMoves);
 
 /**
  * @brief Play a Pokemon's cry, according to the given species and form number.

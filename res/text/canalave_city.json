@@ -112,7 +112,7 @@
     {
       "id": "CanalaveCity_Text_DawnYoullBeOKRight",
       "en_US": [
-        "Dawn: ...{STRVAR_1 3, 0, 0}, you’ll be OK,\n",
+        "Juniper: ...{STRVAR_1 3, 0, 0}, you’ll be OK,\n",
         "no matter what, right?"
       ]
     },
@@ -126,8 +126,8 @@
     {
       "id": "CanalaveCity_Text_DawnGoingToLakeVerity",
       "en_US": [
-        "Dawn: We’re going off to Lake Verity\n",
-        "first...\r",
+        "Juniper: We’re going off to Lake\n",
+        "Verity first...\r",
         "Don’t do anything rash if something\n",
         "does happen."
       ]

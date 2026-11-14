@@ -635,7 +635,7 @@ static void PlayResultSpeciesCry(PoketchCalculator *appData, const CalculatorVal
 {
     s64 lookupValue = CalculatorValue_GetSignedInt(result);
 
-    if (lookupValue > 0 && lookupValue <= NATIONAL_DEX_COUNT) {
+    if (lookupValue > 0 && lookupValue <= POKEDEX_SPECIES_COUNT) {
         Pokedex *pokedex;
         u16 species;
 
@@ -647,7 +647,7 @@ static void PlayResultSpeciesCry(PoketchCalculator *appData, const CalculatorVal
             species = Pokemon_NationalDexNumber(lookupValue);
         }
 
-        if (species > 0 && species <= NATIONAL_DEX_COUNT && Pokedex_HasSeenSpecies(pokedex, species)) {
+        if (species > 0 && species <= POKEDEX_SPECIES_COUNT && Pokedex_HasSeenSpecies(pokedex, species)) {
             PoketchSystem_PlayCry(species, 0);
         }
     }

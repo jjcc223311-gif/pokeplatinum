@@ -970,15 +970,15 @@ u16 *GTS_LoadAlphabeticalPokedex(enum HeapID heapID, int unused, int *pokedexLen
 u8 *GTS_LoadNationalDexLookup(enum HeapID heapID)
 {
     u32 nationalDexSize, nationalDexLength;
-    u8 *nationalDex = Heap_Alloc(HEAP_ID_62, NATIONAL_DEX_COUNT + 1);
+    u8 *nationalDex = Heap_Alloc(HEAP_ID_62, POKEDEX_SPECIES_COUNT + 1);
 
-    MI_CpuClearFast(nationalDex, NATIONAL_DEX_COUNT + 1);
+    MI_CpuClearFast(nationalDex, POKEDEX_SPECIES_COUNT + 1);
 
     u16 *nationalDexAlphabetic = LoadMemberFromNARC_OutFileSize(NARC_INDEX_APPLICATION__ZUKANLIST__ZKN_DATA__ZUKAN_DATA, 12, 0, heapID, 0, &nationalDexSize);
     nationalDexLength = nationalDexSize / (sizeof(u16));
 
     for (int i = 0; i < nationalDexLength; i++) {
-        if (nationalDexAlphabetic[i] < NATIONAL_DEX_COUNT + 1) {
+        if (nationalDexAlphabetic[i] < POKEDEX_SPECIES_COUNT + 1) {
             nationalDex[nationalDexAlphabetic[i]] = 1;
         }
     }

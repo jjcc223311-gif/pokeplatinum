@@ -13,13 +13,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_GEODUDE",
+            "species": "SPECIES_DWEBBLE",
             "form": 0,
             "level": 12,
             "item": null,
             "moves": [
-                "MOVE_STEALTH_ROCK",
-                "MOVE_ROCK_THROW"
+                "MOVE_FURY_CUTTER",
+                "MOVE_ROCK_BLAST",
+                "MOVE_WITHDRAW",
+                "MOVE_SAND_ATTACK"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_TIRTOUGA",
+            "form": 0,
+            "level": 12,
+            "item": null,
+            "moves": [
+                "MOVE_WITHDRAW",
+                "MOVE_ROLLOUT",
+                "MOVE_BITE",
+                "MOVE_PROTECT"
             ],
             "iv_scale": 50,
             "ball_seal": 0

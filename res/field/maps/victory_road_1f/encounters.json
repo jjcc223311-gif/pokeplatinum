@@ -19,11 +19,11 @@
         },
         {
             "level": 42,
-            "species": "SPECIES_ONIX"
+            "species": "SPECIES_EXCADRILL"
         },
         {
             "level": 41,
-            "species": "SPECIES_RHYDON"
+            "species": "SPECIES_BOLDORE"
         },
         {
             "level": 43,
@@ -43,11 +43,11 @@
         },
         {
             "level": 42,
-            "species": "SPECIES_STEELIX"
+            "species": "SPECIES_FRAXURE"
         },
         {
             "level": 41,
-            "species": "SPECIES_GABITE"
+            "species": "SPECIES_SHELGON"
         }
     ],
     "swarms": [

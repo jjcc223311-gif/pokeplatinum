@@ -5231,6 +5231,28 @@
     ReleaseAll
     .endm
 
+    // DNA Splicers: fuse / separate Kyurem (result: DNA_SPLICERS_*, speciesVar: the partner species)
+    .macro UseDNASplicers destVar, speciesVar
+    .short SCRCMD_USEDNASPLICERS
+    .short \destVar
+    .short \speciesVar
+    .endm
+
+    // Reveal Glass: switch Tornadus / Thundurus / Landorus Formes (result: REVEAL_GLASS_*,
+    // speciesVar: the first one changed)
+    .macro UseRevealGlass destVar, speciesVar
+    .short SCRCMD_USEREVEALGLASS
+    .short \destVar
+    .short \speciesVar
+    .endm
+
+    // Distorted Rift legendary pool (mode: RIFT_CMD_* in constants/distorted_rift.h)
+    .macro DistortedRift mode, destVar
+    .short SCRCMD_DISTORTEDRIFT
+    .short \mode
+    .short \destVar
+    .endm
+
     .macro PokeMartSpecialtiesWithGreeting martID
     PlaySE SE_CONFIRM_sseq_3
     LockAll

@@ -1,5 +1,5 @@
 {
-    "name": "Volkner",
+    "name": "Hugo",
     "class": "TRAINER_CLASS_LEADER_VOLKNER",
     "items": [
         "ITEM_FULL_RESTORE",
@@ -13,29 +13,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_JOLTEON",
+            "species": "SPECIES_EMOLGA",
             "form": 0,
             "level": 61,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_PIN_MISSILE",
-                "MOVE_CHARGE_BEAM",
-                "MOVE_DOUBLE_KICK",
-                "MOVE_QUICK_ATTACK"
+                "MOVE_ENCORE",
+                "MOVE_VOLT_SWITCH",
+                "MOVE_AGILITY",
+                "MOVE_DISCHARGE"
             ],
             "iv_scale": 200,
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_RAICHU",
+            "species": "SPECIES_MANECTRIC",
             "form": 0,
             "level": 61,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_CHARGE_BEAM",
-                "MOVE_BRICK_BREAK",
-                "MOVE_THUNDER_WAVE",
-                "MOVE_LIGHT_SCREEN"
+                "MOVE_ROAR",
+                "MOVE_DISCHARGE",
+                "MOVE_CHARGE",
+                "MOVE_THUNDER"
             ],
             "iv_scale": 200,
             "ball_seal": 0

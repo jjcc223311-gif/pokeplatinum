@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_ZEBSTRIKA",
+            "form": 0,
+            "level": 59,
+            "item": null,
+            "moves": [
+                "MOVE_DISCHARGE",
+                "MOVE_AGILITY",
+                "MOVE_WILD_CHARGE",
+                "MOVE_THRASH"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_METAGROSS",
             "form": 0,
             "level": 60,

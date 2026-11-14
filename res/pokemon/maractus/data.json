@@ -1,0 +1,244 @@
+{
+    "base_stats": {
+        "hp": 75,
+        "attack": 86,
+        "defense": 67,
+        "speed": 60,
+        "special_attack": 106,
+        "special_defense": 67
+    },
+    "types": [
+        "TYPE_GRASS",
+        "TYPE_GRASS"
+    ],
+    "catch_rate": 255,
+    "base_exp_reward": 161,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "special_attack": 2,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_MIRACLE_SEED"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_50",
+    "hatch_cycles": 20,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_MEDIUM_FAST",
+    "egg_groups": [
+        "EGG_GROUP_GRASS",
+        "EGG_GROUP_GRASS"
+    ],
+    "abilities": [
+        "ABILITY_WATER_ABSORB",
+        "ABILITY_CHLOROPHYLL"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_GREEN",
+    "flip_sprite": false,
+    "icon_palette": 0,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_ABSORB"
+            ],
+            [
+                1,
+                "MOVE_PECK"
+            ],
+            [
+                3,
+                "MOVE_SWEET_SCENT"
+            ],
+            [
+                6,
+                "MOVE_GROWTH"
+            ],
+            [
+                10,
+                "MOVE_PIN_MISSILE"
+            ],
+            [
+                13,
+                "MOVE_MEGA_DRAIN"
+            ],
+            [
+                15,
+                "MOVE_SYNTHESIS"
+            ],
+            [
+                18,
+                "MOVE_COTTON_SPORE"
+            ],
+            [
+                22,
+                "MOVE_NEEDLE_ARM"
+            ],
+            [
+                26,
+                "MOVE_GIGA_DRAIN"
+            ],
+            [
+                29,
+                "MOVE_ACUPRESSURE"
+            ],
+            [
+                33,
+                "MOVE_INGRAIN"
+            ],
+            [
+                38,
+                "MOVE_PETAL_DANCE"
+            ],
+            [
+                42,
+                "MOVE_SUCKER_PUNCH"
+            ],
+            [
+                45,
+                "MOVE_SUNNY_DAY"
+            ],
+            [
+                50,
+                "MOVE_SOLAR_BEAM"
+            ],
+            [
+                55,
+                "MOVE_COTTON_GUARD"
+            ],
+            [
+                57,
+                "MOVE_AFTER_YOU"
+            ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM11",
+            "TM17",
+            "TM19",
+            "TM20",
+            "TM21",
+            "TM22",
+            "TM27",
+            "TM32",
+            "TM40",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM53",
+            "TM60",
+            "TM82",
+            "TM84",
+            "TM86",
+            "TM87",
+            "TM90"
+        ],
+        "by_tutor": [
+            "MOVE_BOUNCE",
+            "MOVE_ENDEAVOR",
+            "MOVE_HELPING_HAND",
+            "MOVE_KNOCK_OFF",
+            "MOVE_SEED_BOMB",
+            "MOVE_SNORE",
+            "MOVE_SYNTHESIS",
+            "MOVE_UPROAR"
+        ],
+        "egg_moves": [
+            "MOVE_BOUNCE",
+            "MOVE_BULLET_SEED",
+            "MOVE_GRASS_WHISTLE",
+            "MOVE_LEECH_SEED",
+            "MOVE_SEED_BOMB",
+            "MOVE_SPIKES",
+            "MOVE_WOOD_HAMMER",
+            "MOVE_WORRY_SEED"
+        ]
+    },
+    "evolutions": [],
+    "offspring": "SPECIES_MARACTUS",
+    "footprint": {
+        "has": true,
+        "size": "FOOTPRINT_MEDIUM",
+        "type": "FOOTPRINT_TYPE_SCARY"
+    },
+    "pokedex_data": {
+        "height_inches": 39,
+        "weight_pounds": 61.7,
+        "body_shape": "SHAPE_BIPEDAL_TAILLESS",
+        "trainer_scale_f": 272,
+        "pokemon_scale_f": 287,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 287,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 17,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 17,
+        "en": {
+            "name": "MARACTUS",
+            "category": "Cactus Pokémon",
+            "entry_text": [
+                "It lives in deserts and moves to a\n",
+                "rhythmic beat, rattling its body to\n",
+                "scare off foes."
+            ]
+        },
+        "fr": {
+            "name": "MARACTUS",
+            "category": "Cactus Pokémon",
+            "entry_text": [
+                "It lives in deserts and moves to a\n",
+                "rhythmic beat, rattling its body to\n",
+                "scare off foes."
+            ]
+        },
+        "de": {
+            "name": "MARACTUS",
+            "category": "Cactus Pokémon",
+            "entry_text": [
+                "It lives in deserts and moves to a\n",
+                "rhythmic beat, rattling its body to\n",
+                "scare off foes."
+            ]
+        },
+        "it": {
+            "name": "MARACTUS",
+            "category": "Cactus Pokémon",
+            "entry_text": [
+                "It lives in deserts and moves to a\n",
+                "rhythmic beat, rattling its body to\n",
+                "scare off foes."
+            ]
+        },
+        "es": {
+            "name": "MARACTUS",
+            "category": "Cactus Pokémon",
+            "entry_text": [
+                "It lives in deserts and moves to a\n",
+                "rhythmic beat, rattling its body to\n",
+                "scare off foes."
+            ]
+        },
+        "jp": {
+            "name": "MARACTUS",
+            "category": "Cactus Pokémon",
+            "entry_text": [
+                "It lives in deserts and moves to a\n",
+                "rhythmic beat, rattling its body to\n",
+                "scare off foes."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

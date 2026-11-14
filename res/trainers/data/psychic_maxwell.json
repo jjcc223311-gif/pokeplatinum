@@ -9,6 +9,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_BEHEEYEM",
+            "form": 0,
+            "level": 54,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MISDREAVUS",
             "form": 0,
             "level": 58,
@@ -18,7 +27,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_HAUNTER",
+            "species": "SPECIES_GOTHITELLE",
             "form": 0,
             "level": 54,
             "item": null,

@@ -8,6 +8,19 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_KARRABLAST",
+            "form": 0,
+            "level": 10,
+            "item": null,
+            "moves": [
+                "MOVE_PECK",
+                "MOVE_LEER",
+                "MOVE_ENDURE"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GEODUDE",
             "form": 0,
             "level": 11,

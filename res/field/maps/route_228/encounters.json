@@ -19,15 +19,15 @@
         },
         {
             "level": 52,
-            "species": "SPECIES_RHYDON"
+            "species": "SPECIES_KROOKODILE"
         },
         {
             "level": 51,
-            "species": "SPECIES_HIPPOWDON"
+            "species": "SPECIES_FLYGON"
         },
         {
             "level": 52,
-            "species": "SPECIES_DUGTRIO"
+            "species": "SPECIES_KROOKODILE"
         },
         {
             "level": 50,
@@ -43,7 +43,7 @@
         },
         {
             "level": 49,
-            "species": "SPECIES_DIGLETT"
+            "species": "SPECIES_MARACTUS"
         },
         {
             "level": 50,
@@ -109,12 +109,12 @@
         {
             "level_max": 55,
             "level_min": 35,
-            "species": "SPECIES_POLIWHIRL"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 55,
             "level_min": 35,
-            "species": "SPECIES_POLIWHIRL"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 55,

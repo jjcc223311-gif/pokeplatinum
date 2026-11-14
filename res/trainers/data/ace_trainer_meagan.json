@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_DELCATTY",
+            "species": "SPECIES_ALOMOMOLA",
             "form": 0,
             "level": 57,
             "item": null,
             "moves": [
-                "MOVE_FAKE_OUT",
-                "MOVE_CAPTIVATE",
-                "MOVE_FAINT_ATTACK",
-                "MOVE_DOUBLE_EDGE"
+                "MOVE_SAFEGUARD",
+                "MOVE_HELPING_HAND",
+                "MOVE_WIDE_GUARD",
+                "MOVE_HEALING_WISH"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_GIGALITH",
+            "form": 0,
+            "level": 57,
+            "item": null,
+            "moves": [
+                "MOVE_STEALTH_ROCK",
+                "MOVE_SANDSTORM",
+                "MOVE_STONE_EDGE",
+                "MOVE_EXPLOSION"
             ],
             "iv_scale": 50,
             "ball_seal": 0

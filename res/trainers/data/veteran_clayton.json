@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_STARAPTOR",
+            "species": "SPECIES_GALVANTULA",
             "form": 0,
             "level": 47,
             "item": null,
             "moves": [
-                "MOVE_BRAVE_BIRD",
-                "MOVE_QUICK_ATTACK",
-                "MOVE_DOUBLE_TEAM",
-                "MOVE_GROWL"
+                "MOVE_ELECTRO_BALL",
+                "MOVE_SIGNAL_BEAM",
+                "MOVE_AGILITY",
+                "MOVE_SUCKER_PUNCH"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_CRUSTLE",
+            "form": 0,
+            "level": 47,
+            "item": null,
+            "moves": [
+                "MOVE_STEALTH_ROCK",
+                "MOVE_ROCK_SLIDE",
+                "MOVE_SLASH",
+                "MOVE_X_SCISSOR"
             ],
             "iv_scale": 100,
             "ball_seal": 0

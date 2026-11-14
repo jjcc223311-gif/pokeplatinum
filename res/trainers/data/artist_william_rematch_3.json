@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_CINCCINO",
+            "form": 0,
+            "level": 57,
+            "item": null,
+            "moves": [
+                "MOVE_ROCK_BLAST",
+                "MOVE_SING",
+                "MOVE_TAIL_SLAP",
+                "MOVE_TICKLE"
+            ],
+            "iv_scale": 250,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_SMEARGLE",
             "form": 0,
             "level": 60,
@@ -22,15 +36,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_MR_MIME",
+            "species": "SPECIES_WATCHOG",
             "form": 0,
             "level": 57,
             "item": null,
             "moves": [
-                "MOVE_PSYCHIC",
-                "MOVE_LIGHT_SCREEN",
-                "MOVE_REFLECT",
-                "MOVE_MIMIC"
+                "MOVE_HYPER_FANG",
+                "MOVE_MEAN_LOOK",
+                "MOVE_BATON_PASS",
+                "MOVE_SLAM"
             ],
             "iv_scale": 0,
             "ball_seal": 0

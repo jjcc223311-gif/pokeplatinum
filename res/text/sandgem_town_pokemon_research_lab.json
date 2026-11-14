@@ -71,8 +71,8 @@
     {
       "id": "SandgemTownLab_Text_DawnImGladYourKind",
       "en_US": [
-        "Dawn: I’m so glad that you’re kind\n",
-        "toward Pokémon!\r",
+        "Juniper: I’m so glad that you’re\n",
+        "kind toward Pokémon!\r",
         "If you weren’t, I’d have to...\n",
         "Oh, I just can’t say it...\r"
       ]
@@ -158,7 +158,7 @@
     },
     {
       "id": "SandgemTownLab_Text_DawnIveGotOneToo",
-      "en_US": "Dawn: I’ve got one, too!\r"
+      "en_US": "Juniper: I’ve got one, too!\r"
     },
     {
       "id": "SandgemTownLab_Text_LucasIveGotTheSamePokedex",
@@ -195,13 +195,13 @@
     {
       "id": "SandgemTownLab_Text_DawnHappyToTeachYou",
       "en_US": [
-        "Dawn: The Pokémon that I met for\n",
+        "Juniper: The Pokémon that I met for\n",
         "the first time was {STRVAR_1 0, 1, 0}!\r",
         "If you would have chosen {STRVAR_1 0, 1, 0}\n",
         "on Route 201, we’d have the same\f",
         "Pokémon now!\r",
         "Not that it matters, but...\r",
-        "Anyway, I’m Dawn.\r",
+        "Anyway, I’m Juniper.\r",
         "I also help the professor add pages\n",
         "to the Pokédex.\r",
         "So, in a sense, I’m just like you.\r",
@@ -530,7 +530,7 @@
     {
       "id": "SandgemTownLab_Text_DawnGladToSeeYouSafe",
       "en_US": [
-        "Dawn: The professor did a lot of\n",
+        "Juniper: The professor did a lot of\n",
         "checking up after you left.\r",
         "He was really worried about you,\n",
         "{STRVAR_1 3, 1, 0}...\r",

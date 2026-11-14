@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_DEERLING",
+            "form": 0,
+            "level": 32,
+            "item": null,
+            "moves": [
+                "MOVE_TAKE_DOWN",
+                "MOVE_JUMP_KICK",
+                "MOVE_AROMATHERAPY",
+                "MOVE_ENERGY_BALL"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_CLEFAIRY",
             "form": 0,
             "level": 33,

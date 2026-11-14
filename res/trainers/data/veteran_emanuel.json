@@ -10,14 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_MACHOKE",
+            "species": "SPECIES_GOLETT",
             "form": 0,
             "level": 28,
             "item": null,
             "moves": [
-                "MOVE_SEISMIC_TOSS",
-                "MOVE_LOW_KICK",
-                "MOVE_FORESIGHT"
+                "MOVE_SHADOW_PUNCH",
+                "MOVE_IRON_DEFENSE",
+                "MOVE_MEGA_PUNCH",
+                "MOVE_MAGNITUDE"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_ZORUA",
+            "form": 0,
+            "level": 28,
+            "item": null,
+            "moves": [
+                "MOVE_FURY_SWIPES",
+                "MOVE_FAINT_ATTACK",
+                "MOVE_SCARY_FACE",
+                "MOVE_TAUNT"
             ],
             "iv_scale": 100,
             "ball_seal": 0

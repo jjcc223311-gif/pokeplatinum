@@ -4,7 +4,7 @@
     {
       "id": "JubilifeCity_Text_DawnAreYouCatchingPokemon",
       "en_US": [
-        "Dawn: Hi, {STRVAR_1 3, 1, 0}!\n",
+        "Juniper: Hi, {STRVAR_1 3, 1, 0}!\n",
         "Are you catching Pokémon?\r"
       ]
     },
@@ -77,13 +77,13 @@
     {
       "id": "JubilifeCity_Text_DawnWhatIsHeDoing",
       "en_US": [
-        "Dawn: That man...\n",
+        "Juniper: That man...\n",
         "What is he doing?\r"
       ]
     },
     {
       "id": "JubilifeCity_Text_DawnUm",
-      "en_US": "Dawn: Um..."
+      "en_US": "Juniper: Um..."
     },
     {
       "id": "JubilifeCity_Text_LucasWhatsHeDoing",
@@ -111,7 +111,7 @@
     {
       "id": "JubilifeCity_Text_DawnJustMakingConversation",
       "en_US": [
-        "Dawn: Huh? What? I beg your pardon?\n",
+        "Juniper: Huh? What? Pardon me?\n",
         "I was just making conversation...\r"
       ]
     },
@@ -210,8 +210,8 @@
     {
       "id": "JubilifeCity_Text_DawnInternationPoliceMustBeHard",
       "en_US": [
-        "Dawn: ...Working for the International\n",
-        "Police must be hard.\r"
+        "Juniper: ...Working for the\n",
+        "International Police must be hard.\r"
       ]
     },
     {
@@ -662,7 +662,7 @@
     {
       "id": "JubilifeCity_Text_DawnPlayerLetsBattleTogether",
       "en_US": [
-        "Dawn: {STRVAR_1 3, 1, 0}!\n",
+        "Juniper: {STRVAR_1 3, 1, 0}!\n",
         "Let’s battle together!\r"
       ]
     },
@@ -700,7 +700,7 @@
     {
       "id": "JubilifeCity_Text_DawnProfessorStudiesEvolutionOfPokemon",
       "en_US": [
-        "Dawn: {STRVAR_1 3, 1, 0}, did you know?\r",
+        "Juniper: {STRVAR_1 3, 1, 0}, did you know?\r",
         "The professor studies the evolution\n",
         "of Pokémon, too.\r",
         "According to his research, 90% of all\n",

@@ -3,10 +3,13 @@
 #include <nitro.h>
 #include <string.h>
 
+#include "constants/forms.h"
 #include "constants/pokemon.h"
 #include "constants/species.h"
 
 #include "pokemon.h"
+
+#include "data/form_icons.h"
 
 #include "res/pokemon/pl_poke_icon.naix"
 #include "res/pokemon/species_icon_palettes.h"
@@ -14,6 +17,22 @@
 static inline u32 IconTilesIndex(u32 icon)
 {
     return icon + icon_00000_NCGR;
+}
+
+// Appended form icons (Megas, Gen 5 forms, ...) follow ICON_ROTOM_MOW; -1 if the form has none
+static int FormIconSlot(u32 species, u32 form)
+{
+    if (form == 0) {
+        return -1;
+    }
+
+    for (int i = 0; i < (int)NELEMS(sFormIcons); i++) {
+        if (sFormIcons[i].species == species && sFormIcons[i].form == form) {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 u32 BoxPokemon_IconSpriteIndex(const BoxPokemon *boxMon)
@@ -45,6 +64,16 @@ u32 PokeIconSpriteIndex(u32 species, u32 isEgg, u32 form)
     }
 
     form = Pokemon_SanitizeFormId(species, form);
+
+    int formIcon = FormIconSlot(species, form);
+
+    if (formIcon >= 0) {
+        return IconTilesIndex(ICON_ROTOM_MOW + 1 + formIcon);
+    }
+
+    if (FORM_IS_MEGA(form)) {
+        form = 0; // a Mega form without its own icon uses the base species' icon
+    }
 
     if (form != 0) {
         if (species == SPECIES_DEOXYS) {
@@ -95,6 +124,14 @@ u16 BoxPokemon_IconFormOffset(const BoxPokemon *boxMon)
 {
     u32 speciesOrEgg = BoxPokemon_GetValue((BoxPokemon *)boxMon, MON_DATA_SPECIES_OR_EGG, NULL);
 
+    if (speciesOrEgg != SPECIES_EGG) {
+        u32 form = BoxPokemon_GetValue((BoxPokemon *)boxMon, MON_DATA_FORM, NULL);
+
+        if (FormIconSlot(speciesOrEgg, form) >= 0) {
+            return form;
+        }
+    }
+
     switch (speciesOrEgg) {
     case SPECIES_UNOWN:
         return BoxPokemon_GetForm((BoxPokemon *)boxMon);
@@ -122,7 +159,9 @@ const u8 PokeIconPaletteIndex(u32 species, u32 form, u32 isEgg)
         }
     } else if (species > NATIONAL_DEX_COUNT) {
         species = SPECIES_NONE;
-    } else if (form != 0) {
+    } else if (FormIconSlot(species, form) >= 0) {
+        return sFormIcons[FormIconSlot(species, form)].palette;
+    } else if (form != 0 && !FORM_IS_MEGA(form)) { // Mega forms without an icon use the base icon
         if (species == SPECIES_DEOXYS) {
             species = ICON_DEOXYS_ATTACK + form - 1;
         } else if (species == SPECIES_UNOWN) {

@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_UNFEZANT",
+            "form": 0,
+            "level": 59,
+            "item": null,
+            "moves": [
+                "MOVE_RAZOR_WIND",
+                "MOVE_FEATHER_DANCE",
+                "MOVE_SWAGGER",
+                "MOVE_FACADE"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_SKARMORY",
             "form": 0,
             "level": 59,
@@ -22,15 +36,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_NOCTOWL",
+            "species": "SPECIES_MANDIBUZZ",
             "form": 0,
             "level": 59,
             "item": null,
             "moves": [
-                "MOVE_HYPNOSIS",
-                "MOVE_PSYCHIC",
-                "MOVE_ROOST",
-                "MOVE_AIR_SLASH"
+                "MOVE_DARK_PULSE",
+                "MOVE_EMBARGO",
+                "MOVE_BONE_RUSH",
+                "MOVE_WHIRLWIND"
             ],
             "iv_scale": 50,
             "ball_seal": 0

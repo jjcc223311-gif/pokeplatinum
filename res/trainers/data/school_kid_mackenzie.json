@@ -11,15 +11,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_DRIFLOON",
+            "species": "SPECIES_PANSAGE",
             "form": 0,
             "level": 21,
             "item": null,
             "moves": [
-                "MOVE_PAYBACK",
-                "MOVE_GUST",
-                "MOVE_ASTONISH",
-                "MOVE_MINIMIZE"
+                "MOVE_VINE_WHIP",
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEECH_SEED",
+                "MOVE_BITE"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_TRANQUILL",
+            "form": 0,
+            "level": 21,
+            "item": null,
+            "moves": [
+                "MOVE_LEER",
+                "MOVE_QUICK_ATTACK",
+                "MOVE_AIR_CUTTER",
+                "MOVE_ROOST"
             ],
             "iv_scale": 10,
             "ball_seal": 0

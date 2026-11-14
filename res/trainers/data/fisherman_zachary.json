@@ -8,7 +8,16 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_MAGIKARP",
+            "species": "SPECIES_BASCULIN",
+            "form": 0,
+            "level": 14,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_FRILLISH",
             "form": 0,
             "level": 14,
             "item": null,

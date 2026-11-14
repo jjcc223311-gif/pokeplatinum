@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_LUXRAY",
+            "species": "SPECIES_DRUDDIGON",
             "form": 0,
             "level": 58,
             "item": null,
             "moves": [
-                "MOVE_DISCHARGE",
-                "MOVE_CRUNCH",
-                "MOVE_THUNDER_WAVE",
-                "MOVE_FACADE"
+                "MOVE_NIGHT_SLASH",
+                "MOVE_DRAGON_TAIL",
+                "MOVE_ROCK_CLIMB",
+                "MOVE_SUPERPOWER"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_AMOONGUSS",
+            "form": 0,
+            "level": 58,
+            "item": null,
+            "moves": [
+                "MOVE_SYNTHESIS",
+                "MOVE_CLEAR_SMOG",
+                "MOVE_SOLAR_BEAM",
+                "MOVE_RAGE_POWDER"
             ],
             "iv_scale": 50,
             "ball_seal": 0

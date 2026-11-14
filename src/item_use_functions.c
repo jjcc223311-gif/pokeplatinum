@@ -113,6 +113,13 @@ static BOOL UseVsSeekerInField(ItemFieldUseContext *usageContext);
 static BOOL UseAzureFluteInField(ItemFieldUseContext *usageContext);
 static BOOL UseVsRecorderInField(ItemFieldUseContext *usageContext);
 static BOOL UseGracideaInField(ItemFieldUseContext *usageContext);
+static void UseExpShareFromMenu(ItemMenuUseContext *usageContext, const ItemUseContext *additionalContext);
+static BOOL UseExpShareInField(ItemFieldUseContext *usageContext);
+static void UseMobilePCFromMenu(ItemMenuUseContext *usageContext, const ItemUseContext *additionalContext);
+static BOOL UseMobilePCInField(ItemFieldUseContext *usageContext);
+static enum ItemUseCheckResult CanUseMobilePC(const ItemUseContext *usageContext);
+static void UseDNASplicersFromMenu(ItemMenuUseContext *usageContext, const ItemUseContext *additionalContext);
+static void UseRevealGlassFromMenu(ItemMenuUseContext *usageContext, const ItemUseContext *additionalContext);
 static void *sub_02068BEC(void *some_param);
 static void *sub_02068B9C(void *some_param);
 static void *sub_02068708(void *some_param);
@@ -164,6 +171,10 @@ static const ItemUseFuncDat sItemUseFuncs[] = {
     [ITEM_USE_FUNC_AZURE_FLUTE]  = { UseAzureFluteFromMenu,  UseAzureFluteInField,  CanUseAzureFlute  },
     [ITEM_USE_FUNC_VS_RECORDER]  = { UseVsRecorderFromMenu,  UseVsRecorderInField,  NULL              },
     [ITEM_USE_FUNC_GRACIDEA]     = { UseGracideaFromMenu,    UseGracideaInField,    NULL              },
+    [ITEM_USE_FUNC_EXP_SHARE]    = { UseExpShareFromMenu,    UseExpShareInField,    NULL              },
+    [ITEM_USE_FUNC_MOBILE_PC]    = { UseMobilePCFromMenu,    UseMobilePCInField,    CanUseMobilePC    },
+    [ITEM_USE_FUNC_DNA_SPLICERS] = { UseDNASplicersFromMenu, NULL,                  NULL              },
+    [ITEM_USE_FUNC_REVEAL_GLASS] = { UseRevealGlassFromMenu, NULL,                  NULL              },
 };
 // clang-format on
 
@@ -833,7 +844,8 @@ static enum ItemUseCheckResult CanUseFishingRod(const ItemUseContext *usageConte
         || usageContext->mapHeaderID == MAP_HEADER_DISTORTION_WORLD_B6F
         || usageContext->mapHeaderID == MAP_HEADER_DISTORTION_WORLD_B7F
         || usageContext->mapHeaderID == MAP_HEADER_DISTORTION_WORLD_GIRATINA_ROOM
-        || usageContext->mapHeaderID == MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM) {
+        || usageContext->mapHeaderID == MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM
+        || usageContext->mapHeaderID == MAP_HEADER_DISTORTED_RIFT) {
         return ITEM_USE_CANNOT_FISH_HERE;
     }
 
@@ -1161,4 +1173,55 @@ static void RegisteredItem_CreateGoToAppTask(ItemFieldUseContext *usageContext, 
 {
     usageContext->unk_20 = param1;
     FieldSystem_CreateTask(usageContext->fieldSystem, RegisteredItem_GoToApp, usageContext);
+}
+
+// Modern Exp. Share: toggles FLAG_EXP_SHARE_ON via CommonScript_ToggleExpShare
+static void UseExpShareFromMenu(ItemMenuUseContext *usageContext, const ItemUseContext *additionalContext)
+{
+    sub_02068540(usageContext, additionalContext, SCRIPT_ID(COMMON_SCRIPTS, 58));
+}
+
+static BOOL UseExpShareInField(ItemFieldUseContext *usageContext)
+{
+    sub_02068584(usageContext, SCRIPT_ID(COMMON_SCRIPTS, 58));
+    return FALSE;
+}
+
+// Mobile PC: opens the Pokemon Storage System (CommonScript_MobilePC)
+static enum ItemUseCheckResult CanUseMobilePC(const ItemUseContext *usageContext)
+{
+    if (FieldSystem_CanUseMobilePC(usageContext->fieldSystem) == FALSE) {
+        return ITEM_USE_CANNOT_USE_GENERIC;
+    }
+
+    return ITEM_USE_CAN_USE;
+}
+
+static void UseMobilePCFromMenu(ItemMenuUseContext *usageContext, const ItemUseContext *additionalContext)
+{
+    sub_02068540(usageContext, additionalContext, SCRIPT_ID_MOBILE_PC);
+}
+
+static BOOL UseMobilePCInField(ItemFieldUseContext *usageContext)
+{
+    if (FieldSystem_CanUseMobilePC(usageContext->fieldSystem) == FALSE) {
+        PrintRegisteredKeyItemError(usageContext, ITEM_USE_CANNOT_USE_GENERIC);
+        return FALSE;
+    }
+
+    sub_02068584(usageContext, SCRIPT_ID_MOBILE_PC);
+    return FALSE;
+}
+
+// DNA Splicers: fuse Kyurem with Zekrom / Reshiram in the party, or separate them (CommonScript_DNASplicers)
+static void UseDNASplicersFromMenu(ItemMenuUseContext *usageContext, const ItemUseContext *additionalContext)
+{
+    sub_02068540(usageContext, additionalContext, SCRIPT_ID(COMMON_SCRIPTS, 60));
+}
+
+// Reveal Glass: switch Tornadus / Thundurus / Landorus in the party between Incarnate and Therian
+// Forme (CommonScript_RevealGlass)
+static void UseRevealGlassFromMenu(ItemMenuUseContext *usageContext, const ItemUseContext *additionalContext)
+{
+    sub_02068540(usageContext, additionalContext, SCRIPT_ID(COMMON_SCRIPTS, 61));
 }

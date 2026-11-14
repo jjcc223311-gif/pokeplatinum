@@ -1,0 +1,30 @@
+{
+    "name": "Scald",
+    "description": [
+        "The user shoots\n",
+        "boiling hot water\n",
+        "at its target. It\n",
+        "may also leave the\n",
+        "target with a burn."
+    ],
+    "class": "CLASS_SPECIAL",
+    "type": "TYPE_WATER",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+        "type": "BATTLE_EFFECT_THAW_AND_BURN_HIT",
+        "chance": 30
+    },
+    "range": "RANGE_SINGLE_TARGET",
+    "priority": 0,
+    "flags": [
+        "MOVE_FLAG_CAN_PROTECT",
+        "MOVE_FLAG_CAN_MIRROR_MOVE",
+        "MOVE_FLAG_HIDES_SHADOWS"
+    ],
+    "contest": {
+        "effect": "CONTEST_EFFECT_BASIC",
+        "type": "CONTEST_TYPE_BEAUTY"
+    }
+}

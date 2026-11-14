@@ -9,6 +9,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_MARACTUS",
+            "form": 0,
+            "level": 13,
+            "item": null,
+            "moves": [
+                "MOVE_SWEET_SCENT",
+                "MOVE_GROWTH",
+                "MOVE_PIN_MISSILE",
+                "MOVE_MEGA_DRAIN"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_ROSELIA",
             "form": 0,
             "level": 14,

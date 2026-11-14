@@ -329,6 +329,16 @@ Bag *BattleSystem_GetBag(BattleSystem *battleSys)
     return battleSys->bag;
 }
 
+BOOL BattleSystem_ModernExpShareOn(BattleSystem *battleSys)
+{
+    return battleSys->modernExpShare;
+}
+
+BOOL BattleSystem_IsRiftEncounter(BattleSystem *battleSys)
+{
+    return battleSys->riftEncounter;
+}
+
 BagCursor *BattleSystem_GetBagCursor(BattleSystem *battleSys)
 {
     return battleSys->bagCursor;

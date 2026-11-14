@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SAMUROTT",
+            "form": 0,
+            "level": 38,
+            "item": null,
+            "moves": [
+                "MOVE_REVENGE",
+                "MOVE_AQUA_JET",
+                "MOVE_SLASH",
+                "MOVE_ENCORE"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GOLDUCK",
             "form": 0,
             "level": 38,
@@ -38,15 +52,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_SUDOWOODO",
+            "species": "SPECIES_FRILLISH",
             "form": 0,
             "level": 38,
             "item": null,
             "moves": [
-                "MOVE_ROCK_SLIDE",
-                "MOVE_LOW_KICK",
-                "MOVE_FLAIL",
-                "MOVE_ENDURE"
+                "MOVE_WATER_PULSE",
+                "MOVE_OMINOUS_WIND",
+                "MOVE_BRINE",
+                "MOVE_RAIN_DANCE"
             ],
             "iv_scale": 50,
             "ball_seal": 0

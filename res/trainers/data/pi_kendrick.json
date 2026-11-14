@@ -9,6 +9,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_ZOROARK",
+            "form": 0,
+            "level": 30,
+            "item": null,
+            "moves": [
+                "MOVE_SCARY_FACE",
+                "MOVE_TAUNT",
+                "MOVE_FOUL_PLAY",
+                "MOVE_NIGHT_SLASH"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_RHYHORN",
             "form": 0,
             "level": 31,

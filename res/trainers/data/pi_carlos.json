@@ -9,6 +9,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_WOOBAT",
+            "form": 0,
+            "level": 29,
+            "item": null,
+            "moves": [
+                "MOVE_AIR_CUTTER",
+                "MOVE_ATTRACT",
+                "MOVE_AMNESIA",
+                "MOVE_CALM_MIND"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GOLDEEN",
             "form": 0,
             "level": 30,

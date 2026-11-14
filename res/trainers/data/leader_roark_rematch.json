@@ -13,15 +13,15 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_AERODACTYL",
+            "species": "SPECIES_CARRACOSTA",
             "form": 0,
             "level": 62,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_STONE_EDGE",
-                "MOVE_AERIAL_ACE",
-                "MOVE_EARTHQUAKE",
-                "MOVE_DRAGON_CLAW"
+                "MOVE_AQUA_TAIL",
+                "MOVE_ROCK_SLIDE",
+                "MOVE_RAIN_DANCE",
+                "MOVE_HYDRO_PUMP"
             ],
             "iv_scale": 200,
             "ball_seal": 0
@@ -55,15 +55,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_RAMPARDOS",
+            "species": "SPECIES_MAGCARGO",
             "form": 0,
             "level": 63,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_HEAD_SMASH",
-                "MOVE_ZEN_HEADBUTT",
-                "MOVE_AVALANCHE",
-                "MOVE_EARTHQUAKE"
+                "MOVE_LAVA_PLUME",
+                "MOVE_ROCK_SLIDE",
+                "MOVE_BODY_SLAM",
+                "MOVE_FLAMETHROWER"
             ],
             "iv_scale": 200,
             "ball_seal": 0

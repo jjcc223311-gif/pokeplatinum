@@ -4,7 +4,7 @@
     {
       "id": "SnowpointGym_Text_CandiceIntro",
       "en_US": [
-        "You want to challenge Candice?\r",
+        "You want to challenge Dawn?\r",
         "Sure thing!\n",
         "I was waiting for someone tough!\r",
         "But I should tell you, I’m tough\n",
@@ -30,7 +30,7 @@
       "id": "SnowpointGym_Text_CandiceReceiveIciclebadge",
       "en_US": [
         "{STRVAR_1 3, 0, 0} received\n",
-        "the Icicle Badge from Candice."
+        "the Icicle Badge from Dawn."
       ]
     },
     {
@@ -95,7 +95,7 @@
       "id": "SnowpointGym_Text_GymStatueBeforeBadge",
       "en_US": [
         "Snowpoint City Pokémon Gym\n",
-        "Leader: Candice\r",
+        "Leader: Dawn\r",
         "Certified Trainers:\n",
         "{STRVAR_1 3, 1, 0}"
       ]
@@ -104,7 +104,7 @@
       "id": "SnowpointGym_Text_GymStatueAfterBadge",
       "en_US": [
         "Snowpoint City Pokémon Gym\n",
-        "Leader: Candice\r",
+        "Leader: Dawn\r",
         "Certified Trainers:\n",
         "{STRVAR_1 3, 0, 0}\f",
         "{STRVAR_1 3, 1, 0}"

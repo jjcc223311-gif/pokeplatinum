@@ -8,14 +8,28 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_WURMPLE",
+            "species": "SPECIES_JOLTIK",
             "form": 0,
             "level": 11,
             "item": null,
             "moves": [
-                "MOVE_TACKLE",
+                "MOVE_SPIDER_WEB",
                 "MOVE_STRING_SHOT",
-                "MOVE_POISON_STING"
+                "MOVE_THUNDER_WAVE",
+                "MOVE_SCREECH"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_KARRABLAST",
+            "form": 0,
+            "level": 11,
+            "item": null,
+            "moves": [
+                "MOVE_PECK",
+                "MOVE_LEER",
+                "MOVE_ENDURE"
             ],
             "iv_scale": 0,
             "ball_seal": 0

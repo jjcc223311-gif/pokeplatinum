@@ -68,6 +68,8 @@ BOOL PartyMenuFormChange_ChangeForm(PartyMenuApplication *app)
 
         switch (formChanger->species) {
         case SPECIES_GIRATINA:
+        case SPECIES_DIALGA:
+        case SPECIES_PALKIA:
             Pokemon_SetGiratinaFormByHeldItem(mon);
             formChanger->framesBeforeFormChange = 65;
             formChanger->narcIdx = giratina_spa;
@@ -189,6 +191,8 @@ static void LoadParticleResources(PartyMenuFormChange *formChanger)
 
     switch (formChanger->species) {
     case SPECIES_GIRATINA:
+    case SPECIES_DIALGA:
+    case SPECIES_PALKIA:
         ParticleSystem_CreateEmitterWithCallback(formChanger->ps, 0, EmitterCallback, formChanger);
         ParticleSystem_CreateEmitterWithCallback(formChanger->ps, 1, EmitterCallback, formChanger);
         ParticleSystem_CreateEmitterWithCallback(formChanger->ps, 2, EmitterCallback, formChanger);

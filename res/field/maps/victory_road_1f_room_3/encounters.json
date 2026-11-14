@@ -19,11 +19,11 @@
         },
         {
             "level": 50,
-            "species": "SPECIES_ONIX"
+            "species": "SPECIES_EXCADRILL"
         },
         {
             "level": 48,
-            "species": "SPECIES_FLOATZEL"
+            "species": "SPECIES_GIGALITH"
         },
         {
             "level": 49,
@@ -31,7 +31,7 @@
         },
         {
             "level": 49,
-            "species": "SPECIES_FLOATZEL"
+            "species": "SPECIES_EXCADRILL"
         },
         {
             "level": 50,
@@ -43,11 +43,11 @@
         },
         {
             "level": 50,
-            "species": "SPECIES_STEELIX"
+            "species": "SPECIES_HAXORUS"
         },
         {
             "level": 50,
-            "species": "SPECIES_GABITE"
+            "species": "SPECIES_ZWEILOUS"
         }
     ],
     "swarms": [

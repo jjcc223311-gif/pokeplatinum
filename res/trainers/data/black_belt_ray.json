@@ -9,15 +9,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_BRELOOM",
+            "species": "SPECIES_CONKELDURR",
             "form": 0,
             "level": 58,
             "item": null,
             "moves": [
-                "MOVE_SEED_BOMB",
-                "MOVE_MACH_PUNCH",
-                "MOVE_SKY_UPPERCUT",
-                "MOVE_SPORE"
+                "MOVE_HAMMER_ARM",
+                "MOVE_STONE_EDGE",
+                "MOVE_FOCUS_PUNCH",
+                "MOVE_SUPERPOWER"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_MIENSHAO",
+            "form": 0,
+            "level": 58,
+            "item": null,
+            "moves": [
+                "MOVE_U_TURN",
+                "MOVE_WIDE_GUARD",
+                "MOVE_BOUNCE",
+                "MOVE_HI_JUMP_KICK"
             ],
             "iv_scale": 30,
             "ball_seal": 0

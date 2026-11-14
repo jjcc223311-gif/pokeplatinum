@@ -1231,6 +1231,77 @@
     .long \battler
     .endm
 
+    // Jump if Electric Terrain is up and the battler is grounded (it can't fall asleep)
+    .macro CheckElectricTerrainSleep battler, jump
+    .long BTLCMD_CHECKELECTRICTERRAINSLEEP
+    .long \battler
+    .long (\jump-.) / 4 - 1
+    .endm
+
+    // Halve BTLVAR_HP_CALC_TEMP (HP about to be recovered) if an opponent has Fume Cloud
+    .macro ApplyFumeCloud battler
+    .long BTLCMD_APPLYFUMECLOUD
+    .long \battler
+    .endm
+
+    // A major status was just given to BTLVAR_SIDE_EFFECT_MON (Azure Wildfire, Venom Leverage,
+    // Prismatic Grace)
+    .macro NotifyStatusInflicted
+    .long BTLCMD_NOTIFYSTATUSINFLICTED
+    .endm
+
+    // Stored Power: 20 + 20 for every stage the user's stats are raised
+    .macro CalcStoredPowerPower
+    .long BTLCMD_CALCSTOREDPOWERPOWER
+    .endm
+
+    // Heavy Slam / Heat Crash: power from the user's weight vs. the target's
+    .macro CalcHeavySlamPower
+    .long BTLCMD_CALCHEAVYSLAMPOWER
+    .endm
+
+    // Electro Ball: power from the user's Speed vs. the target's
+    .macro CalcElectroBallPower
+    .long BTLCMD_CALCELECTROBALLPOWER
+    .endm
+
+    // Retaliate: double power if an ally fainted last turn
+    .macro CalcRetaliatePower
+    .long BTLCMD_CALCRETALIATEPOWER
+    .endm
+
+    // Echoed Voice: 40 more power for every consecutive turn it was used (max 200)
+    .macro CalcEchoedVoicePower
+    .long BTLCMD_CALCECHOEDVOICEPOWER
+    .endm
+
+    // Jump if the target shares no type with the user (Synchronoise has no effect)
+    .macro CheckSynchronoise jump
+    .long BTLCMD_CHECKSYNCHRONOISE
+    .long (\jump-.) / 4 - 1
+    .endm
+
+    // Ground an airborne battler (Smack Down); jump if it already was grounded
+    .macro TrySmackDown battler, jump
+    .long BTLCMD_TRYSMACKDOWN
+    .long \battler
+    .long (\jump-.) / 4 - 1
+    .endm
+
+    // Make a battler float for 3 turns (Telekinesis); jump if it fails
+    .macro TryTelekinesis battler, jump
+    .long BTLCMD_TRYTELEKINESIS
+    .long \battler
+    .long (\jump-.) / 4 - 1
+    .endm
+
+    // Gen 5 move effects (see enum Gen5MoveEffect); jumps when the move fails / a room ends
+    .macro Gen5MoveEffect kind, jump
+    .long BTLCMD_GEN5MOVEEFFECT
+    .long \kind
+    .long (\jump-.) / 4 - 1
+    .endm
+
     .macro End
     .long BTLCMD_END
     .endm

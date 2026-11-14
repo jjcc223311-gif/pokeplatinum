@@ -8,13 +8,28 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_GEODUDE",
+            "species": "SPECIES_DWEBBLE",
             "form": 0,
             "level": 9,
             "item": null,
             "moves": [
-                "MOVE_TACKLE",
-                "MOVE_DEFENSE_CURL"
+                "MOVE_FURY_CUTTER",
+                "MOVE_ROCK_BLAST",
+                "MOVE_WITHDRAW"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_VENIPEDE",
+            "form": 0,
+            "level": 9,
+            "item": null,
+            "moves": [
+                "MOVE_DEFENSE_CURL",
+                "MOVE_ROLLOUT",
+                "MOVE_POISON_STING",
+                "MOVE_SCREECH"
             ],
             "iv_scale": 10,
             "ball_seal": 0

@@ -11,6 +11,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_ZOROARK",
+            "form": 0,
+            "level": 58,
+            "item": "ITEM_NONE",
+            "moves": [
+                "MOVE_AGILITY",
+                "MOVE_EMBARGO",
+                "MOVE_PUNISHMENT",
+                "MOVE_NASTY_PLOT"
+            ],
+            "iv_scale": 200,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_BRONZONG",
             "form": 0,
             "level": 58,
@@ -25,15 +39,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_GOLBAT",
+            "species": "SPECIES_SCRAFTY",
             "form": 0,
             "level": 58,
             "item": "ITEM_NONE",
             "moves": [
-                "MOVE_SLUDGE_BOMB",
-                "MOVE_AIR_CUTTER",
-                "MOVE_GIGA_DRAIN",
-                "MOVE_MEAN_LOOK"
+                "MOVE_CRUNCH",
+                "MOVE_FACADE",
+                "MOVE_ROCK_CLIMB",
+                "MOVE_FOCUS_PUNCH"
             ],
             "iv_scale": 200,
             "ball_seal": 0

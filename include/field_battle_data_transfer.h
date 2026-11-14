@@ -88,6 +88,8 @@ typedef struct FieldBattleDTO {
     u8 recordedChatter[MAX_BATTLERS];
     SaveData *saveData;
     u32 recordingStopped;
+    BOOL modernExpShare; // Modern Exp. Share owned and switched on
+    BOOL riftEncounter; // Distorted Rift legendary: half catch rate
 } FieldBattleDTO;
 
 FieldBattleDTO *FieldBattleDTO_New(enum HeapID heapID, u32 battleType);

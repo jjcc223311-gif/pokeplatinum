@@ -1,0 +1,30 @@
+{
+    "name": "Stored Power",
+    "description": [
+        "The user attacks the\n",
+        "target with stored\n",
+        "power. The more the\n",
+        "user’s stats are\n",
+        "raised, the greater"
+    ],
+    "class": "CLASS_SPECIAL",
+    "type": "TYPE_PSYCHIC",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+        "type": "BATTLE_EFFECT_STORED_POWER",
+        "chance": 0
+    },
+    "range": "RANGE_SINGLE_TARGET",
+    "priority": 0,
+    "flags": [
+        "MOVE_FLAG_CAN_PROTECT",
+        "MOVE_FLAG_CAN_MIRROR_MOVE",
+        "MOVE_FLAG_TRIGGERS_KINGS_ROCK"
+    ],
+    "contest": {
+        "effect": "CONTEST_EFFECT_BASIC",
+        "type": "CONTEST_TYPE_SMART"
+    }
+}

@@ -1,0 +1,27 @@
+// entrainment: the Black 2 animation is background / camera only (not convertible), so this is
+// teeter_dance's animation.
+#include "macros/btlanimcmd.inc"
+
+L_0:
+    LoadParticleResource 0, teeter_dance_spa
+    PlayLoopedSoundEffectL SEQ_SE_DP_W298_sseq, 4, 6
+    CreateEmitter 0, 0, EMITTER_CB_SET_POS_TO_ATTACKER
+    Func_MoveBattlerX2 8, 24, BATTLE_ANIM_BATTLER_SPRITE_ATTACKER
+    WaitForAnimTasks
+    Func_MoveBattlerX2 8, 12, BATTLE_ANIM_BATTLER_SPRITE_ATTACKER
+    WaitForAnimTasks
+    Func_MoveBattlerX2 8, -36, BATTLE_ANIM_BATTLER_SPRITE_ATTACKER
+    WaitForAnimTasks
+    Func_MoveBattlerX2 8, -24, BATTLE_ANIM_BATTLER_SPRITE_ATTACKER
+    WaitForAnimTasks
+    Func_MoveBattlerX2 8, -12, BATTLE_ANIM_BATTLER_SPRITE_ATTACKER
+    WaitForAnimTasks
+    Func_MoveBattlerX2 8, 36, BATTLE_ANIM_BATTLER_SPRITE_ATTACKER
+    WaitForAnimTasks
+    Func_MoveBattlerX2 4, -4, BATTLE_ANIM_BATTLER_SPRITE_ATTACKER
+    WaitForAnimTasks
+    Func_MoveBattlerX2 4, 4, BATTLE_ANIM_BATTLER_SPRITE_ATTACKER
+    WaitForAnimTasks
+    WaitForAllEmitters
+    UnloadParticleSystem 0
+    End

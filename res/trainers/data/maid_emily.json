@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_RUFFLET",
+            "form": 0,
+            "level": 28,
+            "item": null,
+            "moves": [
+                "MOVE_HONE_CLAWS",
+                "MOVE_SCARY_FACE",
+                "MOVE_AERIAL_ACE",
+                "MOVE_SLASH"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_CLEFAIRY",
             "form": 0,
             "level": 29,

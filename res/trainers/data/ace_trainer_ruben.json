@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_NUZLEAF",
+            "species": "SPECIES_SAWK",
             "form": 0,
             "level": 56,
             "item": null,
             "moves": [
-                "MOVE_EXTRASENSORY",
-                "MOVE_FAKE_OUT",
-                "MOVE_FAINT_ATTACK",
-                "MOVE_RAZOR_LEAF"
+                "MOVE_ENDURE",
+                "MOVE_QUICK_GUARD",
+                "MOVE_CLOSE_COMBAT",
+                "MOVE_REVERSAL"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_SEISMITOAD",
+            "form": 0,
+            "level": 56,
+            "item": null,
+            "moves": [
+                "MOVE_FLAIL",
+                "MOVE_DRAIN_PUNCH",
+                "MOVE_ECHOED_VOICE",
+                "MOVE_HYDRO_PUMP"
             ],
             "iv_scale": 50,
             "ball_seal": 0

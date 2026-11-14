@@ -10,15 +10,15 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_STARAVIA",
+            "species": "SPECIES_DARUMAKA",
             "form": 0,
             "level": 34,
             "item": null,
             "moves": [
-                "MOVE_WING_ATTACK",
-                "MOVE_QUICK_ATTACK",
-                "MOVE_ENDEAVOR",
-                "MOVE_DOUBLE_TEAM"
+                "MOVE_WORK_UP",
+                "MOVE_THRASH",
+                "MOVE_BELLY_DRUM",
+                "MOVE_FLARE_BLITZ"
             ],
             "iv_scale": 80,
             "ball_seal": 0
@@ -38,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_ROSELIA",
+            "species": "SPECIES_MUSHARNA",
             "form": 0,
             "level": 32,
             "item": null,
             "moves": [
-                "MOVE_MEGA_DRAIN",
-                "MOVE_POISON_STING",
-                "MOVE_LEECH_SEED",
-                "MOVE_MAGICAL_LEAF"
+                "MOVE_DEFENSE_CURL",
+                "MOVE_HYPNOSIS",
+                "MOVE_LUCKY_CHANT",
+                "MOVE_PSYBEAM"
             ],
             "iv_scale": 80,
             "ball_seal": 0

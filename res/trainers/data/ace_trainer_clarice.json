@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_EXCADRILL",
+            "form": 0,
+            "level": 53,
+            "item": null,
+            "moves": [
+                "MOVE_HORN_DRILL",
+                "MOVE_EARTHQUAKE",
+                "MOVE_SWORDS_DANCE",
+                "MOVE_SANDSTORM"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_SWALOT",
             "form": 0,
             "level": 53,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_NINETALES",
+            "species": "SPECIES_SAWK",
             "form": 0,
             "level": 54,
             "item": null,
             "moves": [
-                "MOVE_WILL_O_WISP",
-                "MOVE_FLAMETHROWER",
-                "MOVE_DARK_PULSE",
-                "MOVE_EXTRASENSORY"
+                "MOVE_ENDURE",
+                "MOVE_QUICK_GUARD",
+                "MOVE_CLOSE_COMBAT",
+                "MOVE_REVERSAL"
             ],
             "iv_scale": 50,
             "ball_seal": 0

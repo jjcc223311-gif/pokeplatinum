@@ -9,6 +9,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_MIENSHAO",
+            "form": 0,
+            "level": 59,
+            "item": null,
+            "moves": [
+                "MOVE_U_TURN",
+                "MOVE_WIDE_GUARD",
+                "MOVE_BOUNCE",
+                "MOVE_HI_JUMP_KICK"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MACHAMP",
             "form": 0,
             "level": 60,

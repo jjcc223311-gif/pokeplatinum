@@ -498,6 +498,8 @@ BOOL ScrCmd_TryRevertPartyPokemonForms(ScriptContext *ctx)
 
             switch (species) {
             case SPECIES_GIRATINA:
+            case SPECIES_DIALGA:
+            case SPECIES_PALKIA:
                 Pokemon_SetGiratinaFormByHeldItem(mon);
                 break;
             case SPECIES_ROTOM:
@@ -555,6 +557,8 @@ BOOL ScrCmd_TryRevertPokemonForm(ScriptContext *ctx)
 
         switch (pokemonSpecies) {
         case SPECIES_GIRATINA:
+        case SPECIES_DIALGA:
+        case SPECIES_PALKIA:
             Pokemon_SetGiratinaFormByHeldItem(mon);
             break;
         case SPECIES_ROTOM:

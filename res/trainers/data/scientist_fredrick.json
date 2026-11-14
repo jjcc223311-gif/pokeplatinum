@@ -11,15 +11,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_KIRLIA",
+            "species": "SPECIES_EXCADRILL",
             "form": 0,
             "level": 40,
             "item": null,
             "moves": [
-                "MOVE_PSYCHIC",
-                "MOVE_MAGICAL_LEAF",
-                "MOVE_HYPNOSIS",
-                "MOVE_FUTURE_SIGHT"
+                "MOVE_SLASH",
+                "MOVE_ROCK_SLIDE",
+                "MOVE_HORN_DRILL",
+                "MOVE_EARTHQUAKE"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_STUNFISK",
+            "form": 0,
+            "level": 40,
+            "item": null,
+            "moves": [
+                "MOVE_DISCHARGE",
+                "MOVE_ENDURE",
+                "MOVE_BOUNCE",
+                "MOVE_MUDDY_WATER"
             ],
             "iv_scale": 0,
             "ball_seal": 0

@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SEISMITOAD",
+            "form": 0,
+            "level": 39,
+            "item": null,
+            "moves": [
+                "MOVE_MUDDY_WATER",
+                "MOVE_RAIN_DANCE",
+                "MOVE_ACID",
+                "MOVE_FLAIL"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_SCIZOR",
             "form": 0,
             "level": 40,

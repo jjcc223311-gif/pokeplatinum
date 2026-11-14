@@ -19,15 +19,15 @@
         },
         {
             "level": 29,
-            "species": "SPECIES_MEDITITE"
+            "species": "SPECIES_MIENFOO"
         },
         {
             "level": 28,
-            "species": "SPECIES_MACHOP"
+            "species": "SPECIES_XATU"
         },
         {
             "level": 29,
-            "species": "SPECIES_SCYTHER"
+            "species": "SPECIES_MIENFOO"
         },
         {
             "level": 29,
@@ -109,12 +109,12 @@
         {
             "level_max": 40,
             "level_min": 20,
-            "species": "SPECIES_GOLDUCK"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 40,
             "level_min": 20,
-            "species": "SPECIES_GOLDUCK"
+            "species": "SPECIES_AZUMARILL"
         },
         {
             "level_max": 40,
@@ -165,12 +165,12 @@
         {
             "level_max": 25,
             "level_min": 10,
-            "species": "SPECIES_MAGIKARP"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 35,
             "level_min": 25,
-            "species": "SPECIES_WHISCASH"
+            "species": "SPECIES_BASCULIN"
         },
         {
             "level_max": 35,
@@ -193,7 +193,7 @@
         {
             "level_max": 55,
             "level_min": 40,
-            "species": "SPECIES_GYARADOS"
+            "species": "SPECIES_CRAWDAUNT"
         },
         {
             "level_max": 55,

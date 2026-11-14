@@ -1,4 +1,5 @@
 #include "macros/scrcmd.inc"
+#include "constants/distorted_rift.h"
 #include "res/text/bank/twinleaf_town_player_house_1f.h"
 #include "res/field/maps/locals/twinleaf_town_player_house_1f.h"
 
@@ -137,6 +138,17 @@ TwinleafTownPlayerHouse1F_OnFrame_CutsceneAfterRivalBattle:
     WaitFanfare
     Message TwinleafTownPlayerHouse1F_Text_LetMeReadTheInstructions
     WaitButton
+    Message TwinleafTownPlayerHouse1F_Text_MegaRing
+    SetVar VAR_0x8004, ITEM_MEGA_RING
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
+    Message TwinleafTownPlayerHouse1F_Text_ExpShare
+    SetVar VAR_0x8004, ITEM_MODERN_EXP_SHARE
+    SetVar VAR_0x8005, 1
+    CallCommonScript CommonScript_AddItemQuantity
+    SetFlag FLAG_EXP_SHARE_ON
+    Message TwinleafTownPlayerHouse1F_Text_ExpShareExplain
+    WaitButton
     CloseMessage
     SetVar VAR_PLAYER_HOUSE_STATE, 4
     ReleaseAll
@@ -168,6 +180,10 @@ TwinleafTownPlayerHouse1F_Mom:
     PlaySE SE_CONFIRM_sseq_3
     LockAll
     FacePlayer
+#if RIFT_TEMP_TEST
+    GoToIfSet FLAG_HAS_POKEDEX, TwinleafTownPlayerHouse1F_RiftTempTest
+TwinleafTownPlayerHouse1F_MomNormal:
+#endif
     GoToIfSet FLAG_MAP_LOCAL_0x02, TwinleafTownPlayerHouse1F_DoMomMessage
     GoToIfGe VAR_PLAYER_HOUSE_STATE, 7, TwinleafTownPlayerHouse1F_CallTakeAQuickRest2
     GoToIfEq VAR_PLAYER_HOUSE_STATE, 6, TwinleafTownPlayerHouse1F_EnjoyYourAdventure
@@ -263,6 +279,13 @@ TwinleafTownPlayerHouse1F_MomGiveJournal:
     CallCommonScript CommonScript_AddItemQuantity
     GiveJournal
     Message TwinleafTownPlayerHouse1F_Text_ThatsAJournal
+    Message TwinleafTownPlayerHouse1F_Text_FathersPokedex
+    SetFlag FLAG_RECEIVED_LEGENDARY_DEX
+    BufferPlayerName 0
+    Message TwinleafTownPlayerHouse1F_Text_PlayerReceivedLegendaryDex
+    PlayFanfare SEQ_FANFA4_sseq
+    WaitFanfare
+    WaitButton
     GetPlayerDir VAR_0x8007
     GoToIfEq VAR_0x8007, DIR_SOUTH, TwinleafTownPlayerHouse1F_MotherTurnAwaySouth
     GoTo TwinleafTownPlayerHouse1F_MotherTurnAwayNorth
@@ -813,5 +836,38 @@ TwinleafTownPlayerHouse1F_KitchenSink:
 TwinleafTownPlayerHouse1F_KitchenCounter:
     EventMessage TwinleafTownPlayerHouse1F_Text_WhereMomDoesDeliciousCooking
     End
+
+#if RIFT_TEMP_TEST
+// ===== TEMPORARY TEST: Distorted Rift (remove with RIFT_TEMP_TEST in constants/distorted_rift.h) =====
+TwinleafTownPlayerHouse1F_RiftTempTest:
+    GoToIfSet FLAG_RIFT_TEMP_TEST_GIVEN, TwinleafTownPlayerHouse1F_RiftTempTestAskCatchAll
+    SetVar VAR_0x8004, ITEM_LEGEND_MEGA_ROCK
+    SetVar VAR_0x8005, 3
+    GoToIfCannotFitItem VAR_0x8004, VAR_0x8005, VAR_RESULT, TwinleafTownPlayerHouse1F_RiftTempTestAskCatchAll
+    SetFlag FLAG_RIFT_TEMP_TEST_GIVEN
+    CallCommonScript CommonScript_AddItemQuantityNoLineFeed
+    CloseMessage
+TwinleafTownPlayerHouse1F_RiftTempTestAskCatchAll:
+    Message TwinleafTownPlayerHouse1F_Text_RiftTestAskCatchAll
+    ShowYesNoMenu VAR_RESULT
+    GoToIfNe VAR_RESULT, MENU_YES, TwinleafTownPlayerHouse1F_RiftTempTestAskWarp
+    DistortedRift RIFT_CMD_DEBUG_CATCH_ALL, VAR_RESULT
+    Message TwinleafTownPlayerHouse1F_Text_RiftTestCaughtAll
+TwinleafTownPlayerHouse1F_RiftTempTestAskWarp:
+    Message TwinleafTownPlayerHouse1F_Text_RiftTestAskWarp
+    ShowYesNoMenu VAR_RESULT
+    GoToIfEq VAR_RESULT, MENU_YES, TwinleafTownPlayerHouse1F_RiftTempTestWarp
+    CloseMessage
+    GoTo TwinleafTownPlayerHouse1F_MomNormal
+
+TwinleafTownPlayerHouse1F_RiftTempTestWarp:
+    CloseMessage
+    FadeScreenOut
+    WaitFadeScreen
+    Warp MAP_HEADER_TURNBACK_CAVE_GIRATINA_ROOM, 11, 15, DIR_NORTH
+    FadeScreenIn
+    WaitFadeScreen
+    End
+#endif
 
     .balign 4, 0

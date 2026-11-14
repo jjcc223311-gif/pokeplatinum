@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_PORYGON_Z",
+            "species": "SPECIES_REUNICLUS",
             "form": 0,
             "level": 46,
             "item": null,
             "moves": [
-                "MOVE_HYPER_BEAM",
-                "MOVE_SIGNAL_BEAM",
+                "MOVE_PAIN_SPLIT",
                 "MOVE_PSYCHIC",
-                "MOVE_THUNDERBOLT"
+                "MOVE_DIZZY_PUNCH",
+                "MOVE_SKILL_SWAP"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_GARBODOR",
+            "form": 0,
+            "level": 46,
+            "item": null,
+            "moves": [
+                "MOVE_SLUDGE_BOMB",
+                "MOVE_CLEAR_SMOG",
+                "MOVE_TOXIC",
+                "MOVE_AMNESIA"
             ],
             "iv_scale": 100,
             "ball_seal": 0

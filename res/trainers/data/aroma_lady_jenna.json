@@ -9,14 +9,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_BUDEW",
+            "species": "SPECIES_COTTONEE",
             "form": 0,
             "level": 15,
             "item": null,
             "moves": [
-                "MOVE_ABSORB",
+                "MOVE_GROWTH",
+                "MOVE_LEECH_SEED",
                 "MOVE_STUN_SPORE",
-                "MOVE_WATER_SPORT"
+                "MOVE_MEGA_DRAIN"
+            ],
+            "iv_scale": 20,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_FERROSEED",
+            "form": 0,
+            "level": 15,
+            "item": null,
+            "moves": [
+                "MOVE_TACKLE",
+                "MOVE_ROLLOUT",
+                "MOVE_CURSE",
+                "MOVE_METAL_CLAW"
             ],
             "iv_scale": 20,
             "ball_seal": 0

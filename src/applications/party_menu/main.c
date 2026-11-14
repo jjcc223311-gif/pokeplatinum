@@ -2810,7 +2810,8 @@ static int UpdatePokemonWithItem(PartyMenuApplication *application, Pokemon *mon
 
     if (fieldSystem == NULL
         || fieldSystem->location->mapHeaderID < MAP_HEADER_DISTORTION_WORLD_1F
-        || (fieldSystem->location->mapHeaderID > MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM)) {
+        || (fieldSystem->location->mapHeaderID > MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM
+            && fieldSystem->location->mapHeaderID != MAP_HEADER_DISTORTED_RIFT)) {
         *param2 = Pokemon_SetGiratinaFormByHeldItem(mon);
     } else {
         *param2 = -1;
@@ -2819,7 +2820,7 @@ static int UpdatePokemonWithItem(PartyMenuApplication *application, Pokemon *mon
     application->partyMembers[application->currPartySlot].heldItem = application->partyMenu->usedItemID;
     PartyMenu_DrawMemberHeldItem(application, application->currPartySlot, application->partyMembers[application->currPartySlot].heldItem);
 
-    if (item == ITEM_GRISEOUS_ORB && ((*param2) != -1)) {
+    if (Pokemon_IsOriginFormItem(mon, item) && ((*param2) != -1)) {
         return PARTY_MENU_STATE_12;
     }
 
@@ -2911,9 +2912,9 @@ static int ProcessPokemonItemSwap(PartyMenuApplication *application)
             StringTemplate_SetItemName(application->template, 2, v4);
             StringTemplate_Format(application->template, application->tmpString, application->tmpFormat);
 
-            if ((v4 != ITEM_GRISEOUS_ORB) && (v5 == ITEM_GRISEOUS_ORB) && (v1 != -1)) {
+            if (!Pokemon_IsOriginFormItem(mon, v4) && Pokemon_IsOriginFormItem(mon, v5) && (v1 != -1)) {
                 v0 = PARTY_MENU_STATE_12;
-            } else if ((v4 == ITEM_GRISEOUS_ORB) && (v5 == ITEM_GRISEOUS_ORB)) {
+            } else if (Pokemon_IsOriginFormItem(mon, v4) && Pokemon_IsOriginFormItem(mon, v5)) {
                 v0 = PARTY_MENU_STATE_CONFIRM_ITEM_UPDATE;
             }
         }
@@ -2957,7 +2958,7 @@ static int UpdatePokemonFormWithItem(PartyMenuApplication *application)
     item = application->partyMembers[application->currPartySlot].heldItem;
     v4 = UpdatePokemonWithItem(application, v0, &v5);
 
-    if ((item == ITEM_GRISEOUS_ORB) && (v4 == 11) && (v5 == 0)) {
+    if (Pokemon_IsOriginFormItem(v0, item) && (v4 == 11) && (v5 == 0)) {
         v4 = PARTY_MENU_STATE_12;
     }
 

@@ -13,7 +13,8 @@ lighting_data_srcs = lighting_txt_gen.process(files(
 
 lighting_data_newline_srcs = lighting_txt_gen.process(files(
     'lighting_set_001.json',
-    'lighting_set_003.json'),
+    'lighting_set_003.json',
+    'lighting_set_004.json'),
     env: jsoncnv_env,
     extra_args: [
         '--eofnewline',

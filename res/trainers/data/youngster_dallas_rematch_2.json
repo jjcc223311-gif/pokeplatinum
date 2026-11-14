@@ -8,6 +8,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_LEAVANNY",
+            "form": 0,
+            "level": 32,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_LUXIO",
             "form": 0,
             "level": 32,
@@ -17,7 +26,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_BIBAREL",
+            "species": "SPECIES_SWOOBAT",
             "form": 0,
             "level": 32,
             "item": null,

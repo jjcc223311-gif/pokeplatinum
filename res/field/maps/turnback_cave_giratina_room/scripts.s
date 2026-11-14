@@ -1,4 +1,5 @@
 #include "macros/scrcmd.inc"
+#include "constants/distorted_rift.h"
 #include "res/text/bank/turnback_cave_giratina_room.h"
 #include "res/field/maps/locals/turnback_cave_giratina_room.h"
 
@@ -96,6 +97,18 @@ TurnbackCaveGiratinaRoom_Inscription:
 TurnbackCaveGiratinaRoom_Portal:
     PlaySE SE_CONFIRM_sseq_3
     LockAll
+    CheckItem ITEM_LEGEND_MEGA_ROCK, 1, VAR_RESULT
+    GoToIfEq VAR_RESULT, FALSE, TurnbackCaveGiratinaRoom_AskGoToDistortionWorld
+    GoToIfSet FLAG_RIFT_CAUGHT_ARCEUS, TurnbackCaveGiratinaRoom_RiftSilent
+    Message TurnbackCaveGiratinaRoom_Text_LegendMegaRockResonates
+    ShowYesNoMenu VAR_RESULT
+    GoToIfEq VAR_RESULT, MENU_YES, TurnbackCaveGiratinaRoom_GoToDistortedRift
+    GoTo TurnbackCaveGiratinaRoom_AskGoToDistortionWorld
+    End
+
+TurnbackCaveGiratinaRoom_RiftSilent:
+    Message TurnbackCaveGiratinaRoom_Text_RiftRemainsSilent
+TurnbackCaveGiratinaRoom_AskGoToDistortionWorld:
     Message TurnbackCaveGiratinaRoom_Text_GoToDistortionWorld
     ShowYesNoMenu VAR_RESULT
     GoToIfEq VAR_RESULT, MENU_YES, TurnbackCaveGiratinaRoom_GoToDistortionWorld
@@ -111,6 +124,22 @@ TurnbackCaveGiratinaRoom_GoToDistortionWorld:
     FadeScreenOut
     WaitFadeScreen
     Warp MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM, 116, 75, DIR_SOUTH
+    FadeScreenIn
+    WaitFadeScreen
+    End
+
+TurnbackCaveGiratinaRoom_GoToDistortedRift:
+    RemoveItem ITEM_LEGEND_MEGA_ROCK, 1, VAR_RESULT
+    DistortedRift RIFT_CMD_PICK, VAR_RESULT
+    ClearFlag FLAG_RIFT_LEGENDARY_GONE
+    BufferPlayerName 0
+    Message TurnbackCaveGiratinaRoom_Text_PlayerLeaptIntoPortal
+    CloseMessage
+    PlaySE SEQ_SE_PL_SYUWA_sseq
+    SetPartyGiratinaForm GIRATINA_FORM_ORIGIN
+    FadeScreenOut
+    WaitFadeScreen
+    Warp MAP_HEADER_DISTORTED_RIFT, 116, 75, DIR_SOUTH
     FadeScreenIn
     WaitFadeScreen
     End

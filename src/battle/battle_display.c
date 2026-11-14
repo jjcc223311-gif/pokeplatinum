@@ -772,7 +772,8 @@ typedef struct MoveSelectMenuData {
     u8 battlerType;
     u8 partySlot;
     u8 state;
-    u8 unused;
+    u8 megaState;
+    u8 legendaryState;
     u16 invalidMoves;
 } MoveSelectMenuData;
 
@@ -795,6 +796,8 @@ void BattleDisplay_InitTaskShowMoveSelectMenu(BattleSystem *battleSys, BattlerDa
     }
 
     moveSelectMenuData->invalidMoves = message->invalidMoves;
+    moveSelectMenuData->megaState = message->megaState;
+    moveSelectMenuData->legendaryState = message->legendaryState;
 
     SysTask_Start(battlerData->taskFuncs.showMoveSelectMenu, moveSelectMenuData, 0);
 }
@@ -3537,6 +3540,8 @@ static void Task_PlayerShowMoveSelectMenu(SysTask *task, void *data)
         }
 
         moveSelectData.battlerType = moveSelectMenuData->battlerType;
+        moveSelectData.megaState = moveSelectMenuData->megaState;
+        moveSelectData.legendaryState = moveSelectMenuData->legendaryState;
 
         BattleSubscreen_SetupBackground(bgNarc, objNarc, btlSubscreen, 11, 0, &moveSelectData);
         NARC_dtor(bgNarc);

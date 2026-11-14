@@ -27,7 +27,7 @@
         },
         {
             "level": 38,
-            "species": "SPECIES_LUXIO"
+            "species": "SPECIES_ZEBSTRIKA"
         },
         {
             "level": 40,
@@ -35,7 +35,7 @@
         },
         {
             "level": 40,
-            "species": "SPECIES_PELIPPER"
+            "species": "SPECIES_MANECTRIC"
         },
         {
             "level": 41,
@@ -47,7 +47,7 @@
         },
         {
             "level": 41,
-            "species": "SPECIES_MAGNETON"
+            "species": "SPECIES_ZEBSTRIKA"
         }
     ],
     "swarms": [
@@ -109,7 +109,7 @@
         {
             "level_max": 50,
             "level_min": 30,
-            "species": "SPECIES_TENTACRUEL"
+            "species": "SPECIES_ALOMOMOLA"
         },
         {
             "level_max": 50,
@@ -165,12 +165,12 @@
         {
             "level_max": 25,
             "level_min": 10,
-            "species": "SPECIES_MAGIKARP"
+            "species": "SPECIES_FRILLISH"
         },
         {
             "level_max": 25,
             "level_min": 10,
-            "species": "SPECIES_REMORAID"
+            "species": "SPECIES_FRILLISH"
         },
         {
             "level_max": 25,
@@ -193,17 +193,17 @@
         {
             "level_max": 55,
             "level_min": 40,
-            "species": "SPECIES_GYARADOS"
+            "species": "SPECIES_EELEKTRIK"
         },
         {
             "level_max": 55,
             "level_min": 40,
-            "species": "SPECIES_OCTILLERY"
+            "species": "SPECIES_CLAMPERL"
         },
         {
             "level_max": 55,
             "level_min": 40,
-            "species": "SPECIES_OCTILLERY"
+            "species": "SPECIES_EELEKTRIK"
         }
     ],
     "map_category": {

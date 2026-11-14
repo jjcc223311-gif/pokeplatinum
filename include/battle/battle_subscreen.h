@@ -89,6 +89,19 @@ typedef struct FontOAMEntry {
     u16 textWidth;
 } FontOAMEntry;
 
+// One animated sparkle / flame sprite around the Mega or Legendary button
+#define BUTTON_FX_MAX_PARTICLES 16
+
+typedef struct ButtonFxParticle {
+    FontOAMEntry oam;
+    s16 x;
+    s16 y;
+    s8 vx;
+    u8 kind; // enum ButtonFxParticleKind (battle_subscreen.c)
+    u8 life; // frames left before a sparkle respawns
+    u8 timer;
+} ButtonFxParticle;
+
 typedef struct PartyBallAnimState {
     s16 xOffset;
     u8 expPercent;
@@ -117,11 +130,23 @@ typedef struct ActionSelectData {
     u8 isWaitingForPartner;
 } ActionSelectData;
 
+enum MegaButtonState {
+    MEGA_BUTTON_HIDDEN = 0, // not drawn and cannot be pressed (the Pokemon cannot use it now)
+    MEGA_BUTTON_OFF,
+    MEGA_BUTTON_ON, // Mega Evolution is set for this turn; drawn pressed in (unused: ON_1 / ON_2 show the form)
+    MEGA_BUTTON_ON_1, // set: will become form 1 (labelled "1")
+    MEGA_BUTTON_ON_2, // set: holding the Mega Rock, will become form 2 (labelled "2")
+};
+
+#define MEGA_BUTTON_IS_ON(state) ((state) >= MEGA_BUTTON_ON)
+
 typedef struct MoveSelectData {
     u16 moveIDs[4];
     u8 currPP[4];
     u8 maxPP[4];
     u8 battlerType;
+    u8 megaState;
+    u8 legendaryState;
 } MoveSelectData;
 
 typedef struct TargetMonData {
@@ -188,7 +213,7 @@ typedef struct BattleSubscreen {
     SysTask *speedUpPaletteTask;
     MoveDisplayData moveDisplayData[MAX_BATTLERS];
     UnkStruct_02012744 *fontOAMManager;
-    FontOAMEntry fontOAMEntry[13];
+    FontOAMEntry fontOAMEntry[15];
     UnkStruct_02012B20 *unused_5B8;
     ManagedSprite *playerPartyBallSprites[MAX_PARTY_SIZE];
     ManagedSprite *opponentPartyBallSprites[MAX_PARTY_SIZE];
@@ -211,6 +236,14 @@ typedef struct BattleSubscreen {
     u8 pulseCursorDirection;
     s16 pulseCursorBlendValue;
     SysTask *pulseCursorTask;
+    SysTask *megaGlowTask; // neon pulse on the Mega button while Mega Evolution is set
+    u16 megaGlowFrame;
+    ButtonFxParticle buttonFx[BUTTON_FX_MAX_PARTICLES]; // sparkles and flames while Mega is set
+    u8 buttonFxCount;
+    u8 buttonFxTheme; // enum ButtonFxTheme (battle_subscreen.c): which button the effects surround
+    s16 buttonFxBaseX; // left edge of that button, in screen pixels
+    s8 buttonFxPlttSlot; // sub-OBJ palette slot of the effect palette, or -1 when not loaded
+    u32 buttonFxRng; // own RNG: must never touch the battle RNG (recordings / link sync)
     MenuButtonPressAnimState menuButtonPressAnimState;
     UnusedStruct_ov16_02268A14_sub4 unused_6A0;
     s32 panelScrollPos;

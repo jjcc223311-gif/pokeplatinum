@@ -11,6 +11,7 @@ _000:
     CompareVarToValue OPCODE_FLAG_SET, BTLVAR_FIELD_CONDITIONS, FIELD_CONDITION_UPROAR, _115
 
 _027:
+    CheckElectricTerrainSleep BTLSCR_ATTACKER, _electric_terrain
     UpdateMonDataFromVar OPCODE_GET, BTLSCR_ATTACKER, BATTLEMON_MAX_HP, BTLVAR_HP_CALC_TEMP
     CompareMonDataToVar OPCODE_EQU, BTLSCR_ATTACKER, BATTLEMON_CUR_HP, BTLVAR_HP_CALC_TEMP, _137
     PlayMoveAnimation BTLSCR_ATTACKER
@@ -62,6 +63,12 @@ _129:
     WaitButtonABTime 30
     // But {0} can’t sleep in an uproar!
     PrintMessage BattleStrings_Text_ButPokemonCantSleepInAnUproar_Ally, TAG_NICKNAME, BTLSCR_ATTACKER
+    GoTo _143
+
+_electric_terrain:
+    WaitButtonABTime 30
+    // {0} is protected by the Electric Terrain!
+    PrintMessage BattleStrings_Text_PokemonIsProtectedByTheElectricTerrain_Ally, TAG_NICKNAME, BTLSCR_ATTACKER
     GoTo _143
 
 _137:

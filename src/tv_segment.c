@@ -2663,9 +2663,9 @@ static int sub_0206F01C(FieldSystem *fieldSystem, StringTemplate *param1, TVEpis
     u16 v1, v2, v3;
     const Pokedex *pokedex = SaveData_GetPokedex(fieldSystem->saveData);
 
-    v1 = (LCRNG_Next() % (NATIONAL_DEX_COUNT - 1)) + 1;
+    v1 = (LCRNG_Next() % (POKEDEX_SPECIES_COUNT - 1)) + 1;
 
-    for (v2 = 1; v2 <= NATIONAL_DEX_COUNT; v2++) {
+    for (v2 = 1; v2 <= POKEDEX_SPECIES_COUNT; v2++) {
         if (Pokedex_HasSeenSpecies(pokedex, v1) == TRUE) {
             v3 = v1;
             break;
@@ -2673,7 +2673,7 @@ static int sub_0206F01C(FieldSystem *fieldSystem, StringTemplate *param1, TVEpis
 
         v1++;
 
-        if (v1 == NATIONAL_DEX_COUNT) {
+        if (v1 == POKEDEX_SPECIES_COUNT) {
             v1 = 1;
         }
     }
@@ -2757,9 +2757,9 @@ static int sub_0206F160(FieldSystem *fieldSystem, StringTemplate *template, TVEp
     TVSegment_SetTemplatePokemonSpecies(template, 0, Pokemon_GetValue(mon, MON_DATA_SPECIES, NULL), Pokemon_GetValue(mon, MON_DATA_GENDER, NULL), TrainerInfo_Language(trainerInfo), TrainerInfo_GameCode(trainerInfo));
     StringTemplate_SetContestAccessoryName(template, 1, LCRNG_Next() % 100);
 
-    v1 = (LCRNG_Next() % (NATIONAL_DEX_COUNT - 2) + 1);
+    v1 = (LCRNG_Next() % (POKEDEX_SPECIES_COUNT - 2) + 1);
 
-    for (v2 = 1; v2 <= NATIONAL_DEX_COUNT; v2++) {
+    for (v2 = 1; v2 <= POKEDEX_SPECIES_COUNT; v2++) {
         if (Pokedex_HasSeenSpecies(pokedex, v1) == TRUE) {
             v0 = sub_0206F0D8(v1, HEAP_ID_FIELD1);
             StringTemplate_SetString(template, 2, v0, 0, 1, GAME_LANGUAGE);
@@ -2769,7 +2769,7 @@ static int sub_0206F160(FieldSystem *fieldSystem, StringTemplate *template, TVEp
 
         v1++;
 
-        if (v1 >= NATIONAL_DEX_COUNT) {
+        if (v1 >= POKEDEX_SPECIES_COUNT) {
             v1 = 1;
         }
     }

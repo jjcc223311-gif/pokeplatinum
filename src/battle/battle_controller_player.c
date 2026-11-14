@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "constants/battle.h"
+#include "constants/battle/battle_script.h"
 #include "constants/game_options.h"
 #include "constants/heap.h"
 #include "constants/items.h"
@@ -22,6 +23,8 @@
 
 #include "battle/ai_context.h"
 #include "battle/battle_context.h"
+
+#include "res/text/bank/battle_strings.h"
 #include "battle/battle_controller.h"
 #include "battle/battle_display.h"
 #include "battle/battle_lib.h"
@@ -223,6 +226,9 @@ void BattleControllerPlayer_CheckMoveHit(BattleSystem *battleSys, BattleContext 
 static void BattleControllerPlayer_InitBattleMons(BattleSystem *battleSys, BattleContext *battleCtx)
 {
     int maxBattlers = BattleSystem_GetMaxBattlers(battleSys);
+
+    // Trainers' Mega Rock rolls (before the battlers read their held items)
+    BattleSystem_RollTrainerMegaRocks(battleSys, battleCtx);
     for (int i = 0; i < maxBattlers; i++) {
         BattleSystem_InitBattleMon(battleSys, battleCtx, i, battleCtx->selectedPartySlot[i]);
     }
@@ -508,7 +514,33 @@ static void BattleControllerPlayer_CommandSelectionInput(BattleSystem *battleSys
             if (BattleContext_IOBufferVal(battleCtx, i) == PLAYER_INPUT_CANCEL) {
                 battleCtx->curCommandState[i] = COMMAND_SELECTION_INIT;
             } else if (BattleContext_IOBufferVal(battleCtx, i)) {
-                if ((battleCtx->ioBuffer[i][0] - 1) == 4) {
+                if (battleCtx->ioBuffer[i][0] == PLAYER_INPUT_MEGA) {
+                    // Toggle the Mega button for this turn, then let the player pick a move as normal.
+                    // Which Mega it becomes depends on the Mega Rock (Battler_MegaRockChoice).
+                    // Only one of Mega / Legendary may be requested, so turning one on clears the other.
+                    BattleIO_ClearBuffer(battleCtx, i);
+
+                    if (battleCtx->megaRequested[i]) {
+                        battleCtx->megaRequested[i] = 0;
+                    } else if (BattleSystem_CanMegaEvolve(battleSys, battleCtx, i)) {
+                        battleCtx->megaRequested[i] = 1;
+                        battleCtx->legendaryRequested[i] = 0;
+                    }
+
+                    battleCtx->curCommandState[i] = COMMAND_SELECTION_MOVE_SELECT_INIT;
+                } else if (battleCtx->ioBuffer[i][0] == PLAYER_INPUT_LEGENDARY) {
+                    // Same for the Legendary button: on / off
+                    BattleIO_ClearBuffer(battleCtx, i);
+
+                    if (battleCtx->legendaryRequested[i]) {
+                        battleCtx->legendaryRequested[i] = 0;
+                    } else if (BattleSystem_CanLegendaryMegaEvolve(battleSys, battleCtx, i)) {
+                        battleCtx->legendaryRequested[i] = 1;
+                        battleCtx->megaRequested[i] = 0;
+                    }
+
+                    battleCtx->curCommandState[i] = COMMAND_SELECTION_MOVE_SELECT_INIT;
+                } else if ((battleCtx->ioBuffer[i][0] - 1) == 4) {
                     battleCtx->battlerActions[i][BATTLE_ACTION_PICK_COMMAND] = BATTLE_CONTROL_RUN;
                     battleCtx->curCommandState[i] = COMMAND_SELECTION_RUN_SELECT_INIT;
                     break;
@@ -688,6 +720,7 @@ static void BattleControllerPlayer_CommandSelectionInput(BattleSystem *battleSys
             BattleController_EmitClearTouchScreen(battleSys, i);
             battleCtx->curCommandState[i] = battleCtx->nextCommandState[i];
             break;
+
         }
     }
 
@@ -793,7 +826,8 @@ static void BattleControllerPlayer_CalcTurnOrder(BattleSystem *battleSys, Battle
 enum PreMoveActionState {
     PRE_MOVE_ACTION_START = 0,
 
-    PRE_MOVE_ACTION_STATE_TIGHTEN_FOCUS = PRE_MOVE_ACTION_START,
+    PRE_MOVE_ACTION_STATE_MEGA_EVOLVE = PRE_MOVE_ACTION_START,
+    PRE_MOVE_ACTION_STATE_TIGHTEN_FOCUS,
     PRE_MOVE_ACTION_STATE_CHECK_RAGE_FLAG,
     PRE_MOVE_ACTION_STATE_SPEED_RNG,
 
@@ -808,6 +842,93 @@ static void BattleControllerPlayer_CheckPreMoveActions(BattleSystem *battleSys, 
 
     do {
         switch (battleCtx->turnStartCheckState) {
+        case PRE_MOVE_ACTION_STATE_MEGA_EVOLVE:
+            // After each Mega Evolution, run the switch-in checks so the new form's entry ability
+            // (Intimidate, Time Sovereign, ...) takes effect before anyone moves
+            if (battleCtx->megaSwitchInCheck) {
+                int switchInSeq = BattleSystem_TriggerEffectOnSwitch(battleSys, battleCtx);
+
+                if (switchInSeq) {
+                    LOAD_SUBSEQ(switchInSeq);
+                    battleCtx->commandNext = battleCtx->command;
+                    battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+                    return;
+                }
+
+                battleCtx->megaSwitchInCheck = FALSE;
+
+                // Trick Room was set or changed (Time Sovereign): this turn's order follows it
+                if ((battleCtx->fieldConditionsMask & FIELD_CONDITION_TRICK_ROOM) != battleCtx->megaTrickRoomBefore) {
+                    BattleSystem_SortMonActionOrder(battleSys, battleCtx);
+                    BattleSystem_SortMonSpeedOrder(battleSys, battleCtx);
+                }
+            }
+
+            // Requested battlers change form in turn order (fastest first)
+            for (int order = 0; order < maxBattlers; order++) {
+                battler = battleCtx->battlerActionOrder[order];
+                // 0 = off, otherwise 1 / 2: the second form only when holding the Mega Rock
+                int legendaryChoice = battleCtx->legendaryRequested[battler] ? Battler_LegendaryRockChoice(battleCtx, battler) : 0;
+                int megaChoice = battleCtx->megaRequested[battler] ? Battler_MegaRockChoice(battleCtx, battler) : 0;
+
+                // Trainers decide for themselves (BattleSystem_TrainerMegaChoice)
+                int trainerChoice = BattleSystem_TrainerMegaChoice(battleSys, battleCtx, battler);
+                BOOL isTrainer = trainerChoice != 0;
+                if (isTrainer) {
+                    megaChoice = trainerChoice <= 2 ? trainerChoice : 0;
+                    legendaryChoice = trainerChoice >= 3 ? trainerChoice - 2 : 0;
+                }
+
+                BOOL isLegendary = legendaryChoice != 0;
+
+                // Requests only ever apply to this turn, and only button presses ever set them
+                battleCtx->megaRequested[battler] = 0;
+                battleCtx->legendaryRequested[battler] = 0;
+
+                if ((legendaryChoice == 0 && megaChoice == 0)
+                    || battleCtx->battlerActions[battler][BATTLE_ACTION_PICK_COMMAND] != BATTLE_CONTROL_FIGHT
+                    || (battleCtx->battlersSwitchingMask & FlagIndex(battler))) {
+                    continue;
+                }
+
+                int newForm;
+                if (isTrainer) {
+                    newForm = isLegendary ? Battler_LegendaryForm(battleCtx, battler, legendaryChoice) : Battler_MegaForm(battleCtx, battler, megaChoice);
+                } else if (isLegendary) {
+                    // legendaryRequested is already cleared, so the "only one requested" check passes
+                    if (BattleSystem_CanLegendaryMegaEvolve(battleSys, battleCtx, battler) == FALSE) {
+                        continue;
+                    }
+
+                    newForm = Battler_LegendaryForm(battleCtx, battler, legendaryChoice);
+                } else {
+                    if (BattleSystem_CanMegaEvolve(battleSys, battleCtx, battler) == FALSE) {
+                        continue;
+                    }
+
+                    newForm = Battler_MegaForm(battleCtx, battler, megaChoice);
+                }
+
+                if (newForm < 0) {
+                    continue;
+                }
+
+                BattleSystem_PrepareMegaEvolution(battleSys, battleCtx, battler, newForm, isLegendary);
+                BattleController_EmitClearMessageBox(battleSys);
+                battleCtx->msgBattlerTemp = battler;
+                battleCtx->megaSwitchInCheck = TRUE;
+                battleCtx->megaTrickRoomBefore = battleCtx->fieldConditionsMask & FIELD_CONDITION_TRICK_ROOM;
+
+                LOAD_SUBSEQ(isTrainer ? subscript_trainer_mega_evolve : subscript_mega_evolve);
+                battleCtx->commandNext = battleCtx->command;
+                battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                return;
+            }
+
+            battleCtx->turnStartCheckState++;
+            break;
+
         case PRE_MOVE_ACTION_STATE_TIGHTEN_FOCUS:
             while (battleCtx->turnStartCheckTemp < maxBattlers) {
                 battler = battleCtx->battlerActionOrder[battleCtx->turnStartCheckTemp];
@@ -910,6 +1031,7 @@ enum FieldCondCheckState {
     FIELD_COND_CHECK_STATE_HAILING,
     FIELD_COND_CHECK_STATE_DEEP_FOG,
     FIELD_COND_CHECK_STATE_GRAVITY,
+    FIELD_COND_CHECK_STATE_ELECTRIC_TERRAIN,
 
     FIELD_COND_CHECK_END
 };
@@ -1230,6 +1352,19 @@ static void BattleControllerPlayer_CheckFieldConditions(BattleSystem *battleSys,
 
                 if ((battleCtx->fieldConditionsMask & FIELD_CONDITION_GRAVITY) == 0) {
                     PrepareSubroutineSequence(battleCtx, subscript_gravity_end);
+                    state = STATE_BREAK_OUT;
+                }
+            }
+
+            battleCtx->fieldConditionCheckState++;
+            break;
+
+        case FIELD_COND_CHECK_STATE_ELECTRIC_TERRAIN:
+            if (battleCtx->fieldConditionsMask & FIELD_CONDITION_ELECTRIC_TERRAIN) {
+                battleCtx->fieldConditionsMask -= (1 << FIELD_CONDITION_ELECTRIC_TERRAIN_SHIFT);
+
+                if ((battleCtx->fieldConditionsMask & FIELD_CONDITION_ELECTRIC_TERRAIN) == 0) {
+                    PrepareSubroutineSequence(battleCtx, subscript_electric_terrain_end);
                     state = STATE_BREAK_OUT;
                 }
             }
@@ -1980,6 +2115,21 @@ static void BattleControllerPlayer_SwitchCommand(BattleSystem *battleSys, Battle
 
     battleCtx->attacker = battleCtx->battlerActionOrder[battleCtx->turnOrderCounter];
     battleCtx->switchedMon = battleCtx->attacker;
+
+    // Omen Wings: once per battle, the first time a foe voluntarily switches out while it's in
+    // battle, it gains 1 Attack and 1 Speed stage (in the switch-in checks after this switch)
+    for (int i = 0; i < BattleSystem_GetMaxBattlers(battleSys); i++) {
+        u8 slotFlag = FlagIndex(battleCtx->selectedPartySlot[i]);
+
+        if (BattleSystem_GetBattlerSide(battleSys, i) != BattleSystem_GetBattlerSide(battleSys, battleCtx->attacker)
+            && battleCtx->battleMons[i].curHP
+            && Battler_Ability(battleCtx, i) == ABILITY_OMEN_WINGS
+            && (battleCtx->omenWingsUsedMask[i] & slotFlag) == FALSE) {
+            battleCtx->omenWingsUsedMask[i] |= slotFlag;
+            battleCtx->omenWingsPending[i] = TRUE;
+        }
+    }
+
     battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
     battleCtx->commandNext = BATTLE_CONTROL_CHECK_ANY_FAINTED;
     battleCtx->scriptTemp = 0;
@@ -2201,7 +2351,8 @@ static int BattleControllerPlayer_CheckObedience(BattleSystem *battleSys, Battle
     if ((rand1 < maxLevel && (ATTACKING_MON.status & MON_CONDITION_ANY) == FALSE)
         && Battler_Ability(battleCtx, battleCtx->attacker) != ABILITY_VITAL_SPIRIT
         && Battler_Ability(battleCtx, battleCtx->attacker) != ABILITY_INSOMNIA
-        && (battleCtx->fieldConditionsMask & FIELD_CONDITION_UPROAR) == FALSE) {
+        && (battleCtx->fieldConditionsMask & FIELD_CONDITION_UPROAR) == FALSE
+        && Battler_IsElectricTerrainActive(battleCtx, battleCtx->attacker) == FALSE) {
         *nextSeq = subscript_disobey_sleep;
         return OBEY_CHECK_DO_NOTHING;
     }
@@ -2868,6 +3019,15 @@ static int BattleControllerPlayer_CheckMoveHitAccuracy(BattleSystem *battleSys, 
         return 0;
     }
 
+    // Telepathy: it dodges damaging moves used by its partner
+    if (attacker != defender
+        && BattleSystem_GetBattlerSide(battleSys, attacker) == BattleSystem_GetBattlerSide(battleSys, defender)
+        && MOVE_DATA(move).power
+        && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_TELEPATHY) == TRUE) {
+        battleCtx->moveStatusFlags |= MOVE_STATUS_MISSED;
+        return 0;
+    }
+
     u8 moveType = CalcMoveType(battleCtx, attacker, move);
     u8 moveClass = MOVE_DATA(move).class;
     s8 accStages = battleCtx->battleMons[attacker].statBoosts[BATTLE_STAT_ACCURACY] - 6;
@@ -2883,6 +3043,10 @@ static int BattleControllerPlayer_CheckMoveHitAccuracy(BattleSystem *battleSys, 
         accStages = 0;
     }
     if (Battler_Ability(battleCtx, attacker) == ABILITY_UNAWARE) {
+        evaStages = 0;
+    }
+    // Chip Away / Sacred Sword ignore the target's stat changes, evasion included
+    if (MOVE_DATA(move).effect == BATTLE_EFFECT_CHIP_AWAY) {
         evaStages = 0;
     }
     if (MON_IS_IDENTIFIED(defender) && evaStages < 0) {
@@ -2912,7 +3076,7 @@ static int BattleControllerPlayer_CheckMoveHitAccuracy(BattleSystem *battleSys, 
         return 0;
     }
 
-    if (NO_CLOUD_NINE && WEATHER_IS_SUN && MOVE_DATA(move).effect == BATTLE_EFFECT_THUNDER) {
+    if (NO_CLOUD_NINE && WEATHER_IS_SUN && (MOVE_DATA(move).effect == BATTLE_EFFECT_THUNDER || MOVE_DATA(move).effect == BATTLE_EFFECT_HURRICANE)) {
         hitRate = 50;
     }
 
@@ -2921,6 +3085,19 @@ static int BattleControllerPlayer_CheckMoveHitAccuracy(BattleSystem *battleSys, 
 
     if (Battler_Ability(battleCtx, attacker) == ABILITY_COMPOUND_EYES) {
         hitRate = hitRate * 130 / 100;
+    }
+
+    // Victory Star: the user and its ally get 1.1x accuracy
+    if (BattleSystem_CountAbility(battleSys, battleCtx, COUNT_ALIVE_BATTLERS_OUR_SIDE, attacker, ABILITY_VICTORY_STAR)) {
+        hitRate = hitRate * 110 / 100;
+    }
+
+    // Wonder Skin: status moves aimed at it have at most 50% accuracy
+    if (MOVE_DATA(move).class == CLASS_STATUS
+        && attacker != defender
+        && Battler_IgnorableAbility(battleCtx, attacker, defender, ABILITY_WONDER_SKIN) == TRUE
+        && hitRate > 50) {
+        hitRate = 50;
     }
 
     if (NO_CLOUD_NINE) {
@@ -2998,6 +3175,25 @@ static int BattleControllerPlayer_CheckMoveHitAccuracy(BattleSystem *battleSys, 
  * @param move      The attacker's move
  * @return Always 0.
  */
+// The type the current move is being used as (Normalize, Weather Ball, Hidden Power, ...)
+static int CurrentMoveType(BattleContext *battleCtx, int attacker, int move)
+{
+    if (Battler_Ability(battleCtx, attacker) == ABILITY_NORMALIZE) {
+        return TYPE_NORMAL;
+    } else if (battleCtx->moveType) {
+        return battleCtx->moveType;
+    }
+
+    return MOVE_DATA(move).type;
+}
+
+static BOOL SpatialRuptureBypassesProtect(BattleContext *battleCtx, int attacker, int move)
+{
+    int type = CurrentMoveType(battleCtx, attacker, move);
+
+    return Battler_Ability(battleCtx, attacker) == ABILITY_SPATIAL_RUPTURE && (type == TYPE_WATER || type == TYPE_DRAGON);
+}
+
 static int BattleControllerPlayer_CheckMoveHitOverrides(BattleSystem *battleSys, BattleContext *battleCtx, int attacker, int defender, int move)
 {
     if (battleCtx->battleStatusMask & SYSCTL_FIRST_OF_MULTI_TURN) {
@@ -3006,6 +3202,12 @@ static int BattleControllerPlayer_CheckMoveHitOverrides(BattleSystem *battleSys,
 
     if (battleCtx->turnFlags[defender].protecting
         && (MOVE_DATA(move).flags & MOVE_FLAG_CAN_PROTECT)
+        && (move != MOVE_CURSE || Move_IsGhostCurse(battleCtx, move, attacker) == TRUE)
+        && SpatialRuptureBypassesProtect(battleCtx, attacker, move)) {
+        // The move goes through; the message is shown after it (AFTER_MOVE_HIT_STATE_NEW_ABILITY_MESSAGES)
+        battleCtx->battleMons[attacker].spatialRupturePending = TRUE;
+    } else if (battleCtx->turnFlags[defender].protecting
+        && (MOVE_DATA(move).flags & MOVE_FLAG_CAN_PROTECT)
         && (move != MOVE_CURSE || Move_IsGhostCurse(battleCtx, move, attacker) == TRUE) // Ghost-Curse can be Protected
         && (Move_IsMultiTurn(battleCtx, move) == FALSE || (battleCtx->battleStatusMask & SYSCTL_LAST_OF_MULTI_TURN))) {
         Battler_UnlockMoveChoice(battleSys, battleCtx, attacker);
@@ -3013,16 +3215,33 @@ static int BattleControllerPlayer_CheckMoveHitOverrides(BattleSystem *battleSys,
         return 0;
     }
 
+    // Wide Guard / Quick Guard: spread moves / priority moves from the other side are blocked
+    if (BattleSystem_GetBattlerSide(battleSys, attacker) != BattleSystem_GetBattlerSide(battleSys, defender)) {
+        int defSide = BattleSystem_GetBattlerSide(battleSys, defender);
+        int turn = battleCtx->totalTurns + 1;
+
+        if ((battleCtx->wideGuardTurn[defSide] == turn
+                && (MOVE_DATA(move).range == RANGE_ALL_ADJACENT || MOVE_DATA(move).range == RANGE_ADJACENT_OPPONENTS))
+            || (battleCtx->quickGuardTurn[defSide] == turn && MOVE_DATA(move).priority > 0)) {
+            Battler_UnlockMoveChoice(battleSys, battleCtx, attacker);
+            battleCtx->moveStatusFlags |= MOVE_STATUS_PROTECTED;
+            return 0;
+        }
+    }
+
+    // Titan's Grip: its damaging moves never miss (like No Guard, but only for its own attacks)
     if ((battleCtx->battleStatusMask & SYSCTL_NONSTANDARD_ACC_CHECK) == FALSE
         && (MON_IS_LOCKED_ONTO(attacker, defender)
             || Battler_Ability(battleCtx, attacker) == ABILITY_NO_GUARD
-            || Battler_Ability(battleCtx, defender) == ABILITY_NO_GUARD)) {
+            || Battler_Ability(battleCtx, defender) == ABILITY_NO_GUARD
+            || (Battler_IsTelekinesisActive(battleCtx, defender) && MOVE_DATA(move).effect != BATTLE_EFFECT_ONE_HIT_KO)
+            || (Battler_Ability(battleCtx, attacker) == ABILITY_TITANS_GRIP && MOVE_DATA(move).class != CLASS_STATUS))) {
         battleCtx->moveStatusFlags &= ~MOVE_STATUS_MISSED;
         return 0;
     }
 
     if (NO_CLOUD_NINE) {
-        if (WEATHER_IS_RAIN && MOVE_DATA(move).effect == BATTLE_EFFECT_THUNDER) {
+        if (WEATHER_IS_RAIN && (MOVE_DATA(move).effect == BATTLE_EFFECT_THUNDER || MOVE_DATA(move).effect == BATTLE_EFFECT_HURRICANE)) {
             battleCtx->moveStatusFlags &= ~MOVE_STATUS_MISSED;
         }
 
@@ -3081,6 +3300,27 @@ static BOOL BattleControllerPlayer_MoveStolen(BattleSystem *battleSys, BattleCon
         battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
 
         BattleSystem_DecPPForPressure(battleCtx, battleCtx->defender, battleCtx->attacker);
+        return TRUE;
+    }
+
+    // Magic Bounce: reflects the same moves Magic Coat does (Mold Breaker ignores it). A move that
+    // was already reflected this turn is not bounced again (two Magic Bounce users can't loop).
+    if ((battleCtx->moveStatusFlags & MOVE_STATUS_NO_EFFECTS) == FALSE
+        && (battleCtx->battleStatusMask2 & SYSCTL_MAGIC_COAT_REFLECTED) == FALSE
+        && battleCtx->magicBounceReflected == FALSE
+        && Battler_IgnorableAbility(battleCtx, battleCtx->attacker, battleCtx->defender, ABILITY_MAGIC_BOUNCE) == TRUE
+        && (CURRENT_MOVE_DATA.flags & MOVE_FLAG_CAN_MAGIC_COAT)) {
+        battleCtx->magicBounceReflected = TRUE;
+        battleCtx->moveProtect[battleCtx->attacker] = FALSE;
+        battleCtx->movePrevByBattler[battleCtx->attacker] = battleCtx->moveTemp;
+        battleCtx->movePrev = battleCtx->moveTemp;
+
+        battleCtx->battleStatusMask |= SYSCTL_REUSE_LAST_MOVE;
+
+        LOAD_SUBSEQ(subscript_magic_bounce);
+        battleCtx->commandNext = battleCtx->command;
+        battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
         return TRUE;
     }
 
@@ -3356,7 +3596,8 @@ static void BattleControllerPlayer_UpdateHP(BattleSystem *battleSys, BattleConte
 
         battleCtx->lastHitByBattler[battleCtx->defender] = battleCtx->attacker;
 
-        if ((DEFENDING_MON.statusVolatile & VOLATILE_CONDITION_SUBSTITUTE) && battleCtx->damage < 0) {
+        if ((DEFENDING_MON.statusVolatile & VOLATILE_CONDITION_SUBSTITUTE) && battleCtx->damage < 0
+            && Battler_RiftPierceActive(battleCtx, battleCtx->attacker) == FALSE) { // Rift Pierce hits through it
             if (DEFENDING_MON.moveEffectsData.substituteHP + battleCtx->damage <= 0) {
                 ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt += DEFENDING_MON.moveEffectsData.substituteHP * -1;
                 DEFENDING_MON.statusVolatile &= ~VOLATILE_CONDITION_SUBSTITUTE;
@@ -3402,6 +3643,13 @@ static void BattleControllerPlayer_UpdateHP(BattleSystem *battleSys, BattleConte
             } else {
                 battleCtx->moveStatusFlags |= MOVE_STATUS_ENDURED_ITEM;
             }
+        }
+
+        if (Battler_DistortionVeilActive(battleCtx, battleCtx->attacker, battleCtx->defender)) {
+            DEFENDING_MON.distortionVeilPending = TRUE;
+        }
+        if (battleCtx->attacker != battleCtx->defender) {
+            DEFENDING_MON.distortionVeilUsed = TRUE;
         }
 
         battleCtx->storedDamage[battleCtx->defender] += battleCtx->damage;
@@ -4694,7 +4942,22 @@ enum AfterMoveHitState {
     AFTER_MOVE_HIT_START = 0,
 
     AFTER_MOVE_HIT_STATE_RAGE = AFTER_MOVE_HIT_START,
+    AFTER_MOVE_HIT_STATE_NEW_ABILITY_MESSAGES, // Spatial Rupture, Distortion Veil
     AFTER_MOVE_HIT_STATE_SHELL_BELL,
+    AFTER_MOVE_HIT_STATE_ABILITY_DRAIN, // Thorn Bloom, Distortion Veil (Ghost moves), Pearl Radiance
+    AFTER_MOVE_HIT_STATE_ABILITY_CHARGES, // Crosswire, Cannon Salvo, Ruby Conduit
+    AFTER_MOVE_HIT_STATE_RIME_CALLER,
+    AFTER_MOVE_HIT_STATE_DUNE_PURSUIT,
+    AFTER_MOVE_HIT_STATE_AURA_CONVERGE,
+    AFTER_MOVE_HIT_STATE_DISTORTION_GATE,
+    AFTER_MOVE_HIT_STATE_SIEGE_RESERVOIR,
+    AFTER_MOVE_HIT_STATE_AZURE_WILDFIRE,
+    AFTER_MOVE_HIT_STATE_VENOM_LEVERAGE,
+    AFTER_MOVE_HIT_STATE_PRISMATIC_GRACE,
+    AFTER_MOVE_HIT_STATE_SEISMIC_BREAKER,
+    AFTER_MOVE_HIT_STATE_WAKE_RUNNER,
+    AFTER_MOVE_HIT_STATE_THIRD_EYE_CURSE,
+    AFTER_MOVE_HIT_STATE_EMPEROR_MANTLE,
     AFTER_MOVE_HIT_STATE_LIFE_ORB,
 
     AFTER_MOVE_HIT_STATE_END
@@ -4732,6 +4995,514 @@ static BOOL BattleControllerPlayer_TriggerAfterMoveHitEffects(BattleSystem *batt
 
             battleCtx->afterMoveHitCheckState++;
             break;
+
+        case AFTER_MOVE_HIT_STATE_NEW_ABILITY_MESSAGES: {
+            // Shown once per flag; re-entered until none are left
+            int battler, subscript = NULL;
+
+            for (battler = 0; battler < BattleSystem_GetMaxBattlers(battleSys); battler++) {
+                if (battleCtx->battleMons[battler].spatialRupturePending) {
+                    battleCtx->battleMons[battler].spatialRupturePending = FALSE;
+                    subscript = subscript_spatial_rupture;
+                    break;
+                }
+
+                if (battleCtx->battleMons[battler].distortionVeilPending) {
+                    battleCtx->battleMons[battler].distortionVeilPending = FALSE;
+
+                    if (battleCtx->battleMons[battler].curHP) {
+                        subscript = subscript_distortion_veil;
+                        break;
+                    }
+                }
+            }
+
+            if (subscript != NULL) {
+                battleCtx->msgBattlerTemp = battler;
+                LOAD_SUBSEQ(subscript);
+                battleCtx->commandNext = battleCtx->command;
+                battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+                machineState = STATE_BREAK_OUT;
+            } else {
+                battleCtx->afterMoveHitCheckState++;
+            }
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_ABILITY_DRAIN: {
+            // Restores 1/4 of the damage dealt: Thorn Bloom with Grass / Poison moves,
+            // Distortion Veil with Ghost moves
+            int ability = Battler_Ability(battleCtx, battleCtx->attacker);
+            int type = CurrentMoveType(battleCtx, battleCtx->attacker, battleCtx->moveCur);
+
+            if (battleCtx->defender != BATTLER_NONE
+                && ((ability == ABILITY_THORN_BLOOM && (type == TYPE_GRASS || type == TYPE_POISON))
+                    || (ability == ABILITY_DISTORTION_VEIL && type == TYPE_GHOST)
+                    // Pearl Radiance; a draining move already heals more (1/2), so it doesn't stack
+                    || (ability == ABILITY_PEARL_RADIANCE
+                        && (type == TYPE_FAIRY || type == TYPE_LIGHT)
+                        && CURRENT_MOVE_DATA.effect != BATTLE_EFFECT_RECOVER_HALF_DAMAGE_DEALT
+                        && CURRENT_MOVE_DATA.effect != BATTLE_EFFECT_RECOVER_DAMAGE_SLEEP))
+                && (battleCtx->battleStatusMask2 & SYSCTL_UTURN_ACTIVE) == FALSE
+                && (battleCtx->battleStatusMask & SYSCTL_MOVE_HIT)
+                && ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt
+                && battleCtx->attacker != battleCtx->defender
+                && ATTACKING_MON.curHP < ATTACKING_MON.maxHP
+                && ATTACKING_MON.curHP
+                && (ATTACKING_MON.moveEffectsMask & MOVE_EFFECT_HEAL_BLOCK) == FALSE) {
+                battleCtx->hpCalcTemp = BattleSystem_Divide(ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt * -1, 4);
+                BattleSystem_ApplyFumeCloud(battleSys, battleCtx, battleCtx->attacker);
+                battleCtx->msgBattlerTemp = battleCtx->attacker;
+
+                LOAD_SUBSEQ(subscript_ability_hp_restore_gradual);
+                battleCtx->commandNext = battleCtx->command;
+                battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                machineState = STATE_BREAK_OUT;
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_ABILITY_CHARGES: {
+            int attacker = battleCtx->attacker;
+            int defender = battleCtx->defender;
+            BOOL landed = defender != BATTLER_NONE
+                && attacker != defender
+                && CURRENT_MOVE_DATA.power
+                && (battleCtx->battleStatusMask & SYSCTL_MOVE_HIT)
+                && ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt;
+
+            // The attacker's charges change once per move (not once per target)
+            if (landed && battleCtx->abilityChargeTurn[attacker] != battleCtx->totalTurns + 1) {
+                int type = CurrentMoveType(battleCtx, attacker, battleCtx->moveCur);
+                int ability = Battler_Ability(battleCtx, attacker);
+
+                battleCtx->abilityChargeTurn[attacker] = battleCtx->totalTurns + 1;
+
+                if (ability == ABILITY_CROSSWIRE) {
+                    // An Electric hit charges; any other damaging hit uses the charge
+                    battleCtx->crosswireCharged[attacker] = (type == TYPE_ELECTRIC);
+                }
+
+                if (ability == ABILITY_CANNON_SALVO && CURRENT_MOVE_DATA.class == CLASS_SPECIAL) {
+                    battleCtx->cannonSalvoCount[attacker] = (battleCtx->cannonSalvoCount[attacker] + 1) % 3;
+                }
+
+                if (ability == ABILITY_RUBY_CONDUIT
+                    && (type == TYPE_ELECTRIC || type == TYPE_LIGHT || type == TYPE_DRAGON)) {
+                    battleCtx->rubyConduitCharged[attacker] = FALSE;
+                }
+            }
+
+            // Ruby Conduit: taking a damaging hit (and surviving) charges it
+            if (defender != BATTLER_NONE
+                && attacker != defender
+                && Battler_Ability(battleCtx, defender) == ABILITY_RUBY_CONDUIT
+                && DEFENDING_MON.curHP
+                && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)) {
+                battleCtx->rubyConduitCharged[defender] = TRUE;
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_RIME_CALLER: {
+            // Rime Caller: the first damaging Ice move that lands each battle starts 5 turns of hail
+            u8 slotFlag = FlagIndex(battleCtx->selectedPartySlot[battleCtx->attacker]);
+
+            if (battleCtx->defender != BATTLER_NONE
+                && Battler_Ability(battleCtx, battleCtx->attacker) == ABILITY_RIME_CALLER
+                && (battleCtx->rimeCallerUsedMask[battleCtx->attacker] & slotFlag) == FALSE
+                && CurrentMoveType(battleCtx, battleCtx->attacker, battleCtx->moveCur) == TYPE_ICE
+                && CURRENT_MOVE_DATA.power
+                && (battleCtx->battleStatusMask & SYSCTL_MOVE_HIT)
+                && ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt
+                && ATTACKING_MON.curHP) {
+                battleCtx->rimeCallerUsedMask[battleCtx->attacker] |= slotFlag;
+                battleCtx->fieldConditionsMask &= ~FIELD_CONDITION_WEATHER;
+                battleCtx->fieldConditionsMask |= FIELD_CONDITION_HAILING_TEMP;
+                battleCtx->fieldConditions.weatherTurns = 5;
+                battleCtx->msgBattlerTemp = battleCtx->attacker;
+
+                LOAD_SUBSEQ(subscript_rime_caller);
+                battleCtx->commandNext = battleCtx->command;
+                battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                machineState = STATE_BREAK_OUT;
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_DUNE_PURSUIT: {
+            // Dune Pursuit: the first time it knocks out a foe with an attack each battle, +1 Speed
+            u8 slotFlag = FlagIndex(battleCtx->selectedPartySlot[battleCtx->attacker]);
+
+            // Meloetta's Relic Song hit: its form changes in the next form check
+            if (battleCtx->moveCur == MOVE_RELIC_SONG
+                && ATTACKING_MON.species == SPECIES_MELOETTA
+                && (battleCtx->battleStatusMask & SYSCTL_MOVE_HIT)
+                && ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt) {
+                battleCtx->relicSongPending[battleCtx->attacker] = TRUE;
+            }
+
+            if (battleCtx->defender != BATTLER_NONE
+                && battleCtx->attacker != battleCtx->defender
+                && Battler_Ability(battleCtx, battleCtx->attacker) == ABILITY_DUNE_PURSUIT
+                && (battleCtx->dunePursuitUsedMask[battleCtx->attacker] & slotFlag) == FALSE
+                && CURRENT_MOVE_DATA.power
+                && (battleCtx->battleStatusMask & SYSCTL_MOVE_HIT)
+                && ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt
+                && DEFENDING_MON.curHP == 0
+                && ATTACKING_MON.curHP
+                && ATTACKING_MON.statBoosts[BATTLE_STAT_SPEED] < MAX_STAT_STAGE) {
+                battleCtx->dunePursuitUsedMask[battleCtx->attacker] |= slotFlag;
+                battleCtx->sideEffectParam = MOVE_SUBSCRIPT_PTR_SPEED_UP_1_STAGE;
+                battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+                battleCtx->sideEffectMon = battleCtx->attacker;
+
+                LOAD_SUBSEQ(subscript_update_stat_stage);
+                battleCtx->commandNext = battleCtx->command;
+                battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                machineState = STATE_BREAK_OUT;
+            } else if (battleCtx->defender != BATTLER_NONE
+                && battleCtx->attacker != battleCtx->defender
+                && Battler_Ability(battleCtx, battleCtx->attacker) == ABILITY_MOXIE
+                && CURRENT_MOVE_DATA.power
+                && (battleCtx->battleStatusMask & SYSCTL_MOVE_HIT)
+                && ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt
+                && DEFENDING_MON.curHP == 0
+                && ATTACKING_MON.curHP
+                && ATTACKING_MON.statBoosts[BATTLE_STAT_ATTACK] < MAX_STAT_STAGE) {
+                // Moxie: knocking out a foe raises Attack
+                battleCtx->sideEffectParam = MOVE_SUBSCRIPT_PTR_ATTACK_UP_1_STAGE;
+                battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+                battleCtx->sideEffectMon = battleCtx->attacker;
+
+                LOAD_SUBSEQ(subscript_update_stat_stage);
+                battleCtx->commandNext = battleCtx->command;
+                battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                machineState = STATE_BREAK_OUT;
+            } else {
+                // Defiant: Attack +2 for each battler whose stat was lowered by the other side
+                for (int i = 0; i < BattleSystem_GetMaxBattlers(battleSys); i++) {
+                    if (battleCtx->defiantPending[i] == FALSE) {
+                        continue;
+                    }
+
+                    battleCtx->defiantPending[i] = FALSE;
+
+                    if (battleCtx->battleMons[i].curHP
+                        && battleCtx->battleMons[i].statBoosts[BATTLE_STAT_ATTACK] < MAX_STAT_STAGE) {
+                        battleCtx->sideEffectParam = MOVE_SUBSCRIPT_PTR_ATTACK_UP_2_STAGES;
+                        battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+                        battleCtx->sideEffectMon = i;
+
+                        LOAD_SUBSEQ(subscript_update_stat_stage);
+                        battleCtx->commandNext = battleCtx->command;
+                        battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                        machineState = STATE_BREAK_OUT;
+                        break;
+                    }
+                }
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_AURA_CONVERGE: {
+            // Aura Converge: once per battle, surviving a hit that takes it from above half HP to
+            // half or lower raises Attack and Sp. Atk 1 stage each
+            int defender = battleCtx->defender;
+
+            if (defender != BATTLER_NONE
+                && battleCtx->attacker != defender
+                && Battler_Ability(battleCtx, defender) == ABILITY_AURA_CONVERGE
+                && (battleCtx->auraConvergeUsedMask[defender] & FlagIndex(battleCtx->selectedPartySlot[defender])) == FALSE
+                && DEFENDING_MON.curHP
+                && DEFENDING_MON.curHP <= DEFENDING_MON.maxHP / 2
+                && DEFENDING_MON.curHP + DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken + DEFENDER_SELF_TURN_FLAGS.specialDamageTaken > DEFENDING_MON.maxHP / 2
+                && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)) {
+                battleCtx->auraConvergeUsedMask[defender] |= FlagIndex(battleCtx->selectedPartySlot[defender]);
+                battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+                battleCtx->sideEffectMon = defender;
+
+                LOAD_SUBSEQ(subscript_heartlink); // +1 Attack, +1 Sp. Atk
+                battleCtx->commandNext = battleCtx->command;
+                battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                machineState = STATE_BREAK_OUT;
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_DISTORTION_GATE: {
+            // Distortion Gate: once per battle, surviving a hit that takes it from above half HP to
+            // half or lower makes the attacker lose all positive stat stages
+            int defender = battleCtx->defender;
+
+            if (defender != BATTLER_NONE
+                && battleCtx->attacker != defender
+                && Battler_Ability(battleCtx, defender) == ABILITY_DISTORTION_GATE
+                && (battleCtx->distortionGateUsedMask[defender] & FlagIndex(battleCtx->selectedPartySlot[defender])) == FALSE
+                && DEFENDING_MON.curHP
+                && DEFENDING_MON.curHP <= DEFENDING_MON.maxHP / 2
+                && DEFENDING_MON.curHP + DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken + DEFENDER_SELF_TURN_FLAGS.specialDamageTaken > DEFENDING_MON.maxHP / 2
+                && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)
+                && ATTACKING_MON.curHP) {
+                battleCtx->distortionGateUsedMask[defender] |= FlagIndex(battleCtx->selectedPartySlot[defender]);
+
+                for (int stat = 0; stat < BATTLE_STAT_MAX; stat++) {
+                    if (ATTACKING_MON.statBoosts[stat] > 6) { // above the neutral stage
+                        ATTACKING_MON.statBoosts[stat] = 6;
+                    }
+                }
+
+                LOAD_SUBSEQ(subscript_distortion_gate);
+                battleCtx->commandNext = battleCtx->command;
+                battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                machineState = STATE_BREAK_OUT;
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_SIEGE_RESERVOIR: {
+            // Siege Reservoir: surviving the first damaging hit taken this stay queues a heal for
+            // the end of the turn (BattleSystem_TriggerTurnEndAbility)
+            int defender = battleCtx->defender;
+
+            if (defender != BATTLER_NONE
+                && battleCtx->attacker != defender
+                && Battler_Ability(battleCtx, defender) == ABILITY_SIEGE_RESERVOIR
+                && battleCtx->siegeReservoirState[defender] == 0
+                && DEFENDING_MON.curHP
+                && (DEFENDER_SELF_TURN_FLAGS.physicalDamageTaken || DEFENDER_SELF_TURN_FLAGS.specialDamageTaken)) {
+                battleCtx->siegeReservoirState[defender] = 1;
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_AZURE_WILDFIRE: {
+            int attacker = battleCtx->attacker;
+
+            if (battleCtx->azureWildfirePending[attacker]) {
+                battleCtx->azureWildfirePending[attacker] = FALSE;
+
+                if (ATTACKING_MON.curHP) {
+                    battleCtx->hpCalcTemp = 0;
+                    if (ATTACKING_MON.curHP < ATTACKING_MON.maxHP
+                        && (ATTACKING_MON.moveEffectsMask & MOVE_EFFECT_HEAL_BLOCK) == FALSE) {
+                        battleCtx->hpCalcTemp = BattleSystem_Divide(ATTACKING_MON.maxHP, 4);
+                    }
+                    battleCtx->msgBattlerTemp = attacker;
+
+                    LOAD_SUBSEQ(subscript_azure_wildfire);
+                    battleCtx->commandNext = battleCtx->command;
+                    battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                    machineState = STATE_BREAK_OUT;
+                }
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_VENOM_LEVERAGE: {
+            int attacker = battleCtx->attacker;
+
+            if (battleCtx->venomLeveragePending[attacker]) {
+                int target = battleCtx->venomLeverageTarget[attacker];
+                battleCtx->venomLeveragePending[attacker] = FALSE;
+
+                if (battleCtx->battleMons[target].curHP && ATTACKING_MON.curHP) {
+                    battleCtx->sideEffectParam = MOVE_SUBSCRIPT_PTR_DEFENSE_DOWN_1_STAGE;
+                    battleCtx->sideEffectType = SIDE_EFFECT_TYPE_ABILITY;
+                    battleCtx->sideEffectMon = target;
+
+                    LOAD_SUBSEQ(subscript_update_stat_stage); // "{0}'s {1} cuts {2}'s Defense!"
+                    battleCtx->commandNext = battleCtx->command;
+                    battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                    machineState = STATE_BREAK_OUT;
+                }
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_PRISMATIC_GRACE: {
+            int battler;
+
+            for (battler = 0; battler < BattleSystem_GetMaxBattlers(battleSys); battler++) {
+                if (battleCtx->prismaticGracePending[battler]) {
+                    break;
+                }
+            }
+
+            if (battler < BattleSystem_GetMaxBattlers(battleSys)) {
+                BattleMon *mon = &battleCtx->battleMons[battler];
+                battleCtx->prismaticGracePending[battler] = FALSE;
+
+                if (mon->curHP && (mon->status & MON_CONDITION_ANY)) {
+                    if (mon->status & MON_CONDITION_SLEEP) {
+                        battleCtx->msgTemp = MSGCOND_SLEEP;
+                    } else if (mon->status & MON_CONDITION_ANY_POISON) {
+                        battleCtx->msgTemp = MSGCOND_POISON;
+                    } else if (mon->status & MON_CONDITION_BURN) {
+                        battleCtx->msgTemp = MSGCOND_BURN;
+                    } else if (mon->status & MON_CONDITION_PARALYSIS) {
+                        battleCtx->msgTemp = MSGCOND_PARALYSIS;
+                    } else {
+                        battleCtx->msgTemp = MSGCOND_FREEZE;
+                    }
+
+                    battleCtx->hpCalcTemp = 0;
+                    if (mon->curHP < mon->maxHP && (mon->moveEffectsMask & MOVE_EFFECT_HEAL_BLOCK) == FALSE) {
+                        battleCtx->hpCalcTemp = BattleSystem_Divide(mon->maxHP, 8);
+                    }
+                    battleCtx->msgBattlerTemp = battler;
+
+                    LOAD_SUBSEQ(subscript_prismatic_grace);
+                    battleCtx->commandNext = battleCtx->command;
+                    battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                    machineState = STATE_BREAK_OUT;
+                }
+
+                break; // check the next pending battler on the next pass through this state
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_SEISMIC_BREAKER:
+            if (battleCtx->seismicBreakerPending[battleCtx->attacker]) {
+                battleCtx->seismicBreakerPending[battleCtx->attacker] = FALSE;
+                battleCtx->msgBattlerTemp = battleCtx->attacker;
+
+                LOAD_SUBSEQ(subscript_seismic_breaker);
+                battleCtx->commandNext = battleCtx->command;
+                battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                machineState = STATE_BREAK_OUT;
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+
+        case AFTER_MOVE_HIT_STATE_WAKE_RUNNER: {
+            // Wake Runner: its first damaging Water / Light hit after entering clears Stealth Rock,
+            // Spikes and Toxic Spikes from its own side
+            int attacker = battleCtx->attacker;
+            int type = CurrentMoveType(battleCtx, attacker, battleCtx->moveCur);
+            int side = BattleSystem_GetBattlerSide(battleSys, attacker);
+
+            if (battleCtx->defender != BATTLER_NONE
+                && Battler_Ability(battleCtx, attacker) == ABILITY_WAKE_RUNNER
+                && battleCtx->wakeRunnerUsed[attacker] == FALSE
+                && (type == TYPE_WATER || type == TYPE_LIGHT)
+                && CURRENT_MOVE_DATA.power
+                && (battleCtx->battleStatusMask & SYSCTL_MOVE_HIT)
+                && ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt) {
+                battleCtx->wakeRunnerUsed[attacker] = TRUE;
+
+                if (battleCtx->sideConditionsMask[side] & (SIDE_CONDITION_SPIKES | SIDE_CONDITION_TOXIC_SPIKES | SIDE_CONDITION_STEALTH_ROCK)) {
+                    battleCtx->sideConditionsMask[side] &= ~(SIDE_CONDITION_SPIKES | SIDE_CONDITION_TOXIC_SPIKES | SIDE_CONDITION_STEALTH_ROCK);
+                    battleCtx->sideConditions[side].spikesLayers = 0;
+                    battleCtx->sideConditions[side].toxicSpikesLayers = 0;
+                    battleCtx->msgBattlerTemp = attacker;
+
+                    LOAD_SUBSEQ(subscript_wake_runner);
+                    battleCtx->commandNext = battleCtx->command;
+                    battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                    machineState = STATE_BREAK_OUT;
+                }
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_THIRD_EYE_CURSE: {
+            // Third-Eye Curse: once per battle, landing a damaging Ghost move on a foe that already
+            // acted this turn disables that foe's last-used move for 2 turns
+            int attacker = battleCtx->attacker;
+            int defender = battleCtx->defender;
+            u8 slotFlag = FlagIndex(battleCtx->selectedPartySlot[attacker]);
+
+            if (defender != BATTLER_NONE
+                && attacker != defender
+                && Battler_Ability(battleCtx, attacker) == ABILITY_THIRD_EYE_CURSE
+                && (battleCtx->thirdEyeCurseUsedMask[attacker] & slotFlag) == FALSE
+                && CurrentMoveType(battleCtx, attacker, battleCtx->moveCur) == TYPE_GHOST
+                && CURRENT_MOVE_DATA.power
+                && (battleCtx->battleStatusMask & SYSCTL_MOVE_HIT)
+                && ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt
+                && DEFENDING_MON.curHP
+                && Battler_MovedThisTurn(battleCtx, defender)
+                && DEFENDER_LAST_MOVE != MOVE_NONE
+                && DEFENDING_MON.moveEffectsData.disabledMove == MOVE_NONE) {
+                int moveSlot = Battler_SlotForMove(&DEFENDING_MON, DEFENDER_LAST_MOVE);
+
+                if (moveSlot != LEARNED_MOVES_MAX && DEFENDING_MON.ppCur[moveSlot]) {
+                    battleCtx->thirdEyeCurseUsedMask[attacker] |= slotFlag;
+                    battleCtx->msgMoveTemp = DEFENDER_LAST_MOVE;
+                    DEFENDING_MON.moveEffectsData.disabledMove = DEFENDER_LAST_MOVE;
+                    DEFENDING_MON.moveEffectsData.disabledTurns = 2;
+
+                    LOAD_SUBSEQ(subscript_third_eye_curse);
+                    battleCtx->commandNext = battleCtx->command;
+                    battleCtx->command = BATTLE_CONTROL_EXEC_SCRIPT;
+
+                    machineState = STATE_BREAK_OUT;
+                }
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
+
+        case AFTER_MOVE_HIT_STATE_EMPEROR_MANTLE: {
+            // Emperor Mantle (once per entry): landing a Fire attack primes it; the next damaging
+            // Fighting move it uses gets +1 priority (BattleSystem_CompareBattlerSpeed) and spends it
+            int attacker = battleCtx->attacker;
+
+            if (Battler_Ability(battleCtx, attacker) == ABILITY_EMPEROR_MANTLE && CURRENT_MOVE_DATA.power) {
+                int type = CurrentMoveType(battleCtx, attacker, battleCtx->moveCur);
+
+                if (battleCtx->emperorMantleState[attacker] == 1 && type == TYPE_FIGHTING) {
+                    battleCtx->emperorMantleState[attacker] = 2;
+                } else if (battleCtx->emperorMantleState[attacker] == 0
+                    && type == TYPE_FIRE
+                    && battleCtx->defender != BATTLER_NONE
+                    && (battleCtx->battleStatusMask & SYSCTL_MOVE_HIT)
+                    && ATTACKER_SELF_TURN_FLAGS.shellBellDamageDealt) {
+                    battleCtx->emperorMantleState[attacker] = 1;
+                }
+            }
+
+            battleCtx->afterMoveHitCheckState++;
+            break;
+        }
 
         case AFTER_MOVE_HIT_STATE_SHELL_BELL:
             if (battleCtx->defender != BATTLER_NONE

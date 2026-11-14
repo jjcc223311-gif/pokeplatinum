@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_ESCAVALIER",
+            "form": 0,
+            "level": 40,
+            "item": null,
+            "moves": [
+                "MOVE_BUG_BUZZ",
+                "MOVE_SLASH",
+                "MOVE_IRON_HEAD",
+                "MOVE_IRON_DEFENSE"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_LUCARIO",
             "form": 0,
             "level": 41,

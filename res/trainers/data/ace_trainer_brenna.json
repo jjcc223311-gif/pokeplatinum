@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_SNEASEL",
+            "species": "SPECIES_BEARTIC",
             "form": 0,
             "level": 40,
             "item": null,
             "moves": [
-                "MOVE_ICE_SHARD",
+                "MOVE_SWAGGER",
                 "MOVE_SLASH",
-                "MOVE_FAINT_ATTACK",
-                "MOVE_QUICK_ATTACK"
+                "MOVE_FLAIL",
+                "MOVE_ICICLE_CRASH"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_BOUFFALANT",
+            "form": 0,
+            "level": 40,
+            "item": null,
+            "moves": [
+                "MOVE_SCARY_FACE",
+                "MOVE_REVENGE",
+                "MOVE_HEAD_CHARGE",
+                "MOVE_FOCUS_ENERGY"
             ],
             "iv_scale": 50,
             "ball_seal": 0

@@ -8,6 +8,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_DUCKLETT",
+            "form": 0,
+            "level": 30,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_REMORAID",
             "form": 0,
             "level": 32,
@@ -17,7 +26,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_TENTACOOL",
+            "species": "SPECIES_SIMIPOUR",
             "form": 0,
             "level": 30,
             "item": null,

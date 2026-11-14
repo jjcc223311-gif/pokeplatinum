@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_PARASECT",
+            "species": "SPECIES_VANILLUXE",
             "form": 0,
             "level": 53,
             "item": null,
             "moves": [
-                "MOVE_X_SCISSOR",
-                "MOVE_GIGA_DRAIN",
-                "MOVE_SPORE",
-                "MOVE_SLASH"
+                "MOVE_ACID_ARMOR",
+                "MOVE_ICE_BEAM",
+                "MOVE_HAIL",
+                "MOVE_MIRROR_COAT"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_ALOMOMOLA",
+            "form": 0,
+            "level": 53,
+            "item": null,
+            "moves": [
+                "MOVE_BRINE",
+                "MOVE_SAFEGUARD",
+                "MOVE_HELPING_HAND",
+                "MOVE_WIDE_GUARD"
             ],
             "iv_scale": 100,
             "ball_seal": 0

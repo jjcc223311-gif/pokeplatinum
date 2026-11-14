@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_ELECTABUZZ",
+            "species": "SPECIES_AMOONGUSS",
             "form": 0,
             "level": 47,
             "item": null,
             "moves": [
-                "MOVE_THUNDERBOLT",
-                "MOVE_SHOCK_WAVE",
-                "MOVE_QUICK_ATTACK",
-                "MOVE_IRON_TAIL"
+                "MOVE_GIGA_DRAIN",
+                "MOVE_TOXIC",
+                "MOVE_SYNTHESIS",
+                "MOVE_CLEAR_SMOG"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_SIMIPOUR",
+            "form": 0,
+            "level": 47,
+            "item": null,
+            "moves": [
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEER",
+                "MOVE_LICK",
+                "MOVE_SCALD"
             ],
             "iv_scale": 60,
             "ball_seal": 0

@@ -1,0 +1,227 @@
+{
+    "base_stats": {
+        "hp": 55,
+        "attack": 75,
+        "defense": 85,
+        "speed": 15,
+        "special_attack": 25,
+        "special_defense": 25
+    },
+    "types": [
+        "TYPE_ROCK",
+        "TYPE_ROCK"
+    ],
+    "catch_rate": 255,
+    "base_exp_reward": 56,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 1,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_EVERSTONE",
+        "rare": "ITEM_HARD_STONE"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_50",
+    "hatch_cycles": 15,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_MEDIUM_SLOW",
+    "egg_groups": [
+        "EGG_GROUP_MINERAL",
+        "EGG_GROUP_MINERAL"
+    ],
+    "abilities": [
+        "ABILITY_STURDY",
+        "ABILITY_NONE"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_BLUE",
+    "flip_sprite": false,
+    "icon_palette": 0,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_TACKLE"
+            ],
+            [
+                4,
+                "MOVE_HARDEN"
+            ],
+            [
+                7,
+                "MOVE_SAND_ATTACK"
+            ],
+            [
+                10,
+                "MOVE_HEADBUTT"
+            ],
+            [
+                14,
+                "MOVE_ROCK_BLAST"
+            ],
+            [
+                17,
+                "MOVE_MUD_SLAP"
+            ],
+            [
+                20,
+                "MOVE_IRON_DEFENSE"
+            ],
+            [
+                23,
+                "MOVE_SMACK_DOWN"
+            ],
+            [
+                27,
+                "MOVE_ROCK_SLIDE"
+            ],
+            [
+                30,
+                "MOVE_STEALTH_ROCK"
+            ],
+            [
+                33,
+                "MOVE_SANDSTORM"
+            ],
+            [
+                36,
+                "MOVE_STONE_EDGE"
+            ],
+            [
+                40,
+                "MOVE_EXPLOSION"
+            ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM17",
+            "TM21",
+            "TM26",
+            "TM27",
+            "TM32",
+            "TM37",
+            "TM39",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM64",
+            "TM69",
+            "TM71",
+            "TM76",
+            "TM80",
+            "TM82",
+            "TM87",
+            "TM90",
+            "TM91",
+            "HM04",
+            "HM06"
+        ],
+        "by_tutor": [
+            "MOVE_EARTH_POWER",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_SNORE"
+        ],
+        "egg_moves": [
+            "MOVE_AUTOTOMIZE",
+            "MOVE_CURSE",
+            "MOVE_GRAVITY",
+            "MOVE_HEAVY_SLAM",
+            "MOVE_LOCK_ON",
+            "MOVE_MAGNITUDE",
+            "MOVE_ROCK_TOMB",
+            "MOVE_TAKE_DOWN"
+        ]
+    },
+    "evolutions": [
+        [
+            "EVO_LEVEL",
+            25,
+            "SPECIES_BOLDORE"
+        ]
+    ],
+    "offspring": "SPECIES_ROGGENROLA",
+    "footprint": {
+        "has": true,
+        "size": "FOOTPRINT_MEDIUM",
+        "type": "FOOTPRINT_TYPE_CUTE"
+    },
+    "pokedex_data": {
+        "height_inches": 16,
+        "weight_pounds": 39.7,
+        "body_shape": "SHAPE_HEAD_LEGS",
+        "trainer_scale_f": 272,
+        "pokemon_scale_f": 524,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 524,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 27,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 27,
+        "en": {
+            "name": "ROGGENROLA",
+            "category": "Mantle Pokémon",
+            "entry_text": [
+                "Its body is made of compressed\n",
+                "soil. It listens with the hexagonal\n",
+                "ear on its face."
+            ]
+        },
+        "fr": {
+            "name": "ROGGENROLA",
+            "category": "Mantle Pokémon",
+            "entry_text": [
+                "Its body is made of compressed\n",
+                "soil. It listens with the hexagonal\n",
+                "ear on its face."
+            ]
+        },
+        "de": {
+            "name": "ROGGENROLA",
+            "category": "Mantle Pokémon",
+            "entry_text": [
+                "Its body is made of compressed\n",
+                "soil. It listens with the hexagonal\n",
+                "ear on its face."
+            ]
+        },
+        "it": {
+            "name": "ROGGENROLA",
+            "category": "Mantle Pokémon",
+            "entry_text": [
+                "Its body is made of compressed\n",
+                "soil. It listens with the hexagonal\n",
+                "ear on its face."
+            ]
+        },
+        "es": {
+            "name": "ROGGENROLA",
+            "category": "Mantle Pokémon",
+            "entry_text": [
+                "Its body is made of compressed\n",
+                "soil. It listens with the hexagonal\n",
+                "ear on its face."
+            ]
+        },
+        "jp": {
+            "name": "ROGGENROLA",
+            "category": "Mantle Pokémon",
+            "entry_text": [
+                "Its body is made of compressed\n",
+                "soil. It listens with the hexagonal\n",
+                "ear on its face."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

@@ -7,7 +7,7 @@
 
 #define MAX_EVOLUTIONS 7
 
-#define MAX_LEARNSET_ENTRIES        20
+#define MAX_LEARNSET_ENTRIES        25 // Gen 5 species learn up to 21 moves by level
 #define LEARNSET_NO_MOVE_TO_LEARN   0
 #define LEARNSET_MOVE_ALREADY_KNOWN 0xFFFE
 #define LEARNSET_ALL_SLOTS_FILLED   0xFFFF
@@ -63,10 +63,13 @@ typedef struct SpeciesEvolution {
     u16 targetSpecies;
 } SpeciesEvolution;
 
+// Widened from the vanilla 16-bit entry (move : 9, level : 7) so moves 512+ can be learned
 typedef struct SpeciesLearnsetEntry {
-    u16 move : 9;
-    u16 level : 7;
+    u16 move;
+    u16 level;
 } SpeciesLearnsetEntry;
+
+#define LEARNSET_TERMINATOR_MOVE 0xFFFF // marks the end of a level-up learnset
 
 // This struct is not explicitly used; it is provided to document and enforce the size of
 // the learnset entries.

@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_AMBIPOM",
+            "species": "SPECIES_SIMIPOUR",
             "form": 0,
             "level": 39,
             "item": null,
             "moves": [
-                "MOVE_DOUBLE_HIT",
-                "MOVE_U_TURN",
-                "MOVE_SAND_ATTACK",
-                "MOVE_SCREECH"
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEER",
+                "MOVE_LICK",
+                "MOVE_SCALD"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_CARRACOSTA",
+            "form": 0,
+            "level": 39,
+            "item": null,
+            "moves": [
+                "MOVE_WIDE_GUARD",
+                "MOVE_BRINE",
+                "MOVE_SMACK_DOWN",
+                "MOVE_CURSE"
             ],
             "iv_scale": 50,
             "ball_seal": 0

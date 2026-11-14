@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_DEERLING",
+            "form": 0,
+            "level": 7,
+            "item": null,
+            "moves": [
+                "MOVE_CAMOUFLAGE",
+                "MOVE_TACKLE",
+                "MOVE_GROWL",
+                "MOVE_SAND_ATTACK"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MACHOP",
             "form": 0,
             "level": 8,

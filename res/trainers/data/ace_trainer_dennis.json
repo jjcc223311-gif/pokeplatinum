@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_STUNFISK",
+            "form": 0,
+            "level": 24,
+            "item": null,
+            "moves": [
+                "MOVE_THUNDER_SHOCK",
+                "MOVE_MUD_SHOT",
+                "MOVE_CAMOUFLAGE",
+                "MOVE_MUD_BOMB"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GLIGAR",
             "form": 0,
             "level": 24,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_BUIZEL",
+            "species": "SPECIES_TYMPOLE",
             "form": 0,
             "level": 24,
             "item": null,
             "moves": [
-                "MOVE_AQUA_JET",
-                "MOVE_SWIFT",
-                "MOVE_PURSUIT",
-                "MOVE_QUICK_ATTACK"
+                "MOVE_BUBBLE_BEAM",
+                "MOVE_MUD_SHOT",
+                "MOVE_AQUA_RING",
+                "MOVE_UPROAR"
             ],
             "iv_scale": 50,
             "ball_seal": 0

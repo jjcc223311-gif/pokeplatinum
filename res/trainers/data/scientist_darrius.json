@@ -11,6 +11,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_EELEKTROSS",
+            "form": 0,
+            "level": 41,
+            "item": null,
+            "moves": [
+                "MOVE_CRUNCH",
+                "MOVE_CRUSH_CLAW",
+                "MOVE_DISCHARGE",
+                "MOVE_HEADBUTT"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_PORYGON2",
             "form": 0,
             "level": 42,

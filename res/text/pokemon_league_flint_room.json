@@ -7,7 +7,7 @@
         "Yo, Trainer!\r",
         "You had me counting the days on my\n",
         "fingers waiting for you to come.\r",
-        "I heard from Volkner what you \n",
+        "I heard from Hugo what you \n",
         "did in Sunyshore.\r",
         "You managed to light a fire in that\n",
         "guy’s heart again.\r",
@@ -20,7 +20,7 @@
       "en_US": [
         "You’re facing a Fire-type Pokémon\n",
         "user with me.\r",
-        "Let Flint see how hot your spirit\n",
+        "Let Nathan see how hot your spirit\n",
         "burns!\r"
       ]
     },
@@ -53,7 +53,7 @@
       "id": "PokemonLeagueFlintRoom_Text_FlintGameCompletedIntro",
       "en_US": [
         "I was waiting for you, challenger!\r",
-        "Flint, the master of the Fire type,\n",
+        "Nathan, the master of the Fire type,\n",
         "is up next!\r",
         "Battles are clashes of the burning\n",
         "spirit of Pokémon.\r",

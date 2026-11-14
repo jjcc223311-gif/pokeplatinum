@@ -1,0 +1,134 @@
+[
+    {
+        "species": "SPECIES_ARCEUS",
+        "form": 19,
+        "dir": "arceus/forms/light",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_DIALGA",
+        "form": 1,
+        "dir": "dialga/forms/origin",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_PALKIA",
+        "form": 1,
+        "dir": "palkia/forms/origin",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_KYUREM",
+        "form": 1,
+        "dir": "kyurem/forms/black",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_KYUREM",
+        "form": 2,
+        "dir": "kyurem/forms/white",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_BASCULIN",
+        "form": 1,
+        "dir": "basculin/forms/blue_striped",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_DARMANITAN",
+        "form": 1,
+        "dir": "darmanitan/forms/zen",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_DEERLING",
+        "form": 1,
+        "dir": "deerling/forms/summer",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_DEERLING",
+        "form": 2,
+        "dir": "deerling/forms/autumn",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_DEERLING",
+        "form": 3,
+        "dir": "deerling/forms/winter",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_SAWSBUCK",
+        "form": 1,
+        "dir": "sawsbuck/forms/summer",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_SAWSBUCK",
+        "form": 2,
+        "dir": "sawsbuck/forms/autumn",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_SAWSBUCK",
+        "form": 3,
+        "dir": "sawsbuck/forms/winter",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_TORNADUS",
+        "form": 1,
+        "dir": "tornadus/forms/therian",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_THUNDURUS",
+        "form": 1,
+        "dir": "thundurus/forms/therian",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_LANDORUS",
+        "form": 1,
+        "dir": "landorus/forms/therian",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_KELDEO",
+        "form": 1,
+        "dir": "keldeo/forms/resolute",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_MELOETTA",
+        "form": 1,
+        "dir": "meloetta/forms/pirouette",
+        "has_data": true
+    },
+    {
+        "species": "SPECIES_GENESECT",
+        "form": 1,
+        "dir": "genesect/forms/douse_drive",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_GENESECT",
+        "form": 2,
+        "dir": "genesect/forms/shock_drive",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_GENESECT",
+        "form": 3,
+        "dir": "genesect/forms/burn_drive",
+        "has_data": false
+    },
+    {
+        "species": "SPECIES_GENESECT",
+        "form": 4,
+        "dir": "genesect/forms/chill_drive",
+        "has_data": false
+    }
+]

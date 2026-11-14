@@ -54,6 +54,7 @@
 #include "unk_02092494.h"
 
 #include "res/pokemon/regional_pokedex_size.h"
+#include "res/pokemon/mega_forms.h"
 #include "res/trainers/classes/trbgra.naix"
 
 #define FATEFUL_ENCOUNTER_LOCATION 3002
@@ -264,6 +265,7 @@ static void Pokemon_LoadExperienceTableOf(enum ExpRate monExpRate, u32 *monExpTa
 static u32 Pokemon_GetExpRateBaseExpAt(enum ExpRate monExpRate, int monLevel);
 static u16 Pokemon_GetNatureStatValue(u8 monNature, u16 monStatValue, u8 statType);
 static u8 BoxPokemon_IsShiny(BoxPokemon *boxMon);
+static BOOL BuildMegaSpriteTemplate(PokemonSpriteTemplate *spriteTemplate, u16 species, u8 face, u8 shiny, u8 form);
 static inline BOOL Pokemon_InlineIsPersonalityShiny(u32 monOTID, u32 monPersonality);
 static void BuildPokemonSpriteTemplateDP(PokemonSpriteTemplate *spriteTemplate, u16 species, u8 gender, u8 face, u8 shiny, u8 form, u32 personality);
 static u8 LoadPokemonDPSpriteHeight(u16 species, u8 gender, u8 face, u8 form, u32 personality);
@@ -1218,7 +1220,8 @@ static u32 BoxPokemon_GetDataInternal(BoxPokemon *boxMon, enum PokemonDataParam 
 
     case MON_DATA_TYPE_1:
     case MON_DATA_TYPE_2:
-        if (monDataBlockA->species == SPECIES_ARCEUS && monDataBlockA->ability == ABILITY_MULTITYPE) {
+        // Mega Arceus is pure Light whatever Plate it holds: its types come from its Mega data
+        if (monDataBlockA->species == SPECIES_ARCEUS && monDataBlockA->ability == ABILITY_MULTITYPE && !FORM_IS_MEGA(monDataBlockB->form)) {
             result = Pokemon_GetArceusTypeOf(Item_LoadParam(monDataBlockA->heldItem, ITEM_PARAM_HOLD_EFFECT, HEAP_ID_SYSTEM));
         } else {
             result = SpeciesData_GetFormValue(monDataBlockA->species, monDataBlockB->form, SPECIES_DATA_TYPE_1 + (param - MON_DATA_TYPE_1));
@@ -2839,6 +2842,10 @@ void BuildPokemonSpriteTemplate(PokemonSpriteTemplate *spriteTemplate, u16 speci
     spriteTemplate->personality = 0;
     form = Pokemon_SanitizeFormId(species, form);
 
+    if (BuildMegaSpriteTemplate(spriteTemplate, species, face, shiny, form)) {
+        return;
+    }
+
     switch (species) {
     case SPECIES_BURMY:
         spriteTemplate->narcID = NARC_INDEX_POKETOOL__POKEGRA__PL_OTHERPOKE;
@@ -2937,8 +2944,100 @@ void BuildPokemonSpriteTemplate(PokemonSpriteTemplate *spriteTemplate, u16 speci
     }
 }
 
+const MegaSpeciesEntry *Pokemon_GetMegaSpeciesEntry(u16 species)
+{
+    // sMegaSpeciesTable (generated from res/pokemon/mega_forms.json) ends with a SPECIES_NONE row
+    for (int i = 0; sMegaSpeciesTable[i].species != SPECIES_NONE; i++) {
+        if (sMegaSpeciesTable[i].species == species) {
+            return &sMegaSpeciesTable[i];
+        }
+    }
+
+    return NULL;
+}
+
+u8 Pokemon_MegaSlotForm(enum MegaSlot slot)
+{
+    static const u8 sMegaSlotForms[MEGA_SLOT_COUNT] = {
+        [MEGA_SLOT_MEGA_1] = FORM_MEGA_1,
+        [MEGA_SLOT_MEGA_2] = FORM_MEGA_2,
+        [MEGA_SLOT_LEGENDARY_1] = FORM_LEGENDARY_MEGA_1,
+        [MEGA_SLOT_LEGENDARY_2] = FORM_LEGENDARY_MEGA_2,
+    };
+
+    return sMegaSlotForms[slot];
+}
+
+int Pokemon_MegaFormSlot(u8 monForm)
+{
+    for (int slot = 0; slot < MEGA_SLOT_COUNT; slot++) {
+        if (Pokemon_MegaSlotForm(slot) == monForm) {
+            return slot;
+        }
+    }
+
+    return -1;
+}
+
+const MegaFormData *Pokemon_GetMegaFormData(u16 species, u8 monForm)
+{
+    int slot = Pokemon_MegaFormSlot(monForm);
+
+    if (slot < 0) {
+        return NULL;
+    }
+
+    const MegaSpeciesEntry *entry = Pokemon_GetMegaSpeciesEntry(species);
+
+    if (entry == NULL || entry->hasForm[slot] == FALSE) {
+        return NULL;
+    }
+
+    return &entry->forms[slot];
+}
+
+const ExtraFormEntry *Pokemon_GetExtraForm(u16 species, u8 monForm)
+{
+    // sExtraFormTable (generated from res/pokemon/extra_forms.json) ends with a SPECIES_NONE row
+    for (int i = 0; sExtraFormTable[i].species != SPECIES_NONE; i++) {
+        if (sExtraFormTable[i].species == species && sExtraFormTable[i].form == monForm) {
+            return &sExtraFormTable[i];
+        }
+    }
+
+    return NULL;
+}
+
+// Sprites of a species' own Mega / Legendary Mega form, or of an extra form (e.g. Light Arceus),
+// which are appended to pl_otherpoke. Returns FALSE if the form is neither.
+static BOOL BuildMegaSpriteTemplate(PokemonSpriteTemplate *spriteTemplate, u16 species, u8 face, u8 shiny, u8 form)
+{
+    const MegaFormData *megaData = Pokemon_GetMegaFormData(species, form);
+    const ExtraFormEntry *extra = Pokemon_GetExtraForm(species, form);
+    int spriteOffset;
+
+    if (megaData != NULL) {
+        spriteOffset = megaData->spriteOffset;
+    } else if (extra != NULL) {
+        spriteOffset = extra->spriteOffset;
+    } else {
+        return FALSE;
+    }
+
+    spriteTemplate->narcID = NARC_INDEX_POKETOOL__POKEGRA__PL_OTHERPOKE;
+    spriteTemplate->character = MEGA_SPRITE_BASE + spriteOffset + (face == FACE_FRONT ? 1 : 0);
+    spriteTemplate->palette = MEGA_SPRITE_BASE + spriteOffset + 2 + (shiny ? 1 : 0);
+
+    return TRUE;
+}
+
 u8 Pokemon_SanitizeFormId(u16 monSpecies, u8 monForm)
 {
+    // Forms 28-31 are kept only for species with that form in the Mega table
+    if (FORM_IS_MEGA(monForm)) {
+        return Pokemon_GetMegaFormData(monSpecies, monForm) != NULL ? monForm : 0;
+    }
+
     switch (monSpecies) {
     case SPECIES_BURMY:
         if (monForm > BURMY_FORM_COUNT - 1) {
@@ -2966,7 +3065,8 @@ u8 Pokemon_SanitizeFormId(u16 monSpecies, u8 monForm)
         }
         break;
     case SPECIES_ARCEUS:
-        if (monForm > ARCEUS_FORM_COUNT - 1) {
+        // Forms are type numbers; there is no Fairy Arceus (form 18), only Light (form 19)
+        if (monForm > ARCEUS_FORM_COUNT - 1 || monForm == TYPE_FAIRY) {
             monForm = 0;
         }
         break;
@@ -3005,6 +3105,16 @@ u8 Pokemon_SanitizeFormId(u16 monSpecies, u8 monForm)
             monForm = 0;
         }
         break;
+    case SPECIES_DIALGA:
+        if (monForm > DIALGA_FORM_COUNT - 1) {
+            monForm = 0;
+        }
+        break;
+    case SPECIES_PALKIA:
+        if (monForm > PALKIA_FORM_COUNT - 1) {
+            monForm = 0;
+        }
+        break;
     }
 
     return monForm;
@@ -3035,6 +3145,10 @@ static void BuildPokemonSpriteTemplateDP(PokemonSpriteTemplate *spriteTemplate, 
     spriteTemplate->personality = 0;
 
     form = Pokemon_SanitizeFormId(species, form);
+
+    if (BuildMegaSpriteTemplate(spriteTemplate, species, face, shiny, form)) {
+        return;
+    }
 
     switch (species) {
     case SPECIES_BURMY:
@@ -3192,6 +3306,12 @@ u8 LoadPokemonSpriteYOffset(u16 species, u8 gender, u8 face, u8 form, u32 person
 {
     form = Pokemon_SanitizeFormId(species, form);
 
+    // Megas and extra forms (Light Arceus, Origin Dialga / Palkia) have no height entry of
+    // their own: use the base form's, instead of indexing past the species' entries
+    if (FORM_IS_MEGA(form) || Pokemon_GetExtraForm(species, form) != NULL) {
+        form = 0;
+    }
+
     enum NarcID narcID;
     int memberIndex;
     switch (species) {
@@ -3280,6 +3400,12 @@ static u8 LoadPokemonDPSpriteHeight(u16 species, u8 gender, u8 face, u8 form, u3
 {
     // TODO enum values?
     form = Pokemon_SanitizeFormId(species, form);
+
+    // Megas and extra forms (Light Arceus, Origin Dialga / Palkia) have no height entry of
+    // their own: use the base form's, instead of indexing past the species' entries
+    if (FORM_IS_MEGA(form) || Pokemon_GetExtraForm(species, form) != NULL) {
+        form = 0;
+    }
 
     enum NarcID narcID;
     int memberIndex;
@@ -3819,7 +3945,7 @@ u16 Pokemon_GetBaseSpeciesForBattle(const u16 species)
 static void BoxPokemon_SetDefaultMoves(BoxPokemon *boxMon)
 {
     BOOL reencrypt; // must pre-declare to match
-    u16 *monLevelUpMoves = Heap_Alloc(HEAP_ID_SYSTEM, sizeof(SpeciesLearnset));
+    SpeciesLearnsetEntry *monLevelUpMoves = Heap_Alloc(HEAP_ID_SYSTEM, sizeof(SpeciesLearnset));
     reencrypt = BoxPokemon_EnterDecryptionContext(boxMon);
 
     u16 monSpecies = BoxPokemon_GetValue(boxMon, MON_DATA_SPECIES, NULL);
@@ -3828,9 +3954,9 @@ static void BoxPokemon_SetDefaultMoves(BoxPokemon *boxMon)
 
     Pokemon_LoadLevelUpMovesOf(monSpecies, monForm, monLevelUpMoves);
 
-    for (int i = 0; monLevelUpMoves[i] != LEARNSET_SENTINEL_ENTRY; i++) {
-        if ((monLevelUpMoves[i] & 0xFE00) <= monLevel << 9) {
-            u16 monLevelUpMoveID = monLevelUpMoves[i] & 0x1FF;
+    for (int i = 0; monLevelUpMoves[i].move != LEARNSET_TERMINATOR_MOVE; i++) {
+        if (monLevelUpMoves[i].level <= monLevel) {
+            u16 monLevelUpMoveID = monLevelUpMoves[i].move;
             if (BoxPokemon_AddMove(boxMon, monLevelUpMoveID) == LEARNSET_ALL_SLOTS_FILLED) {
                 BoxPokemon_ReplaceMove(boxMon, monLevelUpMoveID);
             }
@@ -3903,6 +4029,7 @@ static void BoxPokemon_ReplaceMove(BoxPokemon *boxMon, u16 moveID)
         BoxPokemon_SetValue(boxMon, MON_DATA_MOVE1_PP_UPS + i, &movePPUps[i]);
     }
 
+    BoxPokemon_UpdateKeldeoForm(boxMon);
     BoxPokemon_ExitDecryptionContext(boxMon, reencrypt);
 }
 
@@ -3930,33 +4057,34 @@ static void BoxPokemon_SetMoveSlot(BoxPokemon *boxMon, u16 moveID, u8 moveSlot)
     u8 moveMaxPP = MoveTable_CalcMaxPP(moveID, movePPUps);
 
     BoxPokemon_SetValue(boxMon, MON_DATA_MOVE1_PP + moveSlot, &moveMaxPP);
+    BoxPokemon_UpdateKeldeoForm(boxMon);
 }
 
 u16 Pokemon_LevelUpMove(Pokemon *mon, int *index, u16 *moveID)
 {
     u16 result = MOVE_NONE;
-    u16 *monLevelUpMoves = Heap_Alloc(HEAP_ID_SYSTEM, sizeof(SpeciesLearnset));
+    SpeciesLearnsetEntry *monLevelUpMoves = Heap_Alloc(HEAP_ID_SYSTEM, sizeof(SpeciesLearnset));
     u16 monSpecies = Pokemon_GetValue(mon, MON_DATA_SPECIES, NULL);
     int monForm = Pokemon_GetValue(mon, MON_DATA_FORM, NULL);
     u8 monLevel = Pokemon_GetValue(mon, MON_DATA_LEVEL, NULL);
 
     Pokemon_LoadLevelUpMovesOf(monSpecies, monForm, monLevelUpMoves);
 
-    if (monLevelUpMoves[*index] == LEARNSET_SENTINEL_ENTRY) {
+    if (monLevelUpMoves[*index].move == LEARNSET_TERMINATOR_MOVE) {
         Heap_Free(monLevelUpMoves);
         return MOVE_NONE;
     }
 
-    while ((monLevelUpMoves[*index] & 0xFE00) != monLevel << 9) {
+    while (monLevelUpMoves[*index].level != monLevel) {
         (*index)++;
-        if (monLevelUpMoves[*index] == LEARNSET_SENTINEL_ENTRY) {
+        if (monLevelUpMoves[*index].move == LEARNSET_TERMINATOR_MOVE) {
             Heap_Free(monLevelUpMoves);
             return MOVE_NONE;
         }
     }
 
-    if ((monLevelUpMoves[*index] & 0xFE00) == monLevel << 9) {
-        *moveID = monLevelUpMoves[*index] & 0x1FF;
+    if (monLevelUpMoves[*index].level == monLevel) {
+        *moveID = monLevelUpMoves[*index].move;
         (*index)++;
         result = Pokemon_AddMove(mon, *moveID);
     }
@@ -4014,6 +4142,7 @@ void Pokemon_ClearMoveSlot(Pokemon *mon, u32 moveSlot)
     Pokemon_SetValue(mon, MON_DATA_MOVE4, &moveID);
     Pokemon_SetValue(mon, MON_DATA_MOVE4_PP, &movePP);
     Pokemon_SetValue(mon, MON_DATA_MOVE4_PP_UPS, &movePPUps);
+    BoxPokemon_UpdateKeldeoForm(&mon->box);
 }
 
 static BOOL Pokemon_HasMove(Pokemon *mon, u16 moveID)
@@ -4128,14 +4257,14 @@ s8 Pokemon_GetFlavorAffinityOf(u32 monPersonality, enum Flavor flavor)
 
 int Pokemon_LoadLevelUpMoveIdsOf(int monSpecies, int monForm, u16 *monLevelUpMoveIDs)
 {
-    u16 *monLevelUpMoves = Heap_Alloc(HEAP_ID_SYSTEM, sizeof(SpeciesLearnset));
+    SpeciesLearnsetEntry *monLevelUpMoves = Heap_Alloc(HEAP_ID_SYSTEM, sizeof(SpeciesLearnset));
 
     Pokemon_LoadLevelUpMovesOf(monSpecies, monForm, monLevelUpMoves);
 
     int result = 0;
 
-    while (monLevelUpMoves[result] != LEARNSET_ALL_SLOTS_FILLED) {
-        monLevelUpMoveIDs[result] = monLevelUpMoves[result] & 0x1FF;
+    while (monLevelUpMoves[result].move != LEARNSET_TERMINATOR_MOVE) {
+        monLevelUpMoveIDs[result] = monLevelUpMoves[result].move;
         result++;
     }
 
@@ -4310,7 +4439,8 @@ void BoxPokemon_SetArceusForm(BoxPokemon *boxMon)
     int monAbility = BoxPokemon_GetValue(boxMon, MON_DATA_ABILITY, NULL);
     int monHeldItem = BoxPokemon_GetValue(boxMon, MON_DATA_HELD_ITEM, NULL);
 
-    if (monSpecies == SPECIES_ARCEUS && monAbility == ABILITY_MULTITYPE) {
+    // Never overwrite a Mega Arceus form with a Plate form
+    if (monSpecies == SPECIES_ARCEUS && monAbility == ABILITY_MULTITYPE && !FORM_IS_MEGA(BoxPokemon_GetValue(boxMon, MON_DATA_FORM, NULL))) {
         int monForm = Pokemon_GetArceusTypeOf(Item_LoadParam(monHeldItem, ITEM_PARAM_HOLD_EFFECT, HEAP_ID_SYSTEM));
         BoxPokemon_SetValue(boxMon, MON_DATA_FORM, &monForm);
     }
@@ -4369,6 +4499,9 @@ u8 Pokemon_GetArceusTypeOf(u16 itemHoldEffect)
     case HOLD_EFFECT_ARCEUS_STEEL:
         type = TYPE_STEEL;
         break;
+    case HOLD_EFFECT_ARCEUS_LIGHT:
+        type = TYPE_LIGHT;
+        break;
     default:
         type = TYPE_NORMAL;
         break;
@@ -4388,13 +4521,85 @@ int Pokemon_SetGiratinaFormByHeldItem(Pokemon *mon)
     return result;
 }
 
+u16 Species_GetOriginFormItem(u16 species)
+{
+    switch (species) {
+    case SPECIES_GIRATINA:
+        return ITEM_GRISEOUS_ORB;
+    case SPECIES_DIALGA:
+        return ITEM_ADAMANT_ORB;
+    case SPECIES_PALKIA:
+        return ITEM_LUSTROUS_ORB;
+    default:
+        return ITEM_NONE;
+    }
+}
+
+BOOL Pokemon_IsOriginFormItem(Pokemon *mon, u16 item)
+{
+    u16 originItem = Species_GetOriginFormItem(Pokemon_GetValue(mon, MON_DATA_SPECIES, NULL));
+
+    return originItem != ITEM_NONE && item == originItem;
+}
+
+// Giratina, Dialga and Palkia: Origin Forme while holding their Orb (Species_GetOriginFormItem)
+int Item_GenesectDriveForm(u16 item)
+{
+    switch (item) {
+    case ITEM_DOUSE_DRIVE:
+        return GENESECT_FORM_DOUSE;
+    case ITEM_SHOCK_DRIVE:
+        return GENESECT_FORM_SHOCK;
+    case ITEM_BURN_DRIVE:
+        return GENESECT_FORM_BURN;
+    case ITEM_CHILL_DRIVE:
+        return GENESECT_FORM_CHILL;
+    }
+
+    return GENESECT_FORM_NONE;
+}
+
+int BoxPokemon_UpdateKeldeoForm(BoxPokemon *boxMon)
+{
+    if (BoxPokemon_GetValue(boxMon, MON_DATA_SPECIES, NULL) != SPECIES_KELDEO) {
+        return -1;
+    }
+
+    int form = KELDEO_FORM_ORDINARY;
+
+    for (int i = 0; i < LEARNED_MOVES_MAX; i++) {
+        if (BoxPokemon_GetValue(boxMon, MON_DATA_MOVE1 + i, NULL) == MOVE_SECRET_SWORD) {
+            form = KELDEO_FORM_RESOLUTE;
+        }
+    }
+
+    BoxPokemon_SetValue(boxMon, MON_DATA_FORM, &form);
+    return form;
+}
+
 int BoxPokemon_SetGiratinaForm(BoxPokemon *boxMon)
 {
     int species = BoxPokemon_GetValue(boxMon, MON_DATA_SPECIES, NULL);
     int item = BoxPokemon_GetValue(boxMon, MON_DATA_HELD_ITEM, NULL);
+    u16 originItem = Species_GetOriginFormItem(species);
 
-    if (species == SPECIES_GIRATINA) {
-        int form = (item == ITEM_GRISEOUS_ORB) ? GIRATINA_FORM_ORIGIN : GIRATINA_FORM_ALTERED;
+    if (species == SPECIES_GENESECT) {
+        // Held Drive (also decides Techno Blast's type)
+        int form = Item_GenesectDriveForm(item);
+
+        BoxPokemon_SetValue(boxMon, MON_DATA_FORM, &form);
+        return form;
+    }
+
+    if (species == SPECIES_KELDEO) {
+        // Resolute Form while it knows Secret Sword. Checked here too because this runs whenever a
+        // held item changes and after every battle (see BattleSystem_RevertMegaForm).
+        return BoxPokemon_UpdateKeldeoForm(boxMon);
+    }
+
+    if (originItem != ITEM_NONE) {
+        // GIRATINA_FORM_ORIGIN == DIALGA_FORM_ORIGIN == PALKIA_FORM_ORIGIN
+        int form = (item == originItem) ? GIRATINA_FORM_ORIGIN : GIRATINA_FORM_ALTERED;
 
         BoxPokemon_SetValue(boxMon, MON_DATA_FORM, &form);
         BoxPokemon_CalcAbility(boxMon);
@@ -4582,7 +4787,7 @@ BOOL Pokemon_SetRotomForm(Pokemon *mon, int form, int moveSlot)
     return TRUE;
 }
 
-void Pokemon_LoadLevelUpMovesOf(int monSpecies, int monForm, u16 *monLevelUpMoves)
+void Pokemon_LoadLevelUpMovesOf(int monSpecies, int monForm, SpeciesLearnsetEntry *monLevelUpMoves)
 {
     monSpecies = Pokemon_GetFormNarcIndex(monSpecies, monForm);
     NARC_ReadWholeMemberByIndexPair(monLevelUpMoves, NARC_INDEX_POKETOOL__PERSONAL__WOTBL, monSpecies);
@@ -4928,31 +5133,45 @@ static void *BoxPokemon_GetDataBlock(BoxPokemon *boxMon, u32 personality, enum P
 
 static int Pokemon_GetFormNarcIndex(int monSpecies, int monForm)
 {
+    // Each species' own Mega / Legendary Mega stats, types, abilities and learnset
+    const MegaFormData *megaData = Pokemon_GetMegaFormData(monSpecies, monForm);
+
+    if (megaData != NULL) {
+        return megaData->personalIndex;
+    }
+
+    // Extra forms with their own data (res/pokemon/extra_forms.json)
+    const ExtraFormEntry *extra = Pokemon_GetExtraForm(monSpecies, monForm);
+
+    if (extra != NULL && extra->hasData) {
+        return extra->personalIndex;
+    }
+
     // TODO enum values?
     switch (monSpecies) {
     case SPECIES_DEOXYS:
         if (monForm && monForm <= DEOXYS_FORM_COUNT - 1) {
-            monSpecies = (496 - 1) + monForm;
+            monSpecies = (SPECIES_BAD_EGG + 0) + monForm;
         }
         break;
     case SPECIES_WORMADAM:
         if (monForm && monForm <= WORMADAM_FORM_COUNT - 1) {
-            monSpecies = (499 - 1) + monForm;
+            monSpecies = (SPECIES_BAD_EGG + 3) + monForm;
         }
         break;
     case SPECIES_GIRATINA:
         if (monForm && monForm <= GIRATINA_FORM_COUNT - 1) {
-            monSpecies = (501 - 1) + monForm;
+            monSpecies = (SPECIES_BAD_EGG + 5) + monForm;
         }
         break;
     case SPECIES_SHAYMIN:
         if (monForm && monForm <= SHAYMIN_FORM_COUNT - 1) {
-            monSpecies = (502 - 1) + monForm;
+            monSpecies = (SPECIES_BAD_EGG + 6) + monForm;
         }
         break;
     case SPECIES_ROTOM:
         if (monForm && monForm <= ROTOM_FORM_COUNT - 1) {
-            monSpecies = (503 - 1) + monForm;
+            monSpecies = (SPECIES_BAD_EGG + 7) + monForm;
         }
         break;
     default:

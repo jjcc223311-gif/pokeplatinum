@@ -9,6 +9,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_MUNNA",
+            "form": 0,
+            "level": 16,
+            "item": null,
+            "moves": [
+                "MOVE_LUCKY_CHANT",
+                "MOVE_YAWN",
+                "MOVE_PSYBEAM",
+                "MOVE_IMPRISON"
+            ],
+            "iv_scale": 20,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MEDITITE",
             "form": 0,
             "level": 17,

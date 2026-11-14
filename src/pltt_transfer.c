@@ -155,6 +155,23 @@ BOOL PlttTransfer_RequestFreeSpace(const PlttTransferTaskTemplate *template)
     return TRUE;
 }
 
+BOOL PlttTransfer_CanRequestFreeSpace(int numPalettes, NNS_G2D_VRAM_TYPE vramType)
+{
+    if (FindNextFreeTask() == NULL) {
+        return FALSE;
+    }
+
+    if ((vramType & NNS_G2D_VRAM_TYPE_2DMAIN) && FindAvailableTransferSlot(sTaskManager->vramTransferMain, numPalettes) == -1) {
+        return FALSE;
+    }
+
+    if ((vramType & NNS_G2D_VRAM_TYPE_2DSUB) && FindAvailableTransferSlot(sTaskManager->vramTransferSub, numPalettes) == -1) {
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
 void PlttTransfer_ReplacePlttData(int resourceID, NNSG2dPaletteData *data)
 {
     GF_ASSERT(data);

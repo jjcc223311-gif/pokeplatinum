@@ -1,5 +1,5 @@
 {
-    "name": "Dawn",
+    "name": "Juniper",
     "class": "TRAINER_CLASS_DP_PLAYER_FEMALE",
     "items": [],
     "ai_flags": [
@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_CLEFAIRY",
+            "species": "SPECIES_SIGILYPH",
             "form": 0,
             "level": 25,
             "item": null,
             "moves": [
-                "MOVE_METRONOME",
-                "MOVE_GRAVITY",
-                "MOVE_WAKE_UP_SLAP",
-                "MOVE_SING"
+                "MOVE_WHIRLWIND",
+                "MOVE_PSYBEAM",
+                "MOVE_AIR_CUTTER",
+                "MOVE_LIGHT_SCREEN"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_SOLOSIS",
+            "form": 0,
+            "level": 25,
+            "item": null,
+            "moves": [
+                "MOVE_LIGHT_SCREEN",
+                "MOVE_CHARM",
+                "MOVE_RECOVER",
+                "MOVE_PSYSHOCK"
             ],
             "iv_scale": 60,
             "ball_seal": 0

@@ -24,29 +24,29 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_ROSELIA",
+            "species": "SPECIES_MUNNA",
             "form": 0,
             "level": 23,
             "item": null,
             "moves": [
-                "MOVE_MEGA_DRAIN",
-                "MOVE_POISON_STING",
-                "MOVE_LEECH_SEED",
-                "MOVE_STUN_SPORE"
+                "MOVE_IMPRISON",
+                "MOVE_MOONLIGHT",
+                "MOVE_HYPNOSIS",
+                "MOVE_ZEN_HEADBUTT"
             ],
             "iv_scale": 50,
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_PONYTA",
+            "species": "SPECIES_SLOWPOKE",
             "form": 0,
             "level": 23,
             "item": null,
             "moves": [
-                "MOVE_EMBER",
-                "MOVE_TACKLE",
-                "MOVE_TAIL_WHIP",
-                "MOVE_GROWL"
+                "MOVE_GROWL",
+                "MOVE_WATER_GUN",
+                "MOVE_CONFUSION",
+                "MOVE_DISABLE"
             ],
             "iv_scale": 50,
             "ball_seal": 0

@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_FERROSEED",
+            "form": 0,
+            "level": 32,
+            "item": null,
+            "moves": [
+                "MOVE_PIN_MISSILE",
+                "MOVE_GYRO_BALL",
+                "MOVE_IRON_DEFENSE",
+                "MOVE_MIRROR_SHOT"
+            ],
+            "iv_scale": 100,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_TANGELA",
             "form": 0,
             "level": 32,
@@ -24,14 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_PONYTA",
+            "species": "SPECIES_FOONGUS",
             "form": 0,
             "level": 32,
             "item": null,
             "moves": [
-                "MOVE_FIRE_SPIN",
-                "MOVE_STOMP",
-                "MOVE_TAKE_DOWN"
+                "MOVE_FAINT_ATTACK",
+                "MOVE_SWEET_SCENT",
+                "MOVE_GIGA_DRAIN",
+                "MOVE_TOXIC"
             ],
             "iv_scale": 100,
             "ball_seal": 0

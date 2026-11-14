@@ -10,13 +10,28 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_STARLY",
+            "species": "SPECIES_MUNNA",
             "form": 0,
             "level": 7,
             "item": null,
             "moves": [
-                "MOVE_QUICK_ATTACK",
-                "MOVE_GROWL"
+                "MOVE_DEFENSE_CURL",
+                "MOVE_PSYWAVE",
+                "MOVE_LUCKY_CHANT",
+                "MOVE_YAWN"
+            ],
+            "iv_scale": 30,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_DARUMAKA",
+            "form": 0,
+            "level": 7,
+            "item": null,
+            "moves": [
+                "MOVE_TACKLE",
+                "MOVE_ROLLOUT",
+                "MOVE_INCINERATE"
             ],
             "iv_scale": 30,
             "ball_seal": 0

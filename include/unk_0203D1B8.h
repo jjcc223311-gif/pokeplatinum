@@ -88,6 +88,9 @@ void sub_0203DFE8(
 void sub_0203E09C(FieldSystem *fieldSystem, TrainerCase *param1);
 void FieldSystem_OpenTrainerCase(FieldSystem *fieldSystem, TrainerCase *trainerCase);
 BOOL FieldSystem_OpenPokedex(FieldSystem *fieldSystem, PokedexOverlayArgs *args);
+struct LegDexSectionsArgs;
+BOOL FieldSystem_OpenLegendaryDex(FieldSystem *fieldSystem, PokedexOverlayArgs *args);
+BOOL FieldSystem_OpenLegendaryDexSections(FieldSystem *fieldSystem, struct LegDexSectionsArgs *args);
 void FieldSystem_LaunchChooseStarterApp(FieldSystem *fieldSystem, ChooseStarterData *param1);
 void FieldSystem_LaunchSignatureApp(FieldSystem *fieldSystem);
 void FieldSystem_LaunchGTSApp(FieldSystem *fieldSystem, BOOL connectToWiFi);

@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_AXEW",
+            "form": 0,
+            "level": 32,
+            "item": null,
+            "moves": [
+                "MOVE_SLASH",
+                "MOVE_FALSE_SWIPE",
+                "MOVE_DRAGON_CLAW",
+                "MOVE_DRAGON_DANCE"
+            ],
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_AIPOM",
             "form": 0,
             "level": 32,
@@ -24,15 +38,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_GIRAFARIG",
+            "species": "SPECIES_LITWICK",
             "form": 0,
             "level": 32,
             "item": null,
             "moves": [
-                "MOVE_DOUBLE_HIT",
-                "MOVE_PSYBEAM",
-                "MOVE_ASSURANCE",
-                "MOVE_LIGHT_SCREEN"
+                "MOVE_WILL_O_WISP",
+                "MOVE_FLAME_BURST",
+                "MOVE_IMPRISON",
+                "MOVE_HEX"
             ],
             "iv_scale": 50,
             "ball_seal": 0

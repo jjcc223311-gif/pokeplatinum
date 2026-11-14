@@ -11,6 +11,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_GARBODOR",
+            "form": 0,
+            "level": 42,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MAGNETON",
             "form": 0,
             "level": 46,
@@ -20,7 +29,7 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_KADABRA",
+            "species": "SPECIES_MUSHARNA",
             "form": 0,
             "level": 42,
             "item": null,

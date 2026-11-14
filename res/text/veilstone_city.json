@@ -4,7 +4,7 @@
     {
       "id": "VeilstoneCity_Text_DawnPleaseCanYouHelpMe",
       "en_US": [
-        "Dawn: Hi, {STRVAR_1 3, 0, 0}!\n",
+        "Juniper: Hi, {STRVAR_1 3, 0, 0}!\n",
         "Please, can you help me?\r",
         "Some Team Galactic goons took my\n",
         "Pokédex away from me.\r",
@@ -28,7 +28,7 @@
     {
       "id": "VeilstoneCity_Text_DawnWillYouTakeTheGymChallenge",
       "en_US": [
-        "Dawn: {STRVAR_1 3, 0, 0}, are you going\n",
+        "Juniper: {STRVAR_1 3, 0, 0}, are you going\n",
         "to take the Gym challenge?\r",
         "Gee, you keep getting tougher and\n",
         "tougher, don’t you?\r",
@@ -92,7 +92,7 @@
     },
     {
       "id": "VeilstoneCity_Text_DawnDotDotDot",
-      "en_US": "Dawn: ...\r"
+      "en_US": "Juniper: ...\r"
     },
     {
       "id": "VeilstoneCity_Text_DawnGoodLuck",
@@ -197,7 +197,7 @@
     {
       "id": "VeilstoneCity_Text_DawnAskForHelp",
       "en_US": [
-        "Dawn: Hi, {STRVAR_1 3, 0, 0}!\n",
+        "Juniper: Hi, {STRVAR_1 3, 0, 0}!\n",
         "Please, can you help me?\r",
         "Do you remember Team Galactic?\n",
         "Those horrible people?\r",
@@ -212,8 +212,8 @@
     {
       "id": "VeilstoneCity_Text_DawnTeamUp",
       "en_US": [
-        "Dawn: You and your Pokémon together\n",
-        "with me and my Pokémon...\r",
+        "Juniper: You and your Pokémon\n",
+        "together with me and my Pokémon...\r",
         "United like this, our dream team\n",
         "has no chance of losing!\r",
         "I’m not letting those bad people get\n",
@@ -223,14 +223,14 @@
     {
       "id": "VeilstoneCity_Text_DawnIllBeWaiting",
       "en_US": [
-        "Dawn: I’ll be waiting.\n",
+        "Juniper: I’ll be waiting.\n",
         "Please get ready and come quickly."
       ]
     },
     {
       "id": "VeilstoneCity_Text_DawnWhatsGoingOn",
       "en_US": [
-        "Dawn: What’s going on?\r",
+        "Juniper: What’s going on?\r",
         "Why is Team Galactic out in the\n",
         "streets like they own the place?\r"
       ]
@@ -238,7 +238,7 @@
     {
       "id": "VeilstoneCity_Text_DawnThankYouSincerely",
       "en_US": [
-        "Dawn: {STRVAR_1 3, 0, 0}, thank you,\n",
+        "Juniper: {STRVAR_1 3, 0, 0}, thank you,\n",
         "sincerely.\r",
         "I would’ve been lost without my\n",
         "Pokédex.\r",
@@ -321,7 +321,7 @@
     {
       "id": "VeilstoneCity_Text_DawnFunnyManFromJubilife",
       "en_US": [
-        "Dawn: Oh...\n",
+        "Juniper: Oh...\n",
         "It’s that funny man from Jubilife...\r"
       ]
     },
@@ -342,7 +342,7 @@
     {
       "id": "VeilstoneCity_Text_DawnIShouldBeGoingNow",
       "en_US": [
-        "Dawn: I’m terribly sorry.\r",
+        "Juniper: I’m terribly sorry.\r",
         "Team Galactic took my Pokédex, so I was\n",
         "very irritated...\r",
         "I just blurted it out...\r",

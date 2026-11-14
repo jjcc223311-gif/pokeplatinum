@@ -8,15 +8,29 @@
     "double_battle": true,
     "party": [
         {
-            "species": "SPECIES_LUMINEON",
+            "species": "SPECIES_SEISMITOAD",
             "form": 0,
             "level": 50,
             "item": null,
             "moves": [
-                "MOVE_WATER_PULSE",
-                "MOVE_AQUA_RING",
-                "MOVE_CAPTIVATE",
-                "MOVE_SILVER_WIND"
+                "MOVE_ACID",
+                "MOVE_FLAIL",
+                "MOVE_DRAIN_PUNCH",
+                "MOVE_ECHOED_VOICE"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_EXCADRILL",
+            "form": 0,
+            "level": 50,
+            "item": null,
+            "moves": [
+                "MOVE_HORN_DRILL",
+                "MOVE_EARTHQUAKE",
+                "MOVE_SWORDS_DANCE",
+                "MOVE_SANDSTORM"
             ],
             "iv_scale": 0,
             "ball_seal": 0

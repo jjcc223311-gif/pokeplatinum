@@ -23,7 +23,7 @@
         },
         {
             "level": 54,
-            "species": "SPECIES_WEEZING"
+            "species": "SPECIES_HEATMOR"
         },
         {
             "level": 52,
@@ -31,7 +31,7 @@
         },
         {
             "level": 54,
-            "species": "SPECIES_GRAVELER"
+            "species": "SPECIES_CAMERUPT"
         },
         {
             "level": 53,
@@ -43,11 +43,11 @@
         },
         {
             "level": 53,
-            "species": "SPECIES_SLUGMA"
+            "species": "SPECIES_LARVESTA"
         },
         {
             "level": 53,
-            "species": "SPECIES_KOFFING"
+            "species": "SPECIES_HEATMOR"
         }
     ],
     "swarms": [

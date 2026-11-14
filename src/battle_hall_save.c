@@ -100,7 +100,7 @@ void BattleHall_SetRankOfType(u8 pokemonType, u8 *typeRanks, u8 value)
 
 void BattleHall_ResetRankOfAllTypes(u8 *typeRanks)
 {
-    for (int i = 0; i < NUM_POKEMON_TYPES; i++) {
+    for (int i = 0; i < HALL_NUM_TYPES; i++) {
         BattleHall_SetRankOfType(i, typeRanks, 0);
     }
 }

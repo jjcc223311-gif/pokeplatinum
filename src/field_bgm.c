@@ -152,6 +152,7 @@ u16 FieldBGM_GetEffective(FieldSystem *fieldSystem, enum MapHeaderID mapHeaderID
         case MAP_HEADER_DISTORTION_WORLD_B7F:
         case MAP_HEADER_DISTORTION_WORLD_GIRATINA_ROOM:
         case MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM:
+        case MAP_HEADER_DISTORTED_RIFT:
             break;
         default:
             return SEQ_NAMINORI_sseq;

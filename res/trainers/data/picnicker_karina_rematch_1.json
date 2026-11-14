@@ -10,6 +10,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_PANSAGE",
+            "form": 0,
+            "level": 23,
+            "item": null,
+            "moves": [
+                "MOVE_FURY_SWIPES",
+                "MOVE_LEECH_SEED",
+                "MOVE_BITE",
+                "MOVE_SEED_BOMB"
+            ],
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_PIPLUP",
             "form": 0,
             "level": 24,

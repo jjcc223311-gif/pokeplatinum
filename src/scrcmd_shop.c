@@ -12,11 +12,15 @@
 #include "data/mart_items.h"
 #include "overlay007/shop_menu.h"
 
+#include "constants/fieldmap.h"
+
 #include "field_script_context.h"
 #include "inlines.h"
+#include "location.h"
 #include "save_player.h"
 #include "trainer_info.h"
 #include "unk_0203D1B8.h"
+#include "vars_flags.h"
 
 BOOL ScrCmd_PokeMartCommon(ScriptContext *ctx)
 {
@@ -66,6 +70,21 @@ BOOL ScrCmd_PokeMartCommon(ScriptContext *ctx)
             shopItems[i] = PokeMartCommonItems[j].itemID;
             i++;
         }
+    }
+
+    // Mega Rock: in every Poke Mart's main list once the player has made it through Eterna Forest
+    // (Cheryl sets FLAG_TRAVELED_WITH_CHERYL when she leaves at the forest exit)
+    if (VarsFlags_CheckFlag(SaveData_GetVarsFlags(ctx->fieldSystem->saveData), FLAG_TRAVELED_WITH_CHERYL)) {
+        shopItems[i] = ITEM_MEGA_ROCK;
+        i++;
+    }
+
+    // Legend Mega Rock: only in the Battle Zone marts (Fight Area and Survival Area)
+    int mapHeaderID = ctx->fieldSystem->location->mapHeaderID;
+
+    if (mapHeaderID == MAP_HEADER_FIGHT_AREA_MART || mapHeaderID == MAP_HEADER_SURVIVAL_AREA_MART) {
+        shopItems[i] = ITEM_LEGEND_MEGA_ROCK;
+        i++;
     }
 
     shopItems[i] = SHOP_ITEM_END;

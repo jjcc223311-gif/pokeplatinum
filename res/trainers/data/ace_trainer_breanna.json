@@ -10,14 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_BRONZOR",
+            "species": "SPECIES_KLINK",
             "form": 0,
             "level": 35,
             "item": null,
             "moves": [
-                "MOVE_GYRO_BALL",
-                "MOVE_EXTRASENSORY",
-                "MOVE_CONFUSE_RAY"
+                "MOVE_GEAR_GRIND",
+                "MOVE_BIND",
+                "MOVE_CHARGE_BEAM",
+                "MOVE_AUTOTOMIZE"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_EMOLGA",
+            "form": 0,
+            "level": 35,
+            "item": null,
+            "moves": [
+                "MOVE_SHOCK_WAVE",
+                "MOVE_ELECTRO_BALL",
+                "MOVE_ACROBATICS",
+                "MOVE_LIGHT_SCREEN"
             ],
             "iv_scale": 60,
             "ball_seal": 0

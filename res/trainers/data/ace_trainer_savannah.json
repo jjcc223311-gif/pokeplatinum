@@ -10,15 +10,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_SNORUNT",
+            "species": "SPECIES_STOUTLAND",
             "form": 0,
             "level": 39,
             "item": null,
             "moves": [
-                "MOVE_ICE_FANG",
+                "MOVE_WORK_UP",
                 "MOVE_CRUNCH",
-                "MOVE_HAIL",
-                "MOVE_PROTECT"
+                "MOVE_ROAR",
+                "MOVE_RETALIATE"
+            ],
+            "iv_scale": 60,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_AUDINO",
+            "form": 0,
+            "level": 39,
+            "item": null,
+            "moves": [
+                "MOVE_SECRET_POWER",
+                "MOVE_ENTRAINMENT",
+                "MOVE_TAKE_DOWN",
+                "MOVE_HEAL_PULSE"
             ],
             "iv_scale": 60,
             "ball_seal": 0

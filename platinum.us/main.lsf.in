@@ -807,6 +807,47 @@ Overlay pokedex
 	Object src/applications/pokedex/ov21_021E8D48.c
 }
 
+Overlay legendary_dex
+{
+	After main
+	Object src/applications/legendary_dex/pokedex_main.c
+	Object src/applications/legendary_dex/footprint.c
+	Object src/applications/legendary_dex/pokedex_graphics.c
+	Object src/applications/legendary_dex/pokedex_sort.c
+	Object src/applications/legendary_dex/pokedex_updater.c
+	Object src/applications/legendary_dex/ov21_021D423C.c
+	Object src/applications/legendary_dex/ov21_021D4340.c
+	Object src/applications/legendary_dex/pokedex_text_manager.c
+	Object src/applications/legendary_dex/pokedex_panel.c
+	Object src/applications/legendary_dex/pokedex_field_map.c
+	Object src/applications/legendary_dex/pokedex_text.c
+	Object src/applications/legendary_dex/pokedex_enc_data.c
+	Object src/applications/legendary_dex/ov21_021D5AEC.c
+	Object src/applications/legendary_dex/ov21_021D76B0.c
+	Object src/applications/legendary_dex/pokedex_search.c
+	Object src/applications/legendary_dex/ov21_021D94BC.c
+	Object src/applications/legendary_dex/ov21_021DC9BC.c
+	Object src/applications/legendary_dex/ov21_021DDD2C.c
+	Object src/applications/legendary_dex/infomain.c
+	Object src/applications/legendary_dex/formmain.c
+	Object src/applications/legendary_dex/infomain_foreign.c
+	Object src/applications/legendary_dex/ov21_021E1924.c
+	Object src/applications/legendary_dex/ov21_021E29DC.c
+	Object src/applications/legendary_dex/ov21_021E3FFC.c
+	Object src/applications/legendary_dex/crysub.c
+	Object src/applications/legendary_dex/pokedex_height_check.c
+	Object src/applications/legendary_dex/ov21_021E68F4.c
+	Object src/applications/legendary_dex/ov21_021E737C.c
+	Object src/applications/legendary_dex/formsub.c
+	Object src/applications/legendary_dex/ov21_021E8D48.c
+}
+
+Overlay legdex_sections
+{
+	After main
+	Object src/applications/legdex_sections.c
+}
+
 Overlay overlay22
 {
 	After overlay17

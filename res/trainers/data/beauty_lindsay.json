@@ -8,6 +8,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_DUCKLETT",
+            "form": 0,
+            "level": 18,
+            "item": null,
+            "moves": [
+                "MOVE_DEFOG",
+                "MOVE_WING_ATTACK",
+                "MOVE_WATER_PULSE",
+                "MOVE_AERIAL_ACE"
+            ],
+            "iv_scale": 20,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_ROSELIA",
             "form": 0,
             "level": 19,

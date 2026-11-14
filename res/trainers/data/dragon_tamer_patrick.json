@@ -10,6 +10,15 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_AXEW",
+            "form": 0,
+            "level": 33,
+            "item": null,
+            "moves": null,
+            "iv_scale": 50,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_GIBLE",
             "form": 0,
             "level": 34,

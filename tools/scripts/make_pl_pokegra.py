@@ -53,7 +53,7 @@ for i, subdir in enumerate(SPECIES_DIRS):
                     target_file,
                     '-encodefronttoback',
                     '-scan',
-                ])
+                ], check=True)  # a failed sprite would shift every later NARC member
             else:
                 subprocess.run(['touch', target_file])
 

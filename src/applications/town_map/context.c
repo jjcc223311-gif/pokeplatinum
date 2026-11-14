@@ -38,7 +38,7 @@ typedef struct TownMapDistWorldMapOffset {
 
 static void PerformTownMapDescriptionsChecks(FieldSystem *fieldSystem, TownMapContext *ctx, const char *flagsFilePath);
 
-static const TownMapDistWorldMapOffset sDistWorldMapOffsets[10] = {
+static const TownMapDistWorldMapOffset sDistWorldMapOffsets[11] = {
     { .mapHeader = MAP_HEADER_DISTORTION_WORLD_1F, .x = 21, .y = 288, .z = 10 },
     { .mapHeader = MAP_HEADER_DISTORTION_WORLD_B1F, .x = 0, .y = 256, .z = 35 },
     { .mapHeader = MAP_HEADER_DISTORTION_WORLD_B2F, .x = 15, .y = 224, .z = 0 },
@@ -48,7 +48,8 @@ static const TownMapDistWorldMapOffset sDistWorldMapOffsets[10] = {
     { .mapHeader = MAP_HEADER_DISTORTION_WORLD_B6F, .x = 56, .y = 114, .z = 38 },
     { .mapHeader = MAP_HEADER_DISTORTION_WORLD_B7F, .x = 74, .y = 64, .z = 32 },
     { .mapHeader = MAP_HEADER_DISTORTION_WORLD_GIRATINA_ROOM, .x = 0, .y = 0, .z = 0 },
-    { .mapHeader = MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM, .x = 70, .y = 64, .z = 30 }
+    { .mapHeader = MAP_HEADER_DISTORTION_WORLD_TURNBACK_CAVE_ROOM, .x = 70, .y = 64, .z = 30 },
+    { .mapHeader = MAP_HEADER_DISTORTED_RIFT, .x = 70, .y = 64, .z = 30 }
 };
 
 static const u8 sTownMapFlyLocationUnlockFlags[NUM_FLY_LOCATIONS] = {

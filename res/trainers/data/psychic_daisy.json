@@ -9,7 +9,16 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_SLOWPOKE",
+            "species": "SPECIES_SIGILYPH",
+            "form": 0,
+            "level": 52,
+            "item": null,
+            "moves": null,
+            "iv_scale": 0,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_REUNICLUS",
             "form": 0,
             "level": 52,
             "item": null,

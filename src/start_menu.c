@@ -19,6 +19,7 @@
 #include "applications/party_menu/main.h"
 #include "applications/poffin_case/main.h"
 #include "applications/pokedex/pokedex_main.h"
+#include "applications/legdex_sections.h"
 #include "applications/pokemon_summary_screen/main.h"
 #include "applications/town_map/main.h"
 #include "field/field_system.h"
@@ -59,6 +60,7 @@
 #include "player_avatar.h"
 #include "player_move.h"
 #include "pokedex.h"
+#include "pokedex_memory.h"
 #include "pokemon.h"
 #include "poketch.h"
 #include "render_window.h"
@@ -102,7 +104,19 @@ enum StartMenuOption {
     START_MENU_OPTION_EXIT,
     START_MENU_OPTION_CHAT,
     START_MENU_OPTION_RETIRE,
+    START_MENU_OPTION_PC_BOX,
+    START_MENU_OPTION_LEGENDARY_DEX,
 };
+
+// Icon cell 9 is the female Bag; the PC BOX icon is cell 10
+#define START_MENU_ICON_FEMALE_BAG 9
+#define START_MENU_ICON_PC_BOX     10
+// Gold Pokédex icon for the Legendary Pokédex is cell 11
+#define START_MENU_ICON_LEGENDARY_DEX 11
+
+// Rows the menu window can hold before the options are squeezed closer together
+#define START_MENU_FULL_ROWS       7
+#define START_MENU_MAX_WINDOW_ROWS 22
 
 typedef struct MenuMailData {
     u16 itemID;
@@ -139,7 +153,7 @@ static u32 StartMenu_GetColosseumHiddenOptions(FieldSystem *fieldSystem);
 static void StartMenu_InitSprites(StartMenu *menu, u8 *options, u32 optionCount, u8 gender);
 static void StartMenu_FreeSprites(StartMenu *menu);
 static void StartMenu_AnimateSprites(StartMenu *menu);
-static void StartMenu_SetCursorPos(Sprite *sprite, u32 pos);
+static void StartMenu_SetCursorPos(Sprite *sprite, u32 pos, u32 pitch);
 static void StartMenu_SetIconAnimationAndPalette(Sprite *sprite, u16 anim, u16 palette);
 static void StartMenu_ChangeActiveMenuIcon(StartMenu *menu, u16 oldIndex, u16 index);
 static void StartMenu_TryTransitionIconAnimationToWiggle(Sprite *sprite);
@@ -179,6 +193,11 @@ static BOOL StartMenu_ExitBerryTag(FieldTask *fieldTask);
 static void StartMenu_EvolveInit(FieldTask *fieldTask);
 static void StartMenu_Evolve(FieldTask *fieldTask);
 static BOOL StartMenu_SelectRetire(FieldTask *fieldTask);
+static BOOL StartMenu_SelectPcBox(FieldTask *fieldTask);
+static BOOL StartMenu_SelectLegendaryDex(FieldTask *fieldTask);
+static BOOL StartMenu_OpenLegendaryDex(FieldTask *fieldTask);
+static BOOL StartMenu_LegendaryDexHomeDone(FieldTask *fieldTask);
+static BOOL StartMenu_LegendaryDexListDone(FieldTask *fieldTask);
 static void StartMenu_ProcessGivenMail(FieldSystem *fieldSystem, StartMenu *menu, u8 mode);
 
 typedef struct StartMenuAction {
@@ -199,6 +218,8 @@ static const StartMenuAction sStartMenuActions[] = {
     [START_MENU_OPTION_EXIT]         = { .bankEntry = StartMenu_Text_Exit,           .callback = (void *)MENU_CANCEL         },
     [START_MENU_OPTION_CHAT]         = { .bankEntry = StartMenu_Text_Chat,           .callback = StartMenu_SelectChat        },
     [START_MENU_OPTION_RETIRE]       = { .bankEntry = StartMenu_Text_Retire,         .callback = StartMenu_SelectRetire      },
+    [START_MENU_OPTION_PC_BOX]       = { .bankEntry = StartMenu_Text_PcBox,          .callback = StartMenu_SelectPcBox       },
+    [START_MENU_OPTION_LEGENDARY_DEX] = { .bankEntry = StartMenu_Text_LegendaryDex,  .callback = StartMenu_SelectLegendaryDex },
 };
 // clang-format on
 
@@ -273,6 +294,28 @@ BOOL FieldSystem_IsInValidLocation(FieldSystem *fieldSystem)
 #define HIDE_OPTION_EXIT         (1 << 6)
 #define HIDE_OPTION_CHAT         (1 << 7)
 #define HIDE_OPTION_RETIRE       (1 << 8)
+#define HIDE_OPTION_PC_BOX       (1 << 9)
+#define HIDE_OPTION_LEGENDARY_DEX (1 << 10)
+
+// Mobile PC (X menu PC BOX / L+R): the player has it, and isn't in the Safari Zone, Pal Park,
+// Battle Tower salon or Amity Square
+BOOL FieldSystem_CanUseMobilePC(FieldSystem *fieldSystem)
+{
+    VarsFlags *varsFlags = SaveData_GetVarsFlags(fieldSystem->saveData);
+
+    if (!Bag_CanRemoveItem(SaveData_GetBag(fieldSystem->saveData), ITEM_MOBILE_PC, 1, HEAP_ID_FIELD2)) {
+        return FALSE;
+    }
+
+    if (SystemFlag_CheckSafariGameActive(varsFlags) == TRUE
+        || SystemFlag_CheckInPalPark(varsFlags) == TRUE
+        || FieldSystem_IsInBattleTowerSalon(fieldSystem) == TRUE
+        || MapHeader_IsAmitySquare(fieldSystem->location->mapHeaderID) == TRUE) {
+        return FALSE;
+    }
+
+    return TRUE;
+}
 
 void StartMenu_Open(FieldSystem *fieldSystem)
 {
@@ -382,6 +425,16 @@ static u32 StartMenu_GetNormalHiddenOptions(FieldSystem *fieldSystem)
         hideFlags |= HIDE_OPTION_BAG;
     }
 
+    // LEG. DEX: only once Mom has given the player the Legendary Pokédex
+    if (!VarsFlags_CheckFlag(SaveData_GetVarsFlags(fieldSystem->saveData), FLAG_RECEIVED_LEGENDARY_DEX)) {
+        hideFlags |= HIDE_OPTION_LEGENDARY_DEX;
+    }
+
+    // PC BOX: only once the player has the Mobile PC
+    if (!FieldSystem_CanUseMobilePC(fieldSystem)) {
+        hideFlags |= HIDE_OPTION_PC_BOX;
+    }
+
     hideFlags |= HIDE_OPTION_CHAT;
     hideFlags |= HIDE_OPTION_RETIRE;
 
@@ -390,27 +443,27 @@ static u32 StartMenu_GetNormalHiddenOptions(FieldSystem *fieldSystem)
 
 static u32 StartMenu_GetSafariHiddenOptions(FieldSystem *fieldSystem)
 {
-    return HIDE_OPTION_SAVE | HIDE_OPTION_CHAT;
+    return HIDE_OPTION_SAVE | HIDE_OPTION_CHAT | HIDE_OPTION_PC_BOX | HIDE_OPTION_LEGENDARY_DEX;
 }
 
 static u32 StartMenu_GetPalParkHiddenOptions(FieldSystem *fieldSystem)
 {
-    return HIDE_OPTION_SAVE | HIDE_OPTION_CHAT | HIDE_OPTION_BAG;
+    return HIDE_OPTION_SAVE | HIDE_OPTION_CHAT | HIDE_OPTION_BAG | HIDE_OPTION_PC_BOX | HIDE_OPTION_LEGENDARY_DEX;
 }
 
 static u32 StartMenu_GetBattleTowerSalonHiddenOptions(FieldSystem *fieldSystem)
 {
-    return HIDE_OPTION_POKEDEX | HIDE_OPTION_BAG | HIDE_OPTION_SAVE | HIDE_OPTION_CHAT | HIDE_OPTION_RETIRE;
+    return HIDE_OPTION_POKEDEX | HIDE_OPTION_BAG | HIDE_OPTION_SAVE | HIDE_OPTION_CHAT | HIDE_OPTION_RETIRE | HIDE_OPTION_PC_BOX | HIDE_OPTION_LEGENDARY_DEX;
 }
 
 static u32 StartMenu_GetUnionRoomHiddenOptions(FieldSystem *fieldSystem)
 {
-    return HIDE_OPTION_SAVE | HIDE_OPTION_RETIRE;
+    return HIDE_OPTION_SAVE | HIDE_OPTION_RETIRE | HIDE_OPTION_PC_BOX | HIDE_OPTION_LEGENDARY_DEX;
 }
 
 static u32 StartMenu_GetColosseumHiddenOptions(FieldSystem *fieldSystem)
 {
-    return HIDE_OPTION_SAVE | HIDE_OPTION_POKEDEX | HIDE_OPTION_CHAT | HIDE_OPTION_RETIRE;
+    return HIDE_OPTION_SAVE | HIDE_OPTION_POKEDEX | HIDE_OPTION_CHAT | HIDE_OPTION_RETIRE | HIDE_OPTION_PC_BOX | HIDE_OPTION_LEGENDARY_DEX;
 }
 
 static BOOL StartMenu_Main(FieldTask *fieldTask)
@@ -524,8 +577,18 @@ static void StartMenu_InitMenu(FieldTask *fieldTask)
     fieldSystem = FieldTask_GetFieldSystem(fieldTask);
     StartMenu *menu = FieldTask_GetEnv(fieldTask);
     u32 optionCount = StartMenu_MakeOptionList(menu, menu->options);
+    u32 windowRows = optionCount * 3;
 
-    Window_Add(fieldSystem->bgConfig, &menu->primaryWindow, BG_LAYER_MAIN_3, 20, 1, 11, optionCount * 3, 12, BASE_TILE_MESSAGE_WINDOW - 11 * 22);
+    // Up to 7 options use the normal 24px rows; more (PC BOX, LEG. DEX) are squeezed into the
+    // tallest window that still fits on the screen
+    menu->rowPitch = 24;
+
+    if (optionCount > START_MENU_FULL_ROWS) {
+        windowRows = START_MENU_MAX_WINDOW_ROWS;
+        menu->rowPitch = (windowRows * 8 - 4) / optionCount;
+    }
+
+    Window_Add(fieldSystem->bgConfig, &menu->primaryWindow, BG_LAYER_MAIN_3, 20, 1, 11, windowRows, 12, BASE_TILE_MESSAGE_WINDOW - 11 * 22);
     LoadStandardWindowGraphics(fieldSystem->bgConfig, BG_LAYER_MAIN_3, BASE_TILE_STANDARD_WINDOW_FRAME, 11, STANDARD_WINDOW_FIELD, HEAP_ID_FIELD2);
     Window_DrawStandardFrame(&menu->primaryWindow, TRUE, BASE_TILE_STANDARD_WINDOW_FRAME, 11);
 
@@ -565,7 +628,7 @@ static void StartMenu_InitMenu(FieldTask *fieldTask)
     template.fontID = FONT_MESSAGE;
     template.xSize = 1;
     template.ySize = optionCount;
-    template.lineSpacing = 8;
+    template.lineSpacing = menu->rowPitch - 16;
     template.suppressCursor = TRUE;
 
     if (optionCount >= 4) {
@@ -594,8 +657,10 @@ static u32 StartMenu_MakeOptionList(StartMenu *menu, u8 *listOut)
     ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_RETIRE, HIDE_OPTION_RETIRE);
     ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_CHAT, HIDE_OPTION_CHAT);
     ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_POKEDEX, HIDE_OPTION_POKEDEX);
+    ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_LEGENDARY_DEX, HIDE_OPTION_LEGENDARY_DEX);
     ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_POKEMON, HIDE_OPTION_POKEMON);
     ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_BAG, HIDE_OPTION_BAG);
+    ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_PC_BOX, HIDE_OPTION_PC_BOX);
     ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_TRAINER_CASE, HIDE_OPTION_TRAINER_CASE);
     ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_SAVE, HIDE_OPTION_SAVE);
     ADD_OPTION_IF_NOT_HIDDEN(START_MENU_OPTION_OPTIONS, HIDE_OPTION_OPTIONS);
@@ -692,7 +757,7 @@ static BOOL StartMenu_Select(FieldTask *fieldTask)
     menu->cursorPos = Menu_GetCursorPos(menu->menu);
 
     if (prevPos != menu->cursorPos) {
-        StartMenu_SetCursorPos(menu->sprites[CURSOR_SPRITE_INDEX]->sprite, menu->cursorPos);
+        StartMenu_SetCursorPos(menu->sprites[CURSOR_SPRITE_INDEX]->sprite, menu->cursorPos, menu->rowPitch);
         StartMenu_ChangeActiveMenuIcon(menu, prevPos, menu->cursorPos);
         fieldSystem->menuCursorPos = menu->options[menu->cursorPos];
     }
@@ -753,7 +818,7 @@ static void StartMenu_InitSprites(StartMenu *menu, u8 *options, u32 optionCount,
 
     menu->sprites[CURSOR_SPRITE_INDEX] = SpriteResourceManager_CreateManagedSprite(&menu->spriteManager, &sSpriteTemplates[CURSOR_TEMPLATE]);
 
-    StartMenu_SetCursorPos(menu->sprites[CURSOR_SPRITE_INDEX]->sprite, menu->cursorPos);
+    StartMenu_SetCursorPos(menu->sprites[CURSOR_SPRITE_INDEX]->sprite, menu->cursorPos, menu->rowPitch);
 
     SpriteResourceManager_LoadCell(&menu->spriteManager, narc, icons_cell_NCER, FALSE, 13529);
     SpriteResourceManager_LoadAnimation(&menu->spriteManager, narc, icons_anim_NANR, FALSE, 13529);
@@ -763,10 +828,14 @@ static void StartMenu_InitSprites(StartMenu *menu, u8 *options, u32 optionCount,
         SpriteTemplate template;
 
         template = sSpriteTemplates[ICON_TEMPLATE];
-        template.y += 24 * i;
+        template.y += menu->rowPitch * i;
 
         if (options[i] == START_MENU_OPTION_BAG && gender == GENDER_FEMALE) {
-            template.animIdx = 9 * ICON_ANIM_COUNT;
+            template.animIdx = START_MENU_ICON_FEMALE_BAG * ICON_ANIM_COUNT;
+        } else if (options[i] == START_MENU_OPTION_PC_BOX) {
+            template.animIdx = START_MENU_ICON_PC_BOX * ICON_ANIM_COUNT;
+        } else if (options[i] == START_MENU_OPTION_LEGENDARY_DEX) {
+            template.animIdx = START_MENU_ICON_LEGENDARY_DEX * ICON_ANIM_COUNT;
         } else {
             template.animIdx = options[i] * ICON_ANIM_COUNT;
         }
@@ -800,10 +869,10 @@ static void StartMenu_AnimateSprites(StartMenu *menu)
     }
 }
 
-static void StartMenu_SetCursorPos(Sprite *sprite, u32 pos)
+static void StartMenu_SetCursorPos(Sprite *sprite, u32 pos, u32 pitch)
 {
     VecFx32 position = *(Sprite_GetPosition(sprite));
-    position.y = (20 + 24 * pos) * FX32_ONE;
+    position.y = (20 + pitch * pos) * FX32_ONE;
 
     Sprite_SetPosition(sprite, &position);
 }
@@ -878,6 +947,91 @@ static BOOL StartMenu_SelectPokedex(FieldTask *fieldTask)
     menu->state = START_MENU_STATE_APP_START;
 
     return TRUE;
+}
+
+static PokedexOverlayArgs *StartMenu_NewPokedexArgs(FieldSystem *fieldSystem)
+{
+    PokedexOverlayArgs *pokedexArgs = Heap_Alloc(HEAP_ID_FIELD2, sizeof(PokedexOverlayArgs));
+    VarsFlags *varsFlags = SaveData_GetVarsFlags(fieldSystem->saveData);
+
+    pokedexArgs->pokedex = SaveData_GetPokedex(fieldSystem->saveData);
+    pokedexArgs->trainerInfo = SaveData_GetTrainerInfo(fieldSystem->saveData);
+    pokedexArgs->timeOfDay = FieldSystem_GetTimeOfDay(fieldSystem);
+    pokedexArgs->fullmoonIslandVisible = SystemVars_CheckHiddenLocation(varsFlags, HIDDEN_LOCATION_FULLMOON_ISLAND);
+    pokedexArgs->newmoonIslandVisible = SystemVars_CheckHiddenLocation(varsFlags, HIDDEN_LOCATION_NEWMOON_ISLAND);
+    pokedexArgs->springPathVisible = SystemVars_CheckHiddenLocation(varsFlags, HIDDEN_LOCATION_SPRING_PATH);
+    pokedexArgs->seabreakPathVisible = SystemVars_CheckHiddenLocation(varsFlags, HIDDEN_LOCATION_SEABREAK_PATH);
+    pokedexArgs->pokedexMemory = fieldSystem->pokedexMemory;
+
+    return pokedexArgs;
+}
+
+static BOOL StartMenu_SelectLegendaryDex(FieldTask *fieldTask)
+{
+    StartMenu *menu = FieldTask_GetEnv(fieldTask);
+
+    FieldMap_FadeScreen(FADE_TYPE_BRIGHTNESS_OUT);
+
+    menu->callback = StartMenu_OpenLegendaryDex;
+    menu->state = START_MENU_STATE_APP_START;
+
+    return TRUE;
+}
+
+// Legendary Pokédex: its home screen (sections) first; choosing POKéMON opens the list (the Pokédex
+// app copy), and closing the list goes back to the home screen.
+static BOOL StartMenu_OpenLegendaryDex(FieldTask *fieldTask)
+{
+    FieldSystem *fieldSystem = FieldTask_GetFieldSystem(fieldTask);
+    StartMenu *menu = FieldTask_GetEnv(fieldTask);
+    LegDexSectionsArgs *args = Heap_Alloc(HEAP_ID_FIELD2, sizeof(LegDexSectionsArgs));
+
+    memset(args, 0, sizeof(LegDexSectionsArgs));
+    args->saveData = fieldSystem->saveData;
+    FieldSystem_OpenLegendaryDexSections(fieldSystem, args);
+
+    menu->taskData = args;
+    menu->callback = StartMenu_LegendaryDexHomeDone;
+
+    return FALSE;
+}
+
+static BOOL StartMenu_LegendaryDexHomeDone(FieldTask *fieldTask)
+{
+    FieldSystem *fieldSystem = FieldTask_GetFieldSystem(fieldTask);
+    StartMenu *menu = FieldTask_GetEnv(fieldTask);
+    LegDexSectionsArgs *args = menu->taskData;
+
+    if (args->choice == LEGDEX_CHOICE_OPEN_LIST) {
+        // The Legendary Pokédex remembers its own last Pokémon: it lists #494-649, which the regular
+        // Pokédex can't open on
+        static PokedexMemory sLegendaryDexMemory = { .currentSpecies = 0, .bootMode = POKEDEX_BOOT_DEFAULT };
+        PokedexOverlayArgs *listArgs = StartMenu_NewPokedexArgs(fieldSystem);
+
+        listArgs->pokedexMemory = &sLegendaryDexMemory;
+        menu->legDexListArgs = listArgs;
+        FieldSystem_OpenLegendaryDex(fieldSystem, menu->legDexListArgs);
+        menu->callback = StartMenu_LegendaryDexListDone;
+        return FALSE;
+    }
+
+    // Exit to the field
+    return StartMenu_ExitPokedex(fieldTask);
+}
+
+static BOOL StartMenu_LegendaryDexListDone(FieldTask *fieldTask)
+{
+    FieldSystem *fieldSystem = FieldTask_GetFieldSystem(fieldTask);
+    StartMenu *menu = FieldTask_GetEnv(fieldTask);
+
+    Heap_FreeExplicit(HEAP_ID_FIELD2, menu->legDexListArgs);
+    menu->legDexListArgs = NULL;
+
+    // Back to the home screen
+    FieldSystem_OpenLegendaryDexSections(fieldSystem, menu->taskData);
+    menu->callback = StartMenu_LegendaryDexHomeDone;
+
+    return FALSE;
 }
 
 static BOOL StartMenu_OpenPokedex(FieldTask *fieldTask)
@@ -1457,6 +1611,23 @@ static BOOL StartMenu_SelectRetire(FieldTask *fieldTask)
     } else {
         ScriptManager_Change(fieldTask, 4, NULL);
     }
+
+    Heap_Free(menu);
+    return FALSE;
+}
+
+// PC BOX (Mobile PC): close the menu and run the Pokemon Storage System script
+static BOOL StartMenu_SelectPcBox(FieldTask *fieldTask)
+{
+    StartMenu *menu = FieldTask_GetEnv(fieldTask);
+
+    StartMenu_Close(menu);
+    Window_EraseStandardFrame(&menu->primaryWindow, TRUE);
+    Bg_ScheduleTilemapTransfer(menu->primaryWindow.bgConfig, menu->primaryWindow.bgLayer);
+    Window_Remove(&menu->primaryWindow);
+    StartMenu_EraseBallCount(fieldTask);
+
+    ScriptManager_Change(fieldTask, SCRIPT_ID_MOBILE_PC, NULL);
 
     Heap_Free(menu);
     return FALSE;

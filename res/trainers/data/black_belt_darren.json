@@ -9,6 +9,20 @@
     "double_battle": false,
     "party": [
         {
+            "species": "SPECIES_SAWK",
+            "form": 0,
+            "level": 25,
+            "item": null,
+            "moves": [
+                "MOVE_DOUBLE_KICK",
+                "MOVE_LOW_SWEEP",
+                "MOVE_COUNTER",
+                "MOVE_KARATE_CHOP"
+            ],
+            "iv_scale": 40,
+            "ball_seal": 0
+        },
+        {
             "species": "SPECIES_MACHOP",
             "form": 0,
             "level": 25,
@@ -21,13 +35,15 @@
             "ball_seal": 0
         },
         {
-            "species": "SPECIES_MEDITITE",
+            "species": "SPECIES_THROH",
             "form": 0,
             "level": 25,
             "item": null,
             "moves": [
-                "MOVE_CONFUSION",
-                "MOVE_FORCE_PALM"
+                "MOVE_SEISMIC_TOSS",
+                "MOVE_VITAL_THROW",
+                "MOVE_REVENGE",
+                "MOVE_STORM_THROW"
             ],
             "iv_scale": 40,
             "ball_seal": 0

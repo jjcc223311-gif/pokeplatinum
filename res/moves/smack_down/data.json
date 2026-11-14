@@ -1,0 +1,29 @@
+{
+    "name": "Smack Down",
+    "description": [
+        "The user throws a\n",
+        "stone or projectile\n",
+        "to attack an\n",
+        "opponent. A flying\n",
+        "Pokémon will fall to"
+    ],
+    "class": "CLASS_PHYSICAL",
+    "type": "TYPE_ROCK",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+        "type": "BATTLE_EFFECT_SMACK_DOWN",
+        "chance": 100
+    },
+    "range": "RANGE_SINGLE_TARGET",
+    "priority": 0,
+    "flags": [
+        "MOVE_FLAG_CAN_PROTECT",
+        "MOVE_FLAG_CAN_MIRROR_MOVE"
+    ],
+    "contest": {
+        "effect": "CONTEST_EFFECT_BASIC",
+        "type": "CONTEST_TYPE_TOUGH"
+    }
+}

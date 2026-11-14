@@ -48,6 +48,14 @@
     {
       "id": "StartMenu_Text_BallStock",
       "en_US": "Stock: {STRVAR_1 51, 0, 0}"
+    },
+    {
+      "id": "StartMenu_Text_PcBox",
+      "en_US": "PC BOX"
+    },
+    {
+      "id": "StartMenu_Text_LegendaryDex",
+      "en_US": "LEG. DEX"
     }
   ]
 }

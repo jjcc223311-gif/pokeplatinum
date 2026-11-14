@@ -8,15 +8,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_GASTLY",
+            "species": "SPECIES_SIGILYPH",
             "form": 0,
             "level": 20,
             "item": null,
             "moves": [
-                "MOVE_SUCKER_PUNCH",
-                "MOVE_NIGHT_SHADE",
-                "MOVE_CONFUSE_RAY",
-                "MOVE_CURSE"
+                "MOVE_PSYWAVE",
+                "MOVE_TAILWIND",
+                "MOVE_WHIRLWIND",
+                "MOVE_PSYBEAM"
+            ],
+            "iv_scale": 10,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_WATCHOG",
+            "form": 0,
+            "level": 20,
+            "item": null,
+            "moves": [
+                "MOVE_SAND_ATTACK",
+                "MOVE_CRUNCH",
+                "MOVE_HYPNOSIS",
+                "MOVE_CONFUSE_RAY"
             ],
             "iv_scale": 10,
             "ball_seal": 0

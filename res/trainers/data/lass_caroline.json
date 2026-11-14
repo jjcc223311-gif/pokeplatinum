@@ -8,13 +8,29 @@
     "double_battle": false,
     "party": [
         {
-            "species": "SPECIES_CHERUBI",
+            "species": "SPECIES_PATRAT",
             "form": 0,
             "level": 17,
             "item": null,
             "moves": [
-                "MOVE_TACKLE",
-                "MOVE_LEECH_SEED"
+                "MOVE_BIDE",
+                "MOVE_DETECT",
+                "MOVE_SAND_ATTACK",
+                "MOVE_CRUNCH"
+            ],
+            "iv_scale": 20,
+            "ball_seal": 0
+        },
+        {
+            "species": "SPECIES_BOUFFALANT",
+            "form": 0,
+            "level": 17,
+            "item": null,
+            "moves": [
+                "MOVE_PURSUIT",
+                "MOVE_RAGE",
+                "MOVE_FURY_ATTACK",
+                "MOVE_HORN_ATTACK"
             ],
             "iv_scale": 20,
             "ball_seal": 0

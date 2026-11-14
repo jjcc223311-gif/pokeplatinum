@@ -1,0 +1,256 @@
+{
+    "base_stats": {
+        "hp": 54,
+        "attack": 78,
+        "defense": 103,
+        "speed": 22,
+        "special_attack": 53,
+        "special_defense": 45
+    },
+    "types": [
+        "TYPE_WATER",
+        "TYPE_ROCK"
+    ],
+    "catch_rate": 45,
+    "base_exp_reward": 71,
+    "ev_yields": {
+        "hp": 0,
+        "attack": 0,
+        "defense": 1,
+        "speed": 0,
+        "special_attack": 0,
+        "special_defense": 0
+    },
+    "held_items": {
+        "common": "ITEM_NONE",
+        "rare": "ITEM_NONE"
+    },
+    "gender_ratio": "GENDER_RATIO_FEMALE_12_5",
+    "hatch_cycles": 30,
+    "base_friendship": 70,
+    "exp_rate": "EXP_RATE_MEDIUM_FAST",
+    "egg_groups": [
+        "EGG_GROUP_WATER_1",
+        "EGG_GROUP_WATER_3"
+    ],
+    "abilities": [
+        "ABILITY_SOLID_ROCK",
+        "ABILITY_STURDY"
+    ],
+    "safari_flee_rate": 0,
+    "body_color": "MON_COLOR_BLUE",
+    "flip_sprite": false,
+    "icon_palette": 2,
+    "learnset": {
+        "by_level": [
+            [
+                1,
+                "MOVE_BIDE"
+            ],
+            [
+                1,
+                "MOVE_WATER_GUN"
+            ],
+            [
+                1,
+                "MOVE_WITHDRAW"
+            ],
+            [
+                5,
+                "MOVE_ROLLOUT"
+            ],
+            [
+                8,
+                "MOVE_BITE"
+            ],
+            [
+                11,
+                "MOVE_PROTECT"
+            ],
+            [
+                15,
+                "MOVE_AQUA_JET"
+            ],
+            [
+                18,
+                "MOVE_ANCIENT_POWER"
+            ],
+            [
+                21,
+                "MOVE_CRUNCH"
+            ],
+            [
+                25,
+                "MOVE_WIDE_GUARD"
+            ],
+            [
+                28,
+                "MOVE_BRINE"
+            ],
+            [
+                31,
+                "MOVE_SMACK_DOWN"
+            ],
+            [
+                35,
+                "MOVE_CURSE"
+            ],
+            [
+                38,
+                "MOVE_SHELL_SMASH"
+            ],
+            [
+                41,
+                "MOVE_AQUA_TAIL"
+            ],
+            [
+                45,
+                "MOVE_ROCK_SLIDE"
+            ],
+            [
+                48,
+                "MOVE_RAIN_DANCE"
+            ],
+            [
+                51,
+                "MOVE_HYDRO_PUMP"
+            ]
+        ],
+        "by_tm": [
+            "TM06",
+            "TM10",
+            "TM13",
+            "TM14",
+            "TM17",
+            "TM18",
+            "TM21",
+            "TM23",
+            "TM26",
+            "TM27",
+            "TM28",
+            "TM32",
+            "TM37",
+            "TM39",
+            "TM42",
+            "TM44",
+            "TM45",
+            "TM69",
+            "TM71",
+            "TM76",
+            "TM80",
+            "TM82",
+            "TM87",
+            "TM90",
+            "HM03",
+            "HM04",
+            "HM06",
+            "HM07"
+        ],
+        "by_tutor": [
+            "MOVE_DIVE",
+            "MOVE_AQUA_TAIL",
+            "MOVE_EARTH_POWER",
+            "MOVE_ICY_WIND",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_SNORE"
+        ],
+        "egg_moves": [
+            "MOVE_BIDE",
+            "MOVE_BODY_SLAM",
+            "MOVE_FLAIL",
+            "MOVE_IRON_DEFENSE",
+            "MOVE_KNOCK_OFF",
+            "MOVE_ROCK_THROW",
+            "MOVE_SLAM",
+            "MOVE_WATER_PULSE",
+            "MOVE_WHIRLPOOL"
+        ]
+    },
+    "evolutions": [
+        [
+            "EVO_LEVEL",
+            37,
+            "SPECIES_CARRACOSTA"
+        ]
+    ],
+    "offspring": "SPECIES_TIRTOUGA",
+    "footprint": {
+        "has": false,
+        "size": "FOOTPRINT_LARGE",
+        "type": "FOOTPRINT_TYPE_SCARY"
+    },
+    "pokedex_data": {
+        "height_inches": 28,
+        "weight_pounds": 36.4,
+        "body_shape": "SHAPE_FINS",
+        "trainer_scale_f": 272,
+        "pokemon_scale_f": 337,
+        "trainer_scale_m": 256,
+        "pokemon_scale_m": 337,
+        "trainer_pos_f": 8,
+        "pokemon_pos_f": 22,
+        "trainer_pos_m": 9,
+        "pokemon_pos_m": 22,
+        "en": {
+            "name": "TIRTOUGA",
+            "category": "Prototurtle Pokémon",
+            "entry_text": [
+                "It was brought back to life from a\n",
+                "fossil. It dives deep into the\n",
+                "ocean to hunt."
+            ]
+        },
+        "fr": {
+            "name": "TIRTOUGA",
+            "category": "Prototurtle Pokémon",
+            "entry_text": [
+                "It was brought back to life from a\n",
+                "fossil. It dives deep into the\n",
+                "ocean to hunt."
+            ]
+        },
+        "de": {
+            "name": "TIRTOUGA",
+            "category": "Prototurtle Pokémon",
+            "entry_text": [
+                "It was brought back to life from a\n",
+                "fossil. It dives deep into the\n",
+                "ocean to hunt."
+            ]
+        },
+        "it": {
+            "name": "TIRTOUGA",
+            "category": "Prototurtle Pokémon",
+            "entry_text": [
+                "It was brought back to life from a\n",
+                "fossil. It dives deep into the\n",
+                "ocean to hunt."
+            ]
+        },
+        "es": {
+            "name": "TIRTOUGA",
+            "category": "Prototurtle Pokémon",
+            "entry_text": [
+                "It was brought back to life from a\n",
+                "fossil. It dives deep into the\n",
+                "ocean to hunt."
+            ]
+        },
+        "jp": {
+            "name": "TIRTOUGA",
+            "category": "Prototurtle Pokémon",
+            "entry_text": [
+                "It was brought back to life from a\n",
+                "fossil. It dives deep into the\n",
+                "ocean to hunt."
+            ]
+        }
+    },
+    "catching_show": {
+        "pal_park_land_area": "PAL_PARK_AREA_LAND_NONE",
+        "pal_park_water_area": "PAL_PARK_AREA_WATER_NONE",
+        "catching_points": 0,
+        "rarity": 0,
+        "unused": 0
+    }
+}

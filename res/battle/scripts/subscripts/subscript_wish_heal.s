@@ -11,6 +11,7 @@ _000:
     UpdateVar OPCODE_FLAG_ON, BTLVAR_BATTLE_CTX_STATUS, SYSCTL_SKIP_SPRITE_BLINK
     PlayBattleAnimation BTLSCR_MSG_TEMP, BATTLE_ANIMATION_RESTORE_HP
     Wait 
+    ApplyFumeCloud BTLSCR_MSG_TEMP
     Call BATTLE_SUBSCRIPT_UPDATE_HP
     // {0} regained health!
     PrintMessage BattleStrings_Text_PokemonRegainedHealth_Ally, TAG_NICKNAME, BTLSCR_MSG_TEMP

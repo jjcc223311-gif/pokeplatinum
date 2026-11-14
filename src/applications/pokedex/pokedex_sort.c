@@ -19,7 +19,7 @@
 #include "trainer_info.h"
 
 #define NUMSTATFILES 11
-#define BLANKSPACE   (NATIONAL_DEX_COUNT + 1)
+#define BLANKSPACE   (POKEDEX_SPECIES_COUNT + 1)
 
 enum PokedexDataSortIndex {
     PDSI_NATIONAL,
@@ -271,16 +271,16 @@ BOOL PokedexSort_Sort(PokedexSortData *param0, enum SortOrder sortOrder, enum Fi
     int fullDexLength;
     BOOL dexExists;
 
-    encounteredPokedex = Heap_AllocAtEnd(heapID, sizeof(u16) * NATIONAL_DEX_COUNT);
+    encounteredPokedex = Heap_AllocAtEnd(heapID, sizeof(u16) * POKEDEX_SPECIES_COUNT);
 
     GF_ASSERT(encounteredPokedex);
-    memset(encounteredPokedex, 0, sizeof(u16) * NATIONAL_DEX_COUNT);
+    memset(encounteredPokedex, 0, sizeof(u16) * POKEDEX_SPECIES_COUNT);
 
     caughtStatusLength = 0;
-    resultingPokedex = Heap_AllocAtEnd(heapID, sizeof(u16) * NATIONAL_DEX_COUNT);
+    resultingPokedex = Heap_AllocAtEnd(heapID, sizeof(u16) * POKEDEX_SPECIES_COUNT);
 
     GF_ASSERT(resultingPokedex);
-    memset(resultingPokedex, 0, sizeof(u16) * NATIONAL_DEX_COUNT);
+    memset(resultingPokedex, 0, sizeof(u16) * POKEDEX_SPECIES_COUNT);
 
     numResulting = 0;
 

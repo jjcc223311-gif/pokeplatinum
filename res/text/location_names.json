@@ -504,6 +504,10 @@
     {
       "id": "LocationNames_Text_RockPeakRuins",
       "en_US": "Rock Peak Ruins"
+    },
+    {
+      "id": "LocationNames_Text_DistortedRift",
+      "en_US": "Distorted Rift"
     }
   ]
 }

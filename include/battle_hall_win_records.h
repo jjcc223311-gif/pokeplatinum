@@ -9,9 +9,9 @@
 
 typedef struct BattleHallWinRecords {
     u32 alwaysNegative1;
-    u16 singleStreaks[MAX_SPECIES];
-    u16 doubleStreaks[MAX_SPECIES];
-    u16 multiStreaks[MAX_SPECIES];
+    u16 singleStreaks[POKEDEX_MAX_SPECIES]; // save layout: vanilla species only
+    u16 doubleStreaks[POKEDEX_MAX_SPECIES]; // save layout: vanilla species only
+    u16 multiStreaks[POKEDEX_MAX_SPECIES]; // save layout: vanilla species only
     u16 unused;
 } BattleHallWinRecords;
 

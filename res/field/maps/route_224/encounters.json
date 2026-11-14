@@ -35,11 +35,11 @@
         },
         {
             "level": 52,
-            "species": "SPECIES_BEAUTIFLY"
+            "species": "SPECIES_LILLIGANT"
         },
         {
             "level": 52,
-            "species": "SPECIES_DUSTOX"
+            "species": "SPECIES_VILEPLUME"
         },
         {
             "level": 52,
@@ -109,12 +109,12 @@
         {
             "level_max": 55,
             "level_min": 35,
-            "species": "SPECIES_GASTRODON"
+            "species": "SPECIES_ALOMOMOLA"
         },
         {
             "level_max": 55,
             "level_min": 35,
-            "species": "SPECIES_GASTRODON"
+            "species": "SPECIES_FRILLISH"
         },
         {
             "level_max": 55,
@@ -165,12 +165,12 @@
         {
             "level_max": 25,
             "level_min": 10,
-            "species": "SPECIES_MAGIKARP"
+            "species": "SPECIES_FRILLISH"
         },
         {
             "level_max": 25,
             "level_min": 10,
-            "species": "SPECIES_REMORAID"
+            "species": "SPECIES_FRILLISH"
         },
         {
             "level_max": 25,
@@ -198,12 +198,12 @@
         {
             "level_max": 55,
             "level_min": 40,
-            "species": "SPECIES_OCTILLERY"
+            "species": "SPECIES_EELEKTRIK"
         },
         {
             "level_max": 55,
             "level_min": 40,
-            "species": "SPECIES_OCTILLERY"
+            "species": "SPECIES_CLAMPERL"
         }
     ],
     "map_category": {

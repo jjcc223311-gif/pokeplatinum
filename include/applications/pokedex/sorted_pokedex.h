@@ -6,10 +6,10 @@
 #include "applications/pokedex/species_caught_status.h"
 
 typedef struct {
-    SpeciesCaughtStatus caughtStatusArray[NATIONAL_DEX_COUNT];
+    SpeciesCaughtStatus caughtStatusArray[POKEDEX_SPECIES_COUNT];
     int currentStatusIndex;
     int caughtStatusLength;
-    int displayPokedex[NATIONAL_DEX_COUNT]; // contains index for caughtStatusArray, not species
+    int displayPokedex[POKEDEX_SPECIES_COUNT]; // contains index for caughtStatusArray, not species
     int currentDisplayIndex;
     int numDisplayed;
 } SortedPokedex;

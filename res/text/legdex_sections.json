@@ -1,0 +1,427 @@
+{
+  "key": 47103,
+  "messages": [
+    {
+      "id": "LegDexSections_Text_Title",
+      "en_US": "LEGENDARY POKéDEX"
+    },
+    {
+      "id": "LegDexSections_Text_TabPokemon",
+      "en_US": "POKéMON"
+    },
+    {
+      "id": "LegDexSections_Text_TabMega",
+      "en_US": "MEGA"
+    },
+    {
+      "id": "LegDexSections_Text_TabTypes",
+      "en_US": "TYPES"
+    },
+    {
+      "id": "LegDexSections_Text_TabAbilities",
+      "en_US": "ABILITIES"
+    },
+    {
+      "id": "LegDexSections_Text_PokemonList",
+      "en_US": "POKéMON LIST"
+    },
+    {
+      "id": "LegDexSections_Text_HomeInfo",
+      "en_US": [
+        "Every Pokémon from BULBASAUR to\n",
+        "GENESECT, with all of their forms,\n",
+        "in your father’s order."
+      ]
+    },
+    {
+      "id": "LegDexSections_Text_HomeOpen",
+      "en_US": "Press A to open the Pokémon list."
+    },
+    {
+      "id": "LegDexSections_Text_HomeSections",
+      "en_US": [
+        "Press L or R for the Mega Evolution,\n",
+        "Type and Ability sections."
+      ]
+    },
+    {
+      "id": "LegDexSections_Text_HomeCountSpecies",
+      "en_US": "Pokémon: "
+    },
+    {
+      "id": "LegDexSections_Text_HomeCountMegas",
+      "en_US": "Megas: "
+    },
+    {
+      "id": "LegDexSections_Text_HomeCountTypes",
+      "en_US": "Types: "
+    },
+    {
+      "id": "LegDexSections_Text_HomeCountAbilities",
+      "en_US": "Abilities: "
+    },
+    {
+      "id": "LegDexSections_Text_FooterHome",
+      "en_US": "L/R: Section  A: Open  B: Exit"
+    },
+    {
+      "id": "LegDexSections_Text_FooterList",
+      "en_US": "L/R: Section  +: Move  B: Exit"
+    },
+    {
+      "id": "LegDexSections_Text_FooterAbilities",
+      "en_US": "L/R: Section  A: More  B: Exit"
+    },
+    {
+      "id": "LegDexSections_Text_MegaPrefix",
+      "en_US": "MEGA "
+    },
+    {
+      "id": "LegDexSections_Text_LegendaryPrefix",
+      "en_US": "LEG. MEGA "
+    },
+    {
+      "id": "LegDexSections_Text_LegendaryTitlePrefix",
+      "en_US": "LEGENDARY MEGA "
+    },
+    {
+      "id": "LegDexSections_Text_SecondSuffix",
+      "en_US": " 2"
+    },
+    {
+      "id": "LegDexSections_Text_Unknown",
+      "en_US": "???"
+    },
+    {
+      "id": "LegDexSections_Text_NotCaught",
+      "en_US": [
+        "Catch this Pokémon to see\n",
+        "its Mega Evolution."
+      ]
+    },
+    {
+      "id": "LegDexSections_Text_Type",
+      "en_US": "Type"
+    },
+    {
+      "id": "LegDexSections_Text_BaseStats",
+      "en_US": "Base stats"
+    },
+    {
+      "id": "LegDexSections_Text_StatHP",
+      "en_US": "HP"
+    },
+    {
+      "id": "LegDexSections_Text_StatAtk",
+      "en_US": "Atk"
+    },
+    {
+      "id": "LegDexSections_Text_StatDef",
+      "en_US": "Def"
+    },
+    {
+      "id": "LegDexSections_Text_StatSpA",
+      "en_US": "SpA"
+    },
+    {
+      "id": "LegDexSections_Text_StatSpD",
+      "en_US": "SpD"
+    },
+    {
+      "id": "LegDexSections_Text_StatSpe",
+      "en_US": "Spe"
+    },
+    {
+      "id": "LegDexSections_Text_StatTotal",
+      "en_US": "Total"
+    },
+    {
+      "id": "LegDexSections_Text_Ability",
+      "en_US": "Ability"
+    },
+    {
+      "id": "LegDexSections_Text_HowToGet",
+      "en_US": "How to get"
+    },
+    {
+      "id": "LegDexSections_Text_HowMega1",
+      "en_US": [
+        "Mega Ring. Press MEGA in battle."
+      ]
+    },
+    {
+      "id": "LegDexSections_Text_HowMega2",
+      "en_US": [
+        "Mega Ring, holding a Mega Rock."
+      ]
+    },
+    {
+      "id": "LegDexSections_Text_HowLegendary1",
+      "en_US": [
+        "Legend Necklace. Press LEGENDARY."
+      ]
+    },
+    {
+      "id": "LegDexSections_Text_HowLegendary2",
+      "en_US": [
+        "Legend Necklace, holding a Mega Rock."
+      ]
+    },
+    {
+      "id": "LegDexSections_Text_Attacking",
+      "en_US": "ATTACKING"
+    },
+    {
+      "id": "LegDexSections_Text_Defending",
+      "en_US": "DEFENDING"
+    },
+    {
+      "id": "LegDexSections_Text_SuperEffective",
+      "en_US": "x2  "
+    },
+    {
+      "id": "LegDexSections_Text_NotVeryEffective",
+      "en_US": "x0.5  "
+    },
+    {
+      "id": "LegDexSections_Text_NoEffect",
+      "en_US": "x0  "
+    },
+    {
+      "id": "LegDexSections_Text_None",
+      "en_US": "-"
+    },
+    {
+      "id": "LegDexSections_Text_Separator",
+      "en_US": ", "
+    },
+    {
+      "id": "LegDexSections_Text_HoldersTitle",
+      "en_US": "Pokémon with this Ability:"
+    },
+    {
+      "id": "LegDexSections_Text_NoHolders",
+      "en_US": "No Pokémon have this Ability."
+    },
+    {
+      "id": "LegDexSections_Text_MoreHolders",
+      "en_US": "(A: more)"
+    },
+    {
+      "id": "LegDexSections_Text_SuffixMega1",
+      "en_US": " (MEGA)"
+    },
+    {
+      "id": "LegDexSections_Text_SuffixMega2",
+      "en_US": " (MEGA 2)"
+    },
+    {
+      "id": "LegDexSections_Text_SuffixLegendary1",
+      "en_US": " (LEG. MEGA)"
+    },
+    {
+      "id": "LegDexSections_Text_SuffixLegendary2",
+      "en_US": " (LEG. MEGA 2)"
+    },
+    {
+      "id": "LegDexSections_Text_OpenParen",
+      "en_US": " ("
+    },
+    {
+      "id": "LegDexSections_Text_CloseParen",
+      "en_US": ")"
+    },
+    {
+      "id": "LegDexSections_Text_FormNormalForm",
+      "en_US": "NORMAL FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormSunnyForm",
+      "en_US": "SUNNY FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormRainyForm",
+      "en_US": "RAINY FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormSnowyForm",
+      "en_US": "SNOWY FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormOvercastForm",
+      "en_US": "OVERCAST FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormSunshineForm",
+      "en_US": "SUNSHINE FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormNormalForme",
+      "en_US": "NORMAL FORME"
+    },
+    {
+      "id": "LegDexSections_Text_FormOriginForme",
+      "en_US": "ORIGIN FORME"
+    },
+    {
+      "id": "LegDexSections_Text_FormNormalType",
+      "en_US": "NORMAL TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormFightingType",
+      "en_US": "FIGHTING TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormFlyingType",
+      "en_US": "FLYING TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormPoisonType",
+      "en_US": "POISON TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormGroundType",
+      "en_US": "GROUND TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormRockType",
+      "en_US": "ROCK TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormBugType",
+      "en_US": "BUG TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormGhostType",
+      "en_US": "GHOST TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormSteelType",
+      "en_US": "STEEL TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormFireType",
+      "en_US": "FIRE TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormWaterType",
+      "en_US": "WATER TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormGrassType",
+      "en_US": "GRASS TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormElectricType",
+      "en_US": "ELECTRIC TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormPsychicType",
+      "en_US": "PSYCHIC TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormIceType",
+      "en_US": "ICE TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormDragonType",
+      "en_US": "DRAGON TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormDarkType",
+      "en_US": "DARK TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormLightType",
+      "en_US": "LIGHT TYPE"
+    },
+    {
+      "id": "LegDexSections_Text_FormRedStriped",
+      "en_US": "RED-STRIPED"
+    },
+    {
+      "id": "LegDexSections_Text_FormBlueStriped",
+      "en_US": "BLUE-STRIPED"
+    },
+    {
+      "id": "LegDexSections_Text_FormStandardMode",
+      "en_US": "STANDARD MODE"
+    },
+    {
+      "id": "LegDexSections_Text_FormZenMode",
+      "en_US": "ZEN MODE"
+    },
+    {
+      "id": "LegDexSections_Text_FormSpringForm",
+      "en_US": "SPRING FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormSummerForm",
+      "en_US": "SUMMER FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormAutumnForm",
+      "en_US": "AUTUMN FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormWinterForm",
+      "en_US": "WINTER FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormIncarnateForme",
+      "en_US": "INCARNATE FORME"
+    },
+    {
+      "id": "LegDexSections_Text_FormTherianForme",
+      "en_US": "THERIAN FORME"
+    },
+    {
+      "id": "LegDexSections_Text_FormKyurem",
+      "en_US": "KYUREM"
+    },
+    {
+      "id": "LegDexSections_Text_FormBlackKyurem",
+      "en_US": "BLACK KYUREM"
+    },
+    {
+      "id": "LegDexSections_Text_FormWhiteKyurem",
+      "en_US": "WHITE KYUREM"
+    },
+    {
+      "id": "LegDexSections_Text_FormOrdinaryForm",
+      "en_US": "ORDINARY FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormResoluteForm",
+      "en_US": "RESOLUTE FORM"
+    },
+    {
+      "id": "LegDexSections_Text_FormAriaForme",
+      "en_US": "ARIA FORME"
+    },
+    {
+      "id": "LegDexSections_Text_FormPirouetteForme",
+      "en_US": "PIROUETTE FORME"
+    },
+    {
+      "id": "LegDexSections_Text_FormNoDrive",
+      "en_US": "NO DRIVE"
+    },
+    {
+      "id": "LegDexSections_Text_FormDouseDrive",
+      "en_US": "DOUSE DRIVE"
+    },
+    {
+      "id": "LegDexSections_Text_FormShockDrive",
+      "en_US": "SHOCK DRIVE"
+    },
+    {
+      "id": "LegDexSections_Text_FormBurnDrive",
+      "en_US": "BURN DRIVE"
+    },
+    {
+      "id": "LegDexSections_Text_FormChillDrive",
+      "en_US": "CHILL DRIVE"
+    }
+  ]
+}

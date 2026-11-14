@@ -496,6 +496,338 @@
     {
       "id": "pl_msg_00000611_00123",
       "en_US": "BAD DREAMS"
+    },
+    {
+      "id": "pl_msg_00000611_00124",
+      "en_US": "MIND SANCTUARY"
+    },
+    {
+      "id": "pl_msg_00000611_00125",
+      "en_US": "HEARTLINK"
+    },
+    {
+      "id": "pl_msg_00000611_00126",
+      "en_US": "WILL IGNITION"
+    },
+    {
+      "id": "pl_msg_00000611_00127",
+      "en_US": "DIVINE EDICT"
+    },
+    {
+      "id": "pl_msg_00000611_00128",
+      "en_US": "LIVE WIRE"
+    },
+    {
+      "id": "pl_msg_00000611_00129",
+      "en_US": "THORN BLOOM"
+    },
+    {
+      "id": "pl_msg_00000611_00130",
+      "en_US": "PRISM TIDE"
+    },
+    {
+      "id": "pl_msg_00000611_00131",
+      "en_US": "LUNAR REFUGE"
+    },
+    {
+      "id": "pl_msg_00000611_00132",
+      "en_US": "AURA OVERDRIVE"
+    },
+    {
+      "id": "pl_msg_00000611_00133",
+      "en_US": "SPATIAL RUPTURE"
+    },
+    {
+      "id": "pl_msg_00000611_00134",
+      "en_US": "DISTORTION VEIL"
+    },
+    {
+      "id": "pl_msg_00000611_00135",
+      "en_US": "TIME SOVEREIGN"
+    },
+    {
+      "id": "pl_msg_00000611_00136",
+      "en_US": "BLAZING MIND"
+    },
+    {
+      "id": "pl_msg_00000611_00137",
+      "en_US": "ROYAL AEGIS"
+    },
+    {
+      "id": "pl_msg_00000611_00138",
+      "en_US": "WORLDROOT"
+    },
+    {
+      "id": "pl_msg_00000611_00139",
+      "en_US": "PREDATOR VOLT"
+    },
+    {
+      "id": "pl_msg_00000611_00140",
+      "en_US": "TITAN’S GRIP"
+    },
+    {
+      "id": "pl_msg_00000611_00141",
+      "en_US": "PRISMATIC ARMOR"
+    },
+    {
+      "id": "pl_msg_00000611_00142",
+      "en_US": "ELECTRIC SURGE"
+    },
+    {
+      "id": "pl_msg_00000611_00143",
+      "en_US": "HEXWEAVER"
+    },
+    {
+      "id": "pl_msg_00000611_00144",
+      "en_US": "WINTER CHASE"
+    },
+    {
+      "id": "pl_msg_00000611_00145",
+      "en_US": "SAND FORCE"
+    },
+    {
+      "id": "pl_msg_00000611_00146",
+      "en_US": "STONE ENGINE"
+    },
+    {
+      "id": "pl_msg_00000611_00147",
+      "en_US": "TIDE RUSH"
+    },
+    {
+      "id": "pl_msg_00000611_00148",
+      "en_US": "AMBUSH FANGS"
+    },
+    {
+      "id": "pl_msg_00000611_00149",
+      "en_US": "TOXIC FISTS"
+    },
+    {
+      "id": "pl_msg_00000611_00150",
+      "en_US": "FURNACE SPARK"
+    },
+    {
+      "id": "pl_msg_00000611_00151",
+      "en_US": "SHARPNESS"
+    },
+    {
+      "id": "pl_msg_00000611_00152",
+      "en_US": "PEARL RADIANCE"
+    },
+    {
+      "id": "pl_msg_00000611_00153",
+      "en_US": "FUME CLOUD"
+    },
+    {
+      "id": "pl_msg_00000611_00154",
+      "en_US": "RIME CALLER"
+    },
+    {
+      "id": "pl_msg_00000611_00155",
+      "en_US": "MAGIC BOUNCE"
+    },
+    {
+      "id": "pl_msg_00000611_00156",
+      "en_US": "SILK SWIPE"
+    },
+    {
+      "id": "pl_msg_00000611_00157",
+      "en_US": "MOONLIT HEX"
+    },
+    {
+      "id": "pl_msg_00000611_00158",
+      "en_US": "PALE MIRAGE"
+    },
+    {
+      "id": "pl_msg_00000611_00159",
+      "en_US": "ROYAL INSULATE"
+    },
+    {
+      "id": "pl_msg_00000611_00160",
+      "en_US": "LIVING TERRACE"
+    },
+    {
+      "id": "pl_msg_00000611_00161",
+      "en_US": "CROSSWIRE"
+    },
+    {
+      "id": "pl_msg_00000611_00162",
+      "en_US": "CANNON SALVO"
+    },
+    {
+      "id": "pl_msg_00000611_00163",
+      "en_US": "RUBY CONDUIT"
+    },
+    {
+      "id": "pl_msg_00000611_00164",
+      "en_US": "ROYAL PARRY"
+    },
+    {
+      "id": "pl_msg_00000611_00165",
+      "en_US": "FOSSIL CITADEL"
+    },
+    {
+      "id": "pl_msg_00000611_00166",
+      "en_US": "DUNE PURSUIT"
+    },
+    {
+      "id": "pl_msg_00000611_00167",
+      "en_US": "AURA CONVERGE"
+    },
+    {
+      "id": "pl_msg_00000611_00168",
+      "en_US": "TIME LOCK"
+    },
+    {
+      "id": "pl_msg_00000611_00169",
+      "en_US": "GILDED CLAWS"
+    },
+    {
+      "id": "pl_msg_00000611_00170",
+      "en_US": "SIEGE RESERVOIR"
+    },
+    {
+      "id": "pl_msg_00000611_00171",
+      "en_US": "AZURE WILDFIRE"
+    },
+    {
+      "id": "pl_msg_00000611_00172",
+      "en_US": "DISTORTION GATE"
+    },
+    {
+      "id": "pl_msg_00000611_00173",
+      "en_US": "WAKE RUNNER"
+    },
+    {
+      "id": "pl_msg_00000611_00174",
+      "en_US": "VENOM LEVERAGE"
+    },
+    {
+      "id": "pl_msg_00000611_00175",
+      "en_US": "SEISMIC BREAKER"
+    },
+    {
+      "id": "pl_msg_00000611_00176",
+      "en_US": "RIFT PIERCE"
+    },
+    {
+      "id": "pl_msg_00000611_00177",
+      "en_US": "EMPEROR MANTLE"
+    },
+    {
+      "id": "pl_msg_00000611_00178",
+      "en_US": "THIRD-EYE CURSE"
+    },
+    {
+      "id": "pl_msg_00000611_00179",
+      "en_US": "OMEN WINGS"
+    },
+    {
+      "id": "pl_msg_00000611_00180",
+      "en_US": "PRISMATIC GRACE"
+    },
+    {
+      "id": "pl_msg_00000611_00181",
+      "en_US": "BIG PECKS"
+    },
+    {
+      "id": "pl_msg_00000611_00182",
+      "en_US": "CURSED BODY"
+    },
+    {
+      "id": "pl_msg_00000611_00183",
+      "en_US": "DEFEATIST"
+    },
+    {
+      "id": "pl_msg_00000611_00184",
+      "en_US": "DEFIANT"
+    },
+    {
+      "id": "pl_msg_00000611_00185",
+      "en_US": "HEALER"
+    },
+    {
+      "id": "pl_msg_00000611_00186",
+      "en_US": "ILLUSION"
+    },
+    {
+      "id": "pl_msg_00000611_00187",
+      "en_US": "INFILTRATOR"
+    },
+    {
+      "id": "pl_msg_00000611_00188",
+      "en_US": "IRON BARBS"
+    },
+    {
+      "id": "pl_msg_00000611_00189",
+      "en_US": "JUSTIFIED"
+    },
+    {
+      "id": "pl_msg_00000611_00190",
+      "en_US": "MOXIE"
+    },
+    {
+      "id": "pl_msg_00000611_00191",
+      "en_US": "MUMMY"
+    },
+    {
+      "id": "pl_msg_00000611_00192",
+      "en_US": "OVERCOAT"
+    },
+    {
+      "id": "pl_msg_00000611_00193",
+      "en_US": "POISON TOUCH"
+    },
+    {
+      "id": "pl_msg_00000611_00194",
+      "en_US": "PRANKSTER"
+    },
+    {
+      "id": "pl_msg_00000611_00195",
+      "en_US": "REGENERATOR"
+    },
+    {
+      "id": "pl_msg_00000611_00196",
+      "en_US": "SAND RUSH"
+    },
+    {
+      "id": "pl_msg_00000611_00197",
+      "en_US": "SAP SIPPER"
+    },
+    {
+      "id": "pl_msg_00000611_00198",
+      "en_US": "SHEER FORCE"
+    },
+    {
+      "id": "pl_msg_00000611_00199",
+      "en_US": "TELEPATHY"
+    },
+    {
+      "id": "pl_msg_00000611_00200",
+      "en_US": "TERAVOLT"
+    },
+    {
+      "id": "pl_msg_00000611_00201",
+      "en_US": "TURBOBLAZE"
+    },
+    {
+      "id": "pl_msg_00000611_00202",
+      "en_US": "UNNERVE"
+    },
+    {
+      "id": "pl_msg_00000611_00203",
+      "en_US": "VICTORY STAR"
+    },
+    {
+      "id": "pl_msg_00000611_00204",
+      "en_US": "WEAK ARMOR"
+    },
+    {
+      "id": "pl_msg_00000611_00205",
+      "en_US": "WONDER SKIN"
+    },
+    {
+      "id": "pl_msg_00000611_00206",
+      "en_US": "ZEN MODE"
     }
   ]
 }
