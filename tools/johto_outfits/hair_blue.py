@@ -65,7 +65,15 @@ import sys
 B = '/home/claude/pokeplatinum/res/johto_outfits/'
 FRONT = {(32, 32, 41): DARK, (57, 65, 82): MID, (57, 66, 82): MID}
 MUG = {(65, 65, 90): DARK, (90, 98, 123): MID}
-for f in sys.argv[1:]:
-    if f == 'front': recolor(B + 'player_male/front.png', 80, 18, MAP=FRONT)
-    if f == 'front_scan': recolor(B + 'player_male/front_scan.png', 80, 18, halves=2, MAP=FRONT)
-    if f == 'mugshot': recolor(B + 'player_male/mugshot.png', 64, 30, MAP=MUG)
+TARGETS = {
+    'field': lambda: [recolor(B + f'field_sprites/player/{f}.png', 32, 14) for f in
+                      ['player_m', 'player_m_bike', 'player_m_fishing', 'player_m_holding_pokeball', 'player_m_pokecenter_heal',
+                       'player_m_poketch', 'player_m_save', 'player_m_sprayduck', 'player_m_surf', 'player_m_vs_seeker']],
+    'front': lambda: recolor(B + 'player_male/front.png', 80, 18, MAP=FRONT),
+    'front_scan': lambda: recolor(B + 'player_male/front_scan.png', 80, 18, halves=2, MAP=FRONT),
+    'back': lambda: recolor(B + 'player_male/back.png', 81, 24),
+    'back_scan': lambda: recolor(B + 'player_male/back_scan.png', 80, 24, halves=2),
+    'mugshot': lambda: recolor(B + 'player_male/mugshot.png', 64, 30, MAP=MUG),
+}
+for f in (sys.argv[1:] or list(TARGETS)):
+    TARGETS[f]()
